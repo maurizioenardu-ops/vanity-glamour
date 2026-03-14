@@ -308,13 +308,14 @@ window.addEventListener('error',e=>{
   <div class="actions">
     <button class="btn primary" type="button" data-action="copyPost">Copia post</button>
     <button class="btn" type="button" data-action="editFromView">Modifica</button>
+    <button class="btn" style="border:2px solid #111;background:#fff7d6" type="button" data-action="duplicateArtFromView">Duplica</button>
     <button class="btn" type="button" data-action="closeView">Chiudi</button>
   </div>
 </div></div>
 
 <div id="mArtEdit" class="modalwrap"><div class="modal artModal">
   <div class="h2" id="artEditTitle">Nuovo articolo</div>
-  <div class="miniNote" style="font-size:13px;margin:2px 0 12px;color:#64748b">Scheda articolo più ordinata, colorata e pronta per la vendita.</div>
+  <div class="miniNote" id="artEditSubnote" style="font-size:13px;margin:2px 0 12px;color:#64748b">Scheda articolo più ordinata, colorata e pronta per la vendita.</div>
 
   <div class="formBlock dati inputSoft">
     <div class="blockTitle">Dati articolo</div>
@@ -737,7 +738,7 @@ function buildPost(a){
   lines.push(`${brand} ${modello} ${qemoji}`.trim());
   const qual=qualityFromCode(a.codice);
   if(qual==='ORIGINALE') lines.push('QUALITÀ SUPERIORE');
-  else if(qual) lines.push(`Qualità ${qual}`);
+  else if(qual && qual!=='STANDARD') lines.push(`Qualità ${qual}`);
   if((a.descrizione||'').trim()) lines.push((a.descrizione||'').trim());
   const detail=[];
   if(a.taglia) detail.push(`Taglia ${a.taglia}`);
@@ -882,7 +883,10 @@ function renderArt(){
       </div>
       <div style="text-align:right">
         <div class="k">Prezzo</div><div class="t">${money(currentPrice(a))}</div>
-        <div style="margin-top:8px"><button class="btn orderAdd small" type="button" data-action="addArtToOrder" data-id="${a.id}">Aggiungi a ordine</button></div>
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+          <button class="btn orderAdd small" type="button" data-action="addArtToOrder" data-id="${a.id}">Aggiungi a ordine</button>
+          <button class="btn small" style="border:2px solid #111;background:#fff7d6" type="button" data-action="duplicateArt" data-id="${a.id}">Duplica</button>
+        </div>
       </div>
     </div>`;
   }).join('') || `<div class="card"><div class="small">Nessun articolo</div></div>`;
@@ -1183,11 +1187,14 @@ async function openArtView(id){
   document.getElementById('vArtPost').value=buildPost(a);
   show('mArtView');
 }
-async function openArtEdit(id){
+async function openArtEdit(id, mode='edit'){
   const db=loadDB();
   const a=id?db.articoli.find(x=>x.id===id):null;
-  currentArtId=id||null;
-  document.getElementById('artEditTitle').textContent = a?'Modifica articolo':'Nuovo articolo';
+  currentArtId=(mode==='duplicate')?null:(id||null);
+  document.getElementById('artEditTitle').textContent = !a ? 'Nuovo articolo' : (mode==='duplicate' ? 'Duplica articolo' : 'Modifica articolo');
+  document.getElementById('artEditSubnote').textContent = mode==='duplicate'
+    ? 'Copia pronta: cambia codice e dettagli, senza creare duplicati.'
+    : 'Scheda articolo più ordinata, colorata e pronta per la vendita.';
   const set=(k,v)=>document.getElementById(k).value=(v===0?0:(v||''));
 
   if(!a){
@@ -1199,18 +1206,22 @@ async function openArtEdit(id){
     show('mArtEdit');
     return;
   }
-  set('a_cod', a?.codice); set('a_brand', a?.brand); set('a_mod', a?.modello);
+  set('a_cod', mode==='duplicate' ? '' : a?.codice); set('a_brand', a?.brand); set('a_mod', a?.modello);
   set('a_cat', a?.categoria); set('a_desc', a?.descrizione); set('a_forn', a?.fornitore);
   set('a_taglia', a?.taglia); set('a_variante', a?.variante); set('a_colore', a?.colore);
   set('a_mis', a?.misura); set('a_usd', a?.costoUsd||'');
   document.getElementById('a_promo_on').checked = !!a?.promoAttiva;
   set('a_promo_date', a?.scadenzaPromo); set('a_promo_price', a?.prezzoPromo||'');
   document.getElementById('a_note').value=a?.note||'';
-  document.getElementById('a_post').value=a?.post||'';
+  document.getElementById('a_post').value=mode==='duplicate' ? '' : (a?.post||'');
   document.getElementById('a_photo').value='';
   renderArtAutoFields();
-  renderArtPhotoPrev(await getArticlePics(a));
+  renderArtPhotoPrev(mode==='duplicate' ? [] : await getArticlePics(a));
   show('mArtEdit');
+}
+function duplicateArt(id){
+  hide('mArtView');
+  openArtEdit(id,'duplicate');
 }
 function renderArtPhotoPrev(pics){
   const box=document.getElementById('a_photo_prev');
@@ -1645,8 +1656,10 @@ document.addEventListener('click',(ev)=>{
   if(a==='hardReset'){ if(confirm('Reset totale?')){ [KEY, ...(typeof LEGACY_KEYS!=='undefined'?LEGACY_KEYS:[])].forEach(k=>localStorage.removeItem(k)); location.reload(); } return; }
   if(a==='copyPost') return copyTextFrom(document.getElementById('vArtPost'));
   if(a==='addArtToOrder'){ const id=el.dataset.id; if(id) return openOrdEdit(null, id); return; }
+  if(a==='duplicateArt'){ const id=el.dataset.id; if(id) return duplicateArt(id); return; }
   if(a==='addArtToOrderFromView'){ if(currentArtId) { hide('mArtView'); return openOrdEdit(null, currentArtId); } return; }
   if(a==='editFromView'){ hide('mArtView'); return openArtEdit(currentArtId); }
+  if(a==='duplicateArtFromView'){ if(currentArtId) return duplicateArt(currentArtId); return; }
   if(a==='closeView') return hide('mArtView');
   if(a==='closeEdit') return hide('mArtEdit');
   if(a==='saveArt') return saveArt();
