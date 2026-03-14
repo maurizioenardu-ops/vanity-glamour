@@ -1,17 +1,15 @@
-const CACHE = 'vg-full-v7_0';
-const ASSETS = [
-  './',
-  './index.html',
-  './index.html?v=v7_0',
+const VERSION = 'v8_1';
+const CACHE = `vg-runtime-${VERSION}`;
+const STATIC_ASSETS = [
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
-  './reset.html'
+  './reset-cache.html'
 ];
 
 self.addEventListener('install', event => {
   self.skipWaiting();
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)));
+  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(STATIC_ASSETS)));
 });
 
 self.addEventListener('activate', event => {
@@ -21,24 +19,50 @@ self.addEventListener('activate', event => {
     await self.clients.claim();
     const clients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
     for (const client of clients) {
-      client.postMessage({ type: 'APP_UPDATED', version: 'v7_0' });
+      client.postMessage({ type: 'VG_SW_UPDATED', version: VERSION });
     }
   })());
 });
 
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
-  const url = new URL(event.request.url);
-  if (url.origin !== location.origin) return;
+  const req = event.request;
+  if (req.method !== 'GET') return;
+  const url = new URL(req.url);
 
+  // Always go to network first for HTML and navigation requests.
+  if (req.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname.endsWith('/')) {
+    event.respondWith((async () => {
+      try {
+        return await fetch(req, { cache: 'reload' });
+      } catch (err) {
+        return (await caches.match('./index.html')) || (await caches.match('./reset-cache.html')) || Response.error();
+      }
+    })());
+    return;
+  }
+
+  // Manifest should always be fresh.
+  if (url.pathname.endsWith('manifest.json')) {
+    event.respondWith((async () => {
+      try {
+        const fresh = await fetch(req, { cache: 'no-store' });
+        const cache = await caches.open(CACHE);
+        cache.put('./manifest.json', fresh.clone());
+        return fresh;
+      } catch (err) {
+        return (await caches.match('./manifest.json')) || Response.error();
+      }
+    })());
+    return;
+  }
+
+  // Icons and reset page: cache-first is fine.
   event.respondWith((async () => {
-    try {
-      const fresh = await fetch(event.request, { cache: 'reload' });
-      const cache = await caches.open(CACHE);
-      cache.put(event.request, fresh.clone());
-      return fresh;
-    } catch (err) {
-      return (await caches.match(event.request)) || (await caches.match('./index.html')) || Response.error();
-    }
+    const cached = await caches.match(req);
+    if (cached) return cached;
+    const fresh = await fetch(req);
+    const cache = await caches.open(CACHE);
+    cache.put(req, fresh.clone());
+    return fresh;
   })());
 });
