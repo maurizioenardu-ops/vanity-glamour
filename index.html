@@ -167,9 +167,18 @@ window.addEventListener('error',e=>{
 
     <div class="cards dashMain">
       <div class="stat" data-go="ordini"><div class="k">Ordini in corso</div><div id="c_open_orders" class="v big">0</div><div class="sub">non ancora consegnati</div></div>
-      <div class="stat" data-go="finanze"><div class="k">Guadagno mese</div><div id="c_profit_month" class="v big">0</div><div class="sub">margine del mese corrente</div></div>
-      <div class="stat" data-go="ordini"><div class="k">Media ordini</div><div id="c_avg_order" class="v big">0</div><div class="sub">valore medio per ordine</div></div>
-      <div class="stat" data-go="finanze"><div class="k">Guadagno totale</div><div id="c_profit_total" class="v big">0</div><div class="sub">margine complessivo</div></div>
+      <div class="stat" data-go="finanze"><div class="k">Guadagno mese</div><div id="c_profit_month" class="v big">0</div><div class="sub">solo ordini incassati del mese</div></div>
+      <div class="stat" data-go="ordini"><div class="k">Da spedire</div><div id="c_ship_todo" class="v big">0</div><div class="sub">incassati ma senza tracking</div></div>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <div class="h2">📦 Monitoraggio spedizioni</div>
+      <div class="substats" style="margin-top:10px">
+        <div class="micro"><div class="k">Da spedire</div><div id="d_ship_todo" class="v">0</div></div>
+        <div class="micro"><div class="k">Spedite</div><div id="d_ship_sent" class="v">0</div></div>
+        <div class="micro"><div class="k">Consegnate</div><div id="d_ship_done" class="v">0</div></div>
+      </div>
+      <div id="dashShipList" class="list" style="margin-top:12px"></div>
     </div>
 
     <div class="card quickCard">
@@ -433,25 +442,21 @@ window.addEventListener('error',e=>{
       <div><div class="k">Totale righe</div><div id="o_subtot" class="small" style="font-weight:900;font-size:18px;padding:12px 14px;border-radius:14px;background:#f8f4ee;border:1px solid #eadbc3">0,00</div></div>
     </div>
   </div>
-  <div class="ordBlock" style="background:linear-gradient(180deg,#f8fbff,#eef7ff);border-color:#cfe0f6">
-    <div class="h2">Spedizione e tracking</div>
-    <div class="grid2">
-      <div>
-        <div class="k">Numero spedizione</div>
-        <input id="o_tracking" placeholder="Inserisci tracking" autocomplete="off" autocapitalize="off" spellcheck="false"/>
-      </div>
-      <div>
-        <div class="k">Azioni rapide</div>
-        <div class="actions" style="margin-top:0;gap:8px;flex-wrap:wrap">
-          <button class="btn tiny" type="button" data-action="copyTracking" style="min-height:auto;padding:8px 10px">Copia tracking</button>
-          <button class="btn tiny" type="button" data-action="openTracking17" style="min-height:auto;padding:8px 10px;background:#f4f7ff">17TRACK</button>
-          <button class="btn tiny" type="button" data-action="toggleTrackingWidget" style="min-height:auto;padding:8px 10px;background:#e9fff5;border-color:#111">Mostra tracking</button>
-        </div>
-      </div>
+  <div class="ordBlock" style="background:linear-gradient(180deg,#fff8ef,#fff2df);border-color:#f0c98b;box-shadow:0 10px 24px rgba(164,106,0,.08)">
+    <div class="h2">📦 Tracking spedizione</div>
+    <div class="small" style="margin:-4px 0 10px;color:#7a4b00;font-weight:700">Direttamente dentro l'ordine, senza corriere</div>
+    <div>
+      <div class="k">Numero spedizione</div>
+      <input id="o_tracking" placeholder="Inserisci tracking" autocomplete="off" autocapitalize="off" spellcheck="false" style="font-size:16px;font-weight:800;border:2px solid #d8a24d;background:#fffdfa"/>
     </div>
-    <div id="o_tracking_wrap" style="display:none;margin-top:10px">
-      <div class="small" style="margin-bottom:8px;color:#355070">Monitoraggio rapido integrato</div>
-      <iframe id="o_tracking_iframe" title="Tracking spedizione" style="width:100%;height:360px;border:1px solid #cfe0f6;border-radius:16px;background:#fff" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div class="actions" style="margin-top:10px;gap:8px;flex-wrap:wrap">
+      <button class="btn tiny" type="button" data-action="copyTracking" style="min-height:auto;padding:9px 12px;background:#fff;border:2px solid #111">Copia</button>
+      <button class="btn tiny" type="button" data-action="openTracking17" style="min-height:auto;padding:9px 12px;background:#f4f7ff;border:2px solid #111">17TRACK</button>
+      <button class="btn tiny" type="button" data-action="toggleTrackingWidget" style="min-height:auto;padding:9px 12px;background:#e9fff5;border:2px solid #111">Mostra tracking</button>
+    </div>
+    <div id="o_tracking_wrap" style="display:none;margin-top:12px">
+      <div class="small" style="margin-bottom:8px;color:#7a4b00;font-weight:700">Monitoraggio rapido integrato</div>
+      <iframe id="o_tracking_iframe" title="Tracking spedizione" style="width:100%;height:360px;border:2px solid #f0c98b;border-radius:16px;background:#fff" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
   </div>
   <div class="ordBlock soft">
@@ -854,22 +859,29 @@ function renderHome(){
   const db=loadDB();
   const now=new Date(), curMonth=now.getMonth(), curYear=now.getFullYear();
   const ordini=db.ordini||[];
-  const inCorso=ordini.filter(o=>String(o.stato||'').trim().toLowerCase()!=='consegnato').length;
+  const statoNorm=o=>String(o.stato||'').trim().toLowerCase();
+  const trackingOf=o=>String(o.trackingNumber||o.tracking||'').trim();
+  const inCorso=ordini.filter(o=>statoNorm(o)!=='consegnato').length;
   const totaleOrdini=ordini.reduce((s,o)=>s+Number(o.totale||0),0);
   const mediaOrdini=ordini.length ? totaleOrdini / ordini.length : 0;
-  const guadagnoTot=ordini.reduce((s,o)=>s+(orderPaidStatus(o)?orderMargin(o,db):0),0);
   const sameMonth=o=>{ const d=new Date((o.data||'')+'T12:00:00'); return !isNaN(d) && d.getMonth()===curMonth && d.getFullYear()===curYear; };
   const guadagnoMese=ordini.filter(sameMonth).reduce((s,o)=>s+(orderPaidStatus(o)?orderMargin(o,db):0),0);
   const incMese=ordini.filter(sameMonth).reduce((s,o)=>s+orderIncassato(o),0);
   const incTot=ordini.reduce((s,o)=>s+orderIncassato(o),0);
   const daIncassare=Math.max(0, totaleOrdini-incTot);
+  const daSpedire=ordini.filter(o=>orderPaidStatus(o) && !trackingOf(o) && !['spedito','consegnato'].includes(statoNorm(o))).length;
+  const spedite=ordini.filter(o=>!!trackingOf(o) && statoNorm(o)!=='consegnato').length;
+  const consegnate=ordini.filter(o=>statoNorm(o)==='consegnato').length;
 
   document.getElementById('c_open_orders').textContent=inCorso;
   document.getElementById('c_profit_month').textContent=money(guadagnoMese);
-  document.getElementById('c_avg_order').textContent=money(mediaOrdini);
-  document.getElementById('c_profit_total').textContent=money(guadagnoTot);
+  const avgOrderEl=document.getElementById('c_avg_order'); if(avgOrderEl) avgOrderEl.textContent=money(mediaOrdini);
+  document.getElementById('c_ship_todo').textContent=daSpedire;
   document.getElementById('c_inc_month').textContent=money(incMese);
   document.getElementById('c_due_total').textContent=money(daIncassare);
+  document.getElementById('d_ship_todo').textContent=daSpedire;
+  document.getElementById('d_ship_sent').textContent=spedite;
+  document.getElementById('d_ship_done').textContent=consegnate;
 
   const months=[];
   for(let i=5;i>=0;i--){
@@ -898,6 +910,25 @@ function renderHome(){
     const target=(i===1)?'articoli':'ordini';
     return `<div class="row" data-go="${target}" style="grid-template-columns:1fr"><div class="main"><div class="t">${esc(t)}</div></div></div>`;
   }).join('');
+
+  const shipList=document.getElementById('dashShipList');
+  const recentShips=ordini.filter(o=>trackingOf(o)).slice().sort((a,b)=>(b._ts||0)-(a._ts||0)).slice(0,3);
+  if(!recentShips.length){
+    shipList.innerHTML=`<div class="card" style="padding:14px;background:#fffaf3"><div class="small">Nessuna spedizione con tracking inserito.</div></div>`;
+  } else {
+    shipList.innerHTML=recentShips.map(o=>{
+      const tr=trackingOf(o);
+      const label=(o.clienteNome||clienteById(o.clienteId)?.nome||'Cliente');
+      const shortTr=tr.length>16 ? tr.slice(0,16)+'…' : tr;
+      return `<div class="row" style="grid-template-columns:1fr auto;align-items:center">
+        <div>
+          <div class="t">${esc(label)}</div>
+          <div class="s">📦 ${esc(shortTr)} • ${esc(o.stato||'-')}</div>
+        </div>
+        <button class="btn tiny" type="button" data-action="openTracking17ForOrder" data-id="${o.id}" style="min-height:auto;padding:8px 12px;background:#eef4ff;border:2px solid #111">17TRACK</button>
+      </div>`;
+    }).join('');
+  }
 }
 
 function renderArt(){
@@ -1614,9 +1645,22 @@ async function renderOrdRows(){
 function trackingValue(){
   return (document.getElementById('o_tracking')?.value||'').trim();
 }
+function trackingValueForOrder(id){
+  const o=(loadDB().ordini||[]).find(x=>x.id===id);
+  return String(o?.trackingNumber||o?.tracking||'').trim();
+}
+function trackingUrl17FromValue(tr){
+  return tr ? `https://t.17track.net/it#nums=${encodeURIComponent(tr)}` : '';
+}
 function trackingUrl17(){
   const tr=trackingValue();
-  return tr ? `https://t.17track.net/it#nums=${encodeURIComponent(tr)}` : '';
+  return trackingUrl17FromValue(tr);
+}
+function openTracking17ForOrder(id){
+  const tr=trackingValueForOrder(id);
+  if(!tr){ alert('Questo ordine non ha ancora un tracking.'); return; }
+  const url=trackingUrl17FromValue(tr);
+  if(url) window.open(url,'_blank','noopener');
 }
 function trackingWidgetUrl(){
   const tr=trackingValue();
@@ -1782,6 +1826,7 @@ document.addEventListener('click',(ev)=>{
   if(a==='deleteCli') return deleteCli();
   if(a==='copyTracking') return copyTracking();
   if(a==='openTracking17') return openTracking17();
+  if(a==='openTracking17ForOrder'){ const id=el.dataset.id; if(id) return openTracking17ForOrder(id); return; }
   if(a==='toggleTrackingWidget') return toggleTrackingWidget();
   if(a==='saveOrd') return saveOrd();
   if(a==='closeOrd') return hide('mOrdEdit');
