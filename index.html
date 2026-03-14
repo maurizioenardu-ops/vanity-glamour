@@ -410,7 +410,8 @@ function mergeById(arrA=[], arrB=[]){
 }
 function loadDB(){
   try{
-    const keys=[...(typeof LEGACY_KEYS!=='undefined'?LEGACY_KEYS:[]), KEY];
+    const legacyKeys = (typeof LEGACY_KEYS!=='undefined' ? LEGACY_KEYS : []);
+    const keys=[...legacyKeys, KEY];
     const found=[];
     keys.forEach(k=>{
       const raw=localStorage.getItem(k);
@@ -430,21 +431,20 @@ function loadDB(){
       };
     });
 
+    const mergedRaw = JSON.stringify(merged);
     const rawMain=localStorage.getItem(KEY);
-    let same=false;
-    if(rawMain){
-      try{
-        const main=normalizeDBShape(JSON.parse(rawMain));
-        same = JSON.stringify(main)===JSON.stringify(merged);
-      }catch(_e){}
-    }
-    if(!same) localStorage.setItem(KEY, JSON.stringify(merged));
+    if(rawMain!==mergedRaw) localStorage.setItem(KEY, mergedRaw);
+
+    // Dopo la migrazione, le chiavi legacy non devono più rimettere in vita record cancellati.
+    legacyKeys.forEach(k=>{ try{ localStorage.removeItem(k); }catch(_e){} });
     return merged;
   }catch(e){ return defDB(); }
 }
 function saveDB(db){
   try{
     localStorage.setItem(KEY, JSON.stringify(db));
+    const legacyKeys = (typeof LEGACY_KEYS!=='undefined' ? LEGACY_KEYS : []);
+    legacyKeys.forEach(k=>{ try{ localStorage.removeItem(k); }catch(_e){} });
   }catch(err){
     const msg=String(err?.message||err||'');
     if(/quota|storage/i.test(msg)) alert('Salvataggio fallito: archivio locale pieno o sporco.');
@@ -1237,8 +1237,11 @@ async function deleteArt(){
   const old=db.articoli.find(a=>a.id===currentArtId);
   for(const pid of (old?.photoIds||[])) await idbDelete(pid);
   db.articoli=db.articoli.filter(a=>a.id!==currentArtId);
-  saveDB(db);
+  currentArtId=null;
+  if(!saveDB(db)) return;
   hide('mArtEdit');
+  renderArt();
+  toast('Articolo eliminato');
 }
 
 /* ====== CLIENTI ====== */
