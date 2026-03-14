@@ -594,6 +594,14 @@ function currentPrice(a){
   return promoValid(a) ? Number(a.prezzoPromo) : Number(a.prezzoVendita||0);
 }
 
+
+function orderIncassato(o){
+  const stato=String(o?.stato||'').trim().toLowerCase();
+  const autoPaidStatuses=new Set(['pagato','in lavorazione','spedito','consegnato']);
+  if(autoPaidStatuses.has(stato)) return Number(o?.totale||0);
+  return Number(o?.incassato||0);
+}
+
 function orderMargin(o, db){
   const righe=Array.isArray(o?.righe)?o.righe:[];
   let margin=0;
@@ -891,7 +899,7 @@ async function repairArchive(){
 function renderFinanze(){
   const db=loadDB();
   const fatt=db.ordini.reduce((s,o)=>s+Number(o.totale||0),0);
-  const inc=db.ordini.reduce((s,o)=>s+Number(o.incassato||0),0);
+  const inc=db.ordini.reduce((s,o)=>s+orderIncassato(o),0);
   const profit=db.ordini.reduce((s,o)=>s+orderMargin(o,db),0);
   const due=Math.max(0,fatt-inc);
   const now=new Date(), curMonth=now.getMonth(), curYear=now.getFullYear();
@@ -899,7 +907,7 @@ function renderFinanze(){
   const sameYear=o=>{ const d=new Date((o.data||'')+'T12:00:00'); return !isNaN(d) && d.getFullYear()===curYear; };
   const profitMonth=db.ordini.filter(sameMonth).reduce((s,o)=>s+orderMargin(o,db),0);
   const profitYear=db.ordini.filter(sameYear).reduce((s,o)=>s+orderMargin(o,db),0);
-  const incMonth=db.ordini.filter(sameMonth).reduce((s,o)=>s+Number(o.incassato||0),0);
+  const incMonth=db.ordini.filter(sameMonth).reduce((s,o)=>s+orderIncassato(o),0);
   const fattMonth=db.ordini.filter(sameMonth).reduce((s,o)=>s+Number(o.totale||0),0);
   document.getElementById('f_fatt').textContent=money(fatt);
   document.getElementById('f_inc').textContent=money(inc);
