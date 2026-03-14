@@ -427,14 +427,14 @@ function loadDB(){
 function saveDB(db){
   try{
     localStorage.setItem(KEY, JSON.stringify(db));
-    renderAll();
-    return true;
   }catch(err){
     const msg=String(err?.message||err||'');
-    if(/quota|storage/i.test(msg)) alert('Salvataggio fallito: archivio locale pieno o sporco. Le foto possono anche entrare su IndexedDB, ma articolo/ordine/cliente NON è garantito che sia stato salvato davvero.');
+    if(/quota|storage/i.test(msg)) alert('Salvataggio fallito: archivio locale pieno o sporco.');
     else alert('Salvataggio fallito: '+msg);
     return false;
   }
+  try{ renderAll(); }catch(err){ console.error('Render post-salvataggio fallito', err); }
+  return true;
 }
 
 function openPhotoDB(){
@@ -592,6 +592,18 @@ function promoValid(a){
 }
 function currentPrice(a){
   return promoValid(a) ? Number(a.prezzoPromo) : Number(a.prezzoVendita||0);
+}
+
+function orderMargin(o, db){
+  const righe=Array.isArray(o?.righe)?o.righe:[];
+  let margin=0;
+  for(const r of righe){
+    const prezzo=Number(r?.prezzo||0);
+    const art=(db?.articoli||[]).find(x=>x.id===r.articoloId || (r.codice && x.codice===r.codice));
+    const costo=Number(art?.costoEur||r?.costoEur||0);
+    margin += Math.max(0, prezzo - costo);
+  }
+  return margin;
 }
 
 /* ====== POST (rules) ====== */
