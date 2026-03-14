@@ -58,7 +58,7 @@ body{-webkit-tap-highlight-color:transparent}
 .btn{border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px;font-weight:1000;cursor:pointer}
 .btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
 .btn.danger{background:#fee2e2;border-color:#fecaca}
-.btn.orderAdd{background:linear-gradient(180deg,#9fe1cf,#46b39d);border:2px solid #111;color:#0f172a;box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.btn.orderAdd{background:linear-gradient(180deg,#7dd3c7,#2f8f83);border:2px solid #111;color:#082f49;box-shadow:0 2px 0 rgba(0,0,0,.18)}
 .btn.orderAdd.small{padding:8px 12px;border-radius:14px;font-size:13px;min-height:auto;line-height:1.15}
 .orderAddWrap{margin-top:10px;display:flex;justify-content:flex-start}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -93,11 +93,11 @@ textarea{min-height:90px;resize:vertical}
 .sparkTitle{display:flex;align-items:center;justify-content:space-between;margin:0 0 8px}.sparkTitle span{font-size:11px;text-transform:uppercase;color:#64748b;font-weight:1000}
 .sparkBars{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;align-items:end;height:92px}.sparkCol{display:flex;flex-direction:column;align-items:center;gap:6px}.sparkBarWrap{height:68px;width:100%;display:flex;align-items:flex-end}.sparkBar{width:100%;border-radius:14px 14px 8px 8px;background:linear-gradient(180deg,#60a5fa,#1d4ed8)}.sparkBar.soft{background:linear-gradient(180deg,#fbbf24,#f59e0b)}.sparkLbl{font-size:10px;color:#64748b;font-weight:900}.quickCard .h2{margin-bottom:8px}.substats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.micro{background:#f8fafc;border:1px solid #edf2f7;border-radius:14px;padding:10px 12px}.micro .k{font-size:10px}.micro .v{font-size:16px;margin-top:2px}.stat .v.big{font-size:24px}.stat .sub{margin-top:4px;font-size:11px;color:#64748b;font-weight:800}
 
-#mArtView .modal,#mArtEdit .modal{max-width:760px}
+#mArtView .modal,#mArtEdit .modal,#mOrdEdit .modal,#mCliEdit .modal{max-width:760px}
 @media (max-width:700px){
-  #mArtView .modal,#mArtEdit .modal{width:100vw;max-width:none;height:100vh;max-height:none;border-radius:0;padding:14px 14px 96px}
-  #mArtView.modalwrap,#mArtEdit.modalwrap{padding:0}
-  #mArtView .actions,#mArtEdit .actions{position:sticky;bottom:-2px;background:linear-gradient(180deg,rgba(248,250,252,0),#fff 18%,#fff 100%);padding-top:10px;margin-top:12px}
+  #mArtView .modal,#mArtEdit .modal,#mOrdEdit .modal,#mCliEdit .modal{width:100vw;max-width:none;height:100vh;max-height:none;border-radius:0;padding:14px 14px 96px}
+  #mArtView.modalwrap,#mArtEdit.modalwrap,#mOrdEdit.modalwrap,#mCliEdit.modalwrap{padding:0}
+  #mArtView .actions,#mArtEdit .actions,#mOrdEdit .actions,#mCliEdit .actions{position:sticky;bottom:-2px;background:linear-gradient(180deg,rgba(248,250,252,0),#fff 18%,#fff 100%);padding-top:10px;margin-top:12px}
 }
 @media (max-width:520px){
   .smallGrid,.cards,.btnGrid,.grid2{grid-template-columns:1fr}
@@ -114,6 +114,19 @@ textarea{min-height:90px;resize:vertical}
   .chartRow{grid-template-columns:56px minmax(0,1fr) auto;gap:8px}
   .v{font-size:20px}
 }
+
+#o_rows .orderRowItem{grid-template-columns:56px 1fr auto;align-items:center}
+#o_rows .orderRowThumb{width:56px;height:56px;border-radius:14px;border:1px solid var(--line);background:#f3f4f6;object-fit:cover;display:none}
+#o_rows .orderRowThumbWrap{width:56px;height:56px;border-radius:14px;border:1px solid var(--line);background:#f3f4f6;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#o_rows .orderRowCode{font-size:13px;font-weight:1000;color:#0f172a}
+#o_rows .orderRowPrice{font-size:12px;color:#64748b;font-weight:900;margin-top:4px}
+#mOrdEdit .modal{background:linear-gradient(180deg,#ffffff,#fbfdff)}
+#mOrdEdit .actions:last-child{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.98) 18%,#fff 55%);padding-top:12px;padding-bottom:2px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+#mOrdEdit .actions:last-child .btn{min-height:50px;font-size:16px}
+#mOrdEdit .ordBlock{padding:14px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,#fff8f2,#fffdfb);margin-bottom:12px;box-shadow:0 10px 24px rgba(15,23,42,.05)}
+#mOrdEdit .ordBlock.soft{background:linear-gradient(180deg,#f4f8ff,#fbfdff)}
+#mOrdEdit .ordBlock.gold{background:linear-gradient(180deg,#fff8ea,#fffdf8)}
+
 @media (max-width:390px){
   .app{max-width:100%;padding-left:8px;padding-right:8px}
   .tab{font-size:11px;padding:9px 4px}
@@ -387,34 +400,37 @@ window.addEventListener('error',e=>{
 
 <div id="mOrdEdit" class="modalwrap"><div class="modal">
   <div class="h2" id="ordEditTitle">Nuovo ordine</div>
-  <div class="grid2">
-    <div><div class="k">Cliente (cerca)</div><input id="o_cli_q" placeholder="Cerca cliente..." autocomplete="off" autocapitalize="off" spellcheck="false"/><select id="o_cli"></select></div>
-    <div><div class="k">Stato</div>
-      <select id="o_stato">
-        <option>Richiesto</option>
-        <option>In attesa di pagamento</option>
-        <option>Pagato</option>
-        <option>In lavorazione</option>
-        <option>Spedito</option>
-        <option>Consegnato</option>
-      </select>
+  <div class="ordBlock">
+    <div class="grid2">
+      <div><div class="k">Cliente (cerca)</div><input id="o_cli_q" placeholder="Cerca cliente..." autocomplete="off" autocapitalize="off" spellcheck="false"/><select id="o_cli"></select></div>
+      <div><div class="k">Stato</div>
+        <select id="o_stato">
+          <option>Richiesto</option>
+          <option>In attesa di pagamento</option>
+          <option>Pagato</option>
+          <option>In lavorazione</option>
+          <option>Spedito</option>
+          <option>Consegnato</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:10px">
+      <div><div class="k">Data</div><input id="o_data" type="date" autocomplete="off"/></div>
+      <div><div class="k">Note</div><input id="o_note" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
     </div>
   </div>
-  <div class="grid2" style="margin-top:10px">
-    <div><div class="k">Data</div><input id="o_data" type="date" autocomplete="off"/></div>
-    <div><div class="k">Note</div><input id="o_note" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+  <div class="ordBlock soft">
+    <div class="h2">Righe ordine</div>
+    <div class="grid2">
+      <div><div class="k">Articolo (cerca)</div><input id="o_art_q" placeholder="Cerca articolo..." autocomplete="off" autocapitalize="off" spellcheck="false"/><select id="o_art"></select></div>
+      <div><div class="k">Prezzo</div><input id="o_price" inputmode="decimal" autocomplete="off"/></div>
+    </div>
+    <div class="actions">
+      <button class="btn orderAdd" type="button" data-action="addRow">Aggiungi riga</button>
+    </div>
+    <div id="o_rows" class="list"></div>
   </div>
-  <div class="hr"></div>
-  <div class="h2">Righe ordine</div>
-  <div class="grid2">
-    <div><div class="k">Articolo (cerca)</div><input id="o_art_q" placeholder="Cerca articolo..." autocomplete="off" autocapitalize="off" spellcheck="false"/><select id="o_art"></select></div>
-    <div><div class="k">Prezzo</div><input id="o_price" inputmode="decimal" autocomplete="off"/></div>
-  </div>
-  <div class="actions">
-    <button class="btn" type="button" data-action="addRow">Aggiungi riga</button>
-  </div>
-  <div id="o_rows" class="list"></div>
-  <div class="card" style="margin-top:10px"><div class="k">Totale</div><div id="o_tot" class="priceHot">0</div></div>
+  <div class="ordBlock gold" style="margin-top:10px"><div class="k">Totale</div><div id="o_tot" class="priceHot">0</div></div>
   <div class="actions">
     <button class="btn primary" type="button" data-action="saveOrd">Salva</button>
     <button class="btn" type="button" data-action="closeOrd">Annulla</button>
@@ -745,16 +761,29 @@ function go(name){
   history.pushState({page:name},'', '#'+name);
 }
 window.addEventListener('popstate',(e)=>{
-  const page=(e.state&&e.state.page) || location.hash.replace('#','') || 'home';
+  const state=e.state||{};
+  const page=state.page || location.hash.replace('#','') || 'home';
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   const sec=document.getElementById('sec_'+page); if(sec) sec.classList.add('active');
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.go===page));
   document.querySelectorAll('.navBottom button').forEach(b=>b.classList.toggle('active', b.dataset.go===page));
+  document.querySelectorAll('.modalwrap').forEach(m=>m.style.display='none');
+  if(state.overlay && document.getElementById(state.overlay)){ document.getElementById(state.overlay).style.display='flex'; }
 });
 
 /* ====== UI helpers ====== */
-function show(id){ document.getElementById(id).style.display='flex'; }
-function hide(id){ document.getElementById(id).style.display='none'; }
+function currentPageName(){ return document.querySelector('.section.active')?.id?.replace('sec_','') || location.hash.replace('#','') || 'home'; }
+function currentOverlay(){ return [...document.querySelectorAll('.modalwrap')].find(m=>m.style.display==='flex')?.id || null; }
+function show(id){
+  const el=document.getElementById(id); if(!el) return;
+  el.style.display='flex';
+  history.pushState({page:currentPageName(), overlay:id},'', '#'+currentPageName());
+}
+function hide(id,fromPop=false){
+  const el=document.getElementById(id); if(!el) return;
+  if(!fromPop && history.state && history.state.overlay===id){ history.back(); return; }
+  el.style.display='none';
+}
 function toast(msg){
   let t=document.getElementById('vg_toast');
   if(!t){ t=document.createElement('div'); t.id='vg_toast';
@@ -1497,12 +1526,21 @@ function addRow(){
   fillArtSelect(db);
   renderOrdRows();
 }
-function renderOrdRows(){
+async function renderOrdRows(){
   const box=document.getElementById('o_rows');
-  box.innerHTML=ordRows.map((r,i)=>`<div class="row" style="grid-template-columns:1fr auto">
-    <div><div class="t">${esc(r.codice)} • ${esc(r.modello)}</div><div class="s">${money(r.prezzo||0)}</div></div>
+  box.innerHTML=ordRows.map((r,i)=>`<div class="row orderRowItem">
+    <div class="orderRowThumbWrap"><img class="orderRowThumb" data-row-photo="${i}" alt=""/></div>
+    <div><div class="t">${esc(r.codice)} • ${esc(r.modello)}</div><div class="orderRowPrice">${money(r.prezzo||0)}</div></div>
     <button class="btn danger" data-action="delRow" data-i="${i}">X</button>
   </div>`).join('') || `<div class="small">Nessuna riga</div>`;
+  const db=loadDB();
+  for(let i=0;i<ordRows.length;i++){
+    const r=ordRows[i];
+    const a=db.articoli.find(x=>x.id===r.articoloId);
+    const pics=a ? await getArticlePics(a) : [];
+    const img=box.querySelector('[data-row-photo="'+i+'"]');
+    if(img && pics[0]){ img.src=pics[0]; img.style.display='block'; }
+  }
   const tot=ordRows.reduce((s,r)=>s+Number(r.prezzo||0),0);
   document.getElementById('o_tot').textContent=money(tot);
 }
