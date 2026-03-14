@@ -392,6 +392,14 @@ window.addEventListener('error',e=>{
     <div><div class="k">Città</div><input id="c_citta" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
   </div>
   <div style="margin-top:10px"><div class="k">Provincia</div><select id="c_prov"></select></div>
+  <div class="card" style="margin-top:12px;padding:12px;border:2px dashed rgba(12,23,48,.18);background:linear-gradient(180deg,#f7fbff,#eef6ff)">
+    <div class="h3" style="margin-bottom:8px">📦 Spedizione e monitoraggio</div>
+    <div class="grid2">
+      <div><div class="k">Corriere</div><input id="c_corriere" placeholder="GLS, BRT, SDA..." autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+      <div><div class="k">Numero spedizione</div><input id="c_track" placeholder="Tracking" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+    </div>
+    <div style="margin-top:10px"><div class="k">Link monitoraggio</div><input id="c_track_url" placeholder="https://..." autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+  </div>
   <div style="margin-top:10px"><div class="k">Note</div><textarea id="c_note"></textarea></div>
   <div class="actions">
     <button class="btn primary" type="button" data-action="saveCli">Salva</button>
@@ -419,6 +427,31 @@ window.addEventListener('error',e=>{
     <div class="grid2" style="margin-top:10px">
       <div><div class="k">Data</div><input id="o_data" type="date" autocomplete="off"/></div>
       <div><div class="k">Note</div><input id="o_note" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+    </div>
+    <div class="grid2" style="margin-top:10px">
+      <div><div class="k">Sconto cliente (€)</div><input id="o_discount" inputmode="decimal" placeholder="0" autocomplete="off"/></div>
+      <div><div class="k">Totale righe</div><div id="o_subtot" class="small" style="font-weight:900;font-size:18px;padding:12px 14px;border-radius:14px;background:#f8f4ee;border:1px solid #eadbc3">0,00</div></div>
+    </div>
+  </div>
+  <div class="ordBlock" style="background:linear-gradient(180deg,#f8fbff,#eef7ff);border-color:#cfe0f6">
+    <div class="h2">Spedizione e tracking</div>
+    <div class="grid2">
+      <div>
+        <div class="k">Numero spedizione</div>
+        <input id="o_tracking" placeholder="Inserisci tracking" autocomplete="off" autocapitalize="off" spellcheck="false"/>
+      </div>
+      <div>
+        <div class="k">Azioni rapide</div>
+        <div class="actions" style="margin-top:0;gap:8px;flex-wrap:wrap">
+          <button class="btn tiny" type="button" data-action="copyTracking" style="min-height:auto;padding:8px 10px">Copia tracking</button>
+          <button class="btn tiny" type="button" data-action="openTracking17" style="min-height:auto;padding:8px 10px;background:#f4f7ff">17TRACK</button>
+          <button class="btn tiny" type="button" data-action="toggleTrackingWidget" style="min-height:auto;padding:8px 10px;background:#e9fff5;border-color:#111">Mostra tracking</button>
+        </div>
+      </div>
+    </div>
+    <div id="o_tracking_wrap" style="display:none;margin-top:10px">
+      <div class="small" style="margin-bottom:8px;color:#355070">Monitoraggio rapido integrato</div>
+      <iframe id="o_tracking_iframe" title="Tracking spedizione" style="width:100%;height:360px;border:1px solid #cfe0f6;border-radius:16px;background:#fff" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
   </div>
   <div class="ordBlock soft">
@@ -707,8 +740,10 @@ function orderPaidStatus(o){
 }
 
 function orderIncassato(o){
-  if(orderPaidStatus(o)) return Number(o?.totale||0);
-  return Number(o?.incassato||0);
+  const total=Number(o?.totale||0);
+  const manual=Number(o?.incassato||0);
+  if(orderPaidStatus(o)) return total;
+  return Math.min(total, Math.max(0, manual));
 }
 
 function orderMargin(o, db){
@@ -720,7 +755,8 @@ function orderMargin(o, db){
     const costo=Number(art?.costoEur||r?.costoEur||0);
     margin += Math.max(0, prezzo - costo);
   }
-  return margin;
+  const sconto=Math.max(0, Number(o?.scontoCliente||o?.sconto||0));
+  return Math.max(0, margin - sconto);
 }
 
 /* ====== POST (rules) ====== */
@@ -919,6 +955,8 @@ function renderCli(){
       <div>
         <div class="t">${esc(c.nome||'-')}</div>
         <div class="s">${esc(c.citta||'')} (${esc(c.provincia||'')})</div>
+        ${c.trackingNumero||c.tracking ? `<div class="s" style="margin-top:4px">📦 ${esc(c.corriere||'Spedizione')} • ${esc(c.trackingNumero||c.tracking||'')}</div>` : ''}
+        ${(c.trackingUrl||c.monitoraggioUrl) ? `<div class="s" style="margin-top:4px"><a href="${escAttr(c.trackingUrl||c.monitoraggioUrl||'')}" target="_blank" rel="noopener">Apri monitoraggio</a></div>` : ''}
       </div>
       <div class="pill">${esc(c.provincia||'-')}</div>
     </div>
@@ -944,7 +982,7 @@ function renderOrd(){
       </div>
       <div>
         <div class="t">${esc(c?c.nome:'-')} • <span class="${orderAmountClass(o)}">${money(o.totale||0)}</span></div>
-        <div class="s">${esc(o.stato||'-')} • ${esc(o.data||'')}</div>
+        <div class="s">${esc(o.stato||'-')} • ${esc(o.data||'')}${Number(o.scontoCliente||o.sconto||0)>0 ? ' • sconto '+money(o.scontoCliente||o.sconto||0) : ''}${(o.trackingNumber||o.tracking)? ' • tracking '+esc(o.trackingNumber||o.tracking) : ''}</div>
       </div>
       <div class="pill">${esc(o.stato||'-')}</div>
     </div>`;
@@ -1426,6 +1464,9 @@ function openCliEdit(id){
   document.getElementById('c_cap').value=c?.cap||'';
   document.getElementById('c_citta').value=c?.citta||'';
   document.getElementById('c_prov').value=c?.provincia||'';
+  document.getElementById('c_corriere').value=c?.corriere||'';
+  document.getElementById('c_track').value=c?.trackingNumero||c?.tracking||'';
+  document.getElementById('c_track_url').value=c?.trackingUrl||c?.monitoraggioUrl||'';
   document.getElementById('c_note').value=c?.note||'';
   show('mCliEdit');
 }
@@ -1450,6 +1491,9 @@ function saveCli(){
     cap: document.getElementById('c_cap').value.trim(),
     citta: document.getElementById('c_citta').value.trim(),
     provincia: document.getElementById('c_prov').value,
+    corriere: document.getElementById('c_corriere').value.trim(),
+    trackingNumero: document.getElementById('c_track').value.trim(),
+    trackingUrl: document.getElementById('c_track_url').value.trim(),
     note: document.getElementById('c_note').value,
     _ts: Date.now()
   };
@@ -1480,6 +1524,8 @@ function openOrdEdit(id, prefillArticleId=null){
   document.getElementById('o_stato').value=o?.stato||'Richiesto';
   document.getElementById('o_data').value=o?.data||todayStr();
   document.getElementById('o_note').value=o?.note||'';
+  document.getElementById('o_discount').value=(o?.scontoCliente||o?.sconto)?String(Number(o?.scontoCliente||o?.sconto||0)):'';
+  document.getElementById('o_tracking').value=o?.trackingNumber||o?.tracking||'';
   document.getElementById('o_art').value='';
   document.getElementById('o_price').value='';
   ordRows=(o?.righe||[]).slice();
@@ -1491,6 +1537,7 @@ function openOrdEdit(id, prefillArticleId=null){
   }
   renderOrdRows();
   updateOrderPriceFromSelection();
+  refreshTrackingWidget(false);
   show('mOrdEdit');
 }
 function todayStr(){
@@ -1557,22 +1604,84 @@ async function renderOrdRows(){
     const img=box.querySelector('[data-row-photo="'+i+'"]');
     if(img && pics[0]){ img.src=pics[0]; img.style.display='block'; }
   }
-  const tot=ordRows.reduce((s,r)=>s+Number(r.prezzo||0),0);
+  const subtot=ordRows.reduce((s,r)=>s+Number(r.prezzo||0),0);
+  const sconto=Math.max(0, Number(document.getElementById('o_discount')?.value||0));
+  const tot=Math.max(0, subtot - sconto);
+  const subt=document.getElementById('o_subtot');
+  if(subt) subt.textContent=money(subtot);
   document.getElementById('o_tot').textContent=money(tot);
 }
+function trackingValue(){
+  return (document.getElementById('o_tracking')?.value||'').trim();
+}
+function trackingUrl17(){
+  const tr=trackingValue();
+  return tr ? `https://t.17track.net/it#nums=${encodeURIComponent(tr)}` : '';
+}
+function trackingWidgetUrl(){
+  const tr=trackingValue();
+  return tr ? `https://parcelsapp.com/widget?trackingNumber=${encodeURIComponent(tr)}` : '';
+}
+function refreshTrackingWidget(forceOpen){
+  const wrap=document.getElementById('o_tracking_wrap');
+  const iframe=document.getElementById('o_tracking_iframe');
+  const btn=document.querySelector('[data-action="toggleTrackingWidget"]');
+  const url=trackingWidgetUrl();
+  const shouldOpen = !!url && (forceOpen || wrap.dataset.open==='1');
+  if(!url){
+    wrap.style.display='none';
+    wrap.dataset.open='0';
+    iframe.removeAttribute('src');
+    if(btn) btn.textContent='Mostra tracking';
+    return;
+  }
+  if(shouldOpen){
+    wrap.style.display='block';
+    wrap.dataset.open='1';
+    iframe.src=url;
+    if(btn) btn.textContent='Nascondi tracking';
+  } else {
+    wrap.style.display='none';
+    wrap.dataset.open='0';
+    iframe.removeAttribute('src');
+    if(btn) btn.textContent='Mostra tracking';
+  }
+}
+function copyTracking(){
+  const tr=trackingValue();
+  if(!tr){ alert('Inserisci prima un numero tracking'); return; }
+  navigator.clipboard?.writeText(tr).then(()=>toast('Tracking copiato')).catch(()=>alert('Copia non riuscita'));
+}
+function openTracking17(){
+  const url=trackingUrl17();
+  if(!url){ alert('Inserisci prima un numero tracking'); return; }
+  window.open(url,'_blank');
+}
+function toggleTrackingWidget(){
+  const tr=trackingValue();
+  if(!tr){ alert('Inserisci prima un numero tracking'); return; }
+  const wrap=document.getElementById('o_tracking_wrap');
+  refreshTrackingWidget(wrap.dataset.open!=='1');
+}
+
 function saveOrd(){
   const db=loadDB();
   const cli=document.getElementById('o_cli').value;
   if(!cli){ alert('Seleziona un cliente'); return; }
   if(!ordRows.length){ alert('Aggiungi almeno una riga'); return; }
-  const tot=ordRows.reduce((s,r)=>s+Number(r.prezzo||0),0);
+  const subtot=ordRows.reduce((s,r)=>s+Number(r.prezzo||0),0);
+  const sconto=Math.max(0, Number(document.getElementById('o_discount').value||0));
+  const tot=Math.max(0, subtot - sconto);
   const obj={
     id: currentOrdId||('ORD-'+uid().slice(0,6).toUpperCase()),
     clienteId: cli,
     stato: document.getElementById('o_stato').value,
     data: document.getElementById('o_data').value.trim()||todayStr(),
     note: document.getElementById('o_note').value.trim(),
+    trackingNumber: document.getElementById('o_tracking').value.trim(),
     righe: ordRows.slice(),
+    subtotale: subtot,
+    scontoCliente: sconto,
     totale: tot,
     _ts: Date.now()
   };
@@ -1671,6 +1780,9 @@ document.addEventListener('click',(ev)=>{
   if(a==='saveCli') return saveCli();
   if(a==='closeCli') return hide('mCliEdit');
   if(a==='deleteCli') return deleteCli();
+  if(a==='copyTracking') return copyTracking();
+  if(a==='openTracking17') return openTracking17();
+  if(a==='toggleTrackingWidget') return toggleTrackingWidget();
   if(a==='saveOrd') return saveOrd();
   if(a==='closeOrd') return hide('mOrdEdit');
   if(a==='deleteOrd') return deleteOrd();
@@ -1693,6 +1805,8 @@ document.getElementById('o_art_q').addEventListener('input',()=>{
   updateOrderPriceFromSelection();
 });
 document.getElementById('o_art').addEventListener('change', updateOrderPriceFromSelection);
+document.getElementById('o_discount').addEventListener('input', renderOrdRows);
+document.getElementById('o_tracking').addEventListener('input', ()=>refreshTrackingWidget(false));
 
 document.getElementById('importFile').addEventListener('change',(e)=>{
   const f=e.target.files[0];
