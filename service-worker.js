@@ -1,8 +1,9 @@
-const CACHE = 'vg-full-v7_0-fontfix';
-const APP_SHELL = [
+const CACHE = 'vg-full-v7_0';
+const ASSETS = [
   './',
-  './index.html?v=v7_0_fontfix',
-  './manifest.json?v=v7_0_fontfix',
+  './index.html',
+  './index.html?v=v7_0',
+  './manifest.json',
   './icon-192.png',
   './icon-512.png',
   './reset.html'
@@ -10,7 +11,7 @@ const APP_SHELL = [
 
 self.addEventListener('install', event => {
   self.skipWaiting();
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(APP_SHELL)));
+  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)));
 });
 
 self.addEventListener('activate', event => {
@@ -20,37 +21,24 @@ self.addEventListener('activate', event => {
     await self.clients.claim();
     const clients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
     for (const client of clients) {
-      client.postMessage({ type: 'VG_SW_UPDATED', version: CACHE });
+      client.postMessage({ type: 'APP_UPDATED', version: 'v7_0' });
     }
   })());
 });
 
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
-  const req = event.request;
-  const url = new URL(req.url);
-
-  if (req.mode === 'navigate' || url.pathname.endsWith('/index.html') || url.pathname === self.registration.scope.replace(location.origin,'')) {
-    event.respondWith((async () => {
-      try {
-        const fresh = await fetch(req, { cache: 'reload' });
-        const cache = await caches.open(CACHE);
-        cache.put('./index.html?v=v7_0_fontfix', fresh.clone());
-        cache.put(req, fresh.clone());
-        return fresh;
-      } catch {
-        return (await caches.match(req)) || (await caches.match('./index.html?v=v7_0_fontfix')) || Response.error();
-      }
-    })());
-    return;
-  }
+  const url = new URL(event.request.url);
+  if (url.origin !== location.origin) return;
 
   event.respondWith((async () => {
     try {
-      const fresh = await fetch(req, { cache: 'no-store' });
+      const fresh = await fetch(event.request, { cache: 'reload' });
+      const cache = await caches.open(CACHE);
+      cache.put(event.request, fresh.clone());
       return fresh;
-    } catch {
-      return (await caches.match(req)) || Response.error();
+    } catch (err) {
+      return (await caches.match(event.request)) || (await caches.match('./index.html')) || Response.error();
     }
   })());
 });
