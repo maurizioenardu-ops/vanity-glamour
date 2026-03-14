@@ -155,7 +155,7 @@ window.addEventListener('error',e=>{
   <div id="sec_articoli" class="section">
     <div class="card">
       <div class="h2">Articoli</div>
-      <input id="qArt" placeholder="Cerca per codice, brand, modello, categoria..." autocomplete="off" autocapitalize="off" spellcheck="false"/>
+      <input id="qArt" placeholder="Cerca per codice, brand, modello, categoria, colore..." autocomplete="off" autocapitalize="off" spellcheck="false"/>
     </div>
     <div style="height:10px"></div>
     <div id="listArt" class="list"></div>
@@ -267,41 +267,65 @@ window.addEventListener('error',e=>{
   </div>
 </div></div>
 
-<div id="mArtEdit" class="modalwrap"><div class="modal">
+<div id="mArtEdit" class="modalwrap"><div class="modal artModal">
   <div class="h2" id="artEditTitle">Nuovo articolo</div>
-  <div class="grid2">
-    <div><div class="k">Codice articolo</div><input id="a_cod" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
-    <div><div class="k">Brand</div><input id="a_brand" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+
+  <div class="formBlock dati inputSoft">
+    <div class="blockTitle">Dati articolo</div>
+    <div class="grid2">
+      <div><div class="k">Codice articolo</div><input id="a_cod" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+      <div><div class="k">Brand</div><input id="a_brand" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+    </div>
+    <div class="grid2" style="margin-top:10px">
+      <div><div class="k">Modello</div><input id="a_mod" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+      <div><div class="k">Categoria</div><input id="a_cat" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+    </div>
+    <div style="margin-top:10px"><div class="k">Fornitore</div><input id="a_forn" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
   </div>
-  <div class="grid2" style="margin-top:10px">
-    <div><div class="k">Modello</div><input id="a_mod" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
-    <div><div class="k">Categoria</div><input id="a_cat" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+
+  <div class="formBlock varianti inputSoft">
+    <div class="blockTitle">Varianti e dettagli</div>
+    <div class="grid2">
+      <div><div class="k">Taglia</div><input id="a_taglia" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+      <div><div class="k">Variante</div><input id="a_variante" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+    </div>
+    <div class="grid2" style="margin-top:10px">
+      <div><div class="k">Colore</div><input id="a_colore" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+      <div><div class="k">Misura</div><input id="a_mis" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+    </div>
   </div>
-  <div style="margin-top:10px"><div class="k">Descrizione</div><input id="a_desc" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
-  <div class="grid2" style="margin-top:10px">
-    <div><div class="k">Fornitore</div><input id="a_forn" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
-    <div><div class="k">Qualità (auto)</div><input id="a_qual" readonly/></div>
+
+  <div class="formBlock prezzi inputSoft">
+    <div class="blockTitle">Prezzi e margine</div>
+    <div class="grid2">
+      <div><div class="k">Qualità (auto)</div><input id="a_qual" readonly/></div>
+      <div><div class="k">Costo USD</div><input id="a_usd" inputmode="decimal" autocomplete="off"/></div>
+    </div>
+    <div class="grid2" style="margin-top:10px">
+      <div><div class="k">Costo EUR (auto)</div><input id="a_eur" readonly/></div>
+      <div><div class="k">Prezzo vendita (auto)</div><input id="a_sell" readonly/></div>
+    </div>
+    <div class="grid2" style="margin-top:10px">
+      <div><div class="k">Prezzo finale in uso</div><input id="a_final" readonly/></div>
+      <div><div class="k">Margine</div><input id="a_margin" readonly/><div id="a_margin_pct" class="miniNote"></div></div>
+    </div>
+    <div class="hr"></div>
+    <div class="grid2">
+      <div><div class="k">Promo attiva</div><label class="pill" style="justify-content:center;cursor:pointer"><input id="a_promo_on" type="checkbox" style="width:auto;margin-right:8px"/>Attiva</label></div>
+      <div><div class="k">Scadenza promo</div><input id="a_promo_date" type="date" autocomplete="off"/></div>
+    </div>
+    <div style="margin-top:10px"><div class="k">Prezzo promo</div><input id="a_promo_price" inputmode="decimal" autocomplete="off"/></div>
   </div>
-  <div class="grid2" style="margin-top:10px">
-    <div><div class="k">Misura</div><input id="a_mis" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
-    <div><div class="k">Costo USD</div><input id="a_usd" inputmode="decimal" autocomplete="off"/></div>
+
+  <div class="formBlock postblk inputSoft">
+    <div class="blockTitle">Post e contenuti</div>
+    <div><div class="k">Descrizione</div><textarea id="a_desc" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Dettagli utili per il post..."></textarea></div>
+    <div style="margin-top:10px"><div class="k">Post</div><textarea id="a_post" placeholder="Qui il post (auto)"></textarea></div>
+    <div style="margin-top:10px"><div class="k">Note</div><textarea id="a_note"></textarea></div>
+    <div style="margin-top:10px"><div class="k">Foto articolo</div><input id="a_photo" type="file" accept="image/*"/></div>
+    <div id="a_photo_prev" class="thumbs"></div>
   </div>
-  <div class="grid2" style="margin-top:10px">
-    <div><div class="k">Costo EUR (auto)</div><input id="a_eur" readonly/></div>
-    <div><div class="k">Prezzo vendita (auto)</div><input id="a_sell" readonly/></div>
-  </div>
-  <div style="margin-top:10px"><div class="k">Prezzo finale in uso</div><input id="a_final" readonly/></div>
-  <div class="hr"></div>
-  <div class="grid2">
-    <div><div class="k">Promo attiva</div><label class="pill" style="justify-content:center;cursor:pointer"><input id="a_promo_on" type="checkbox" style="width:auto;margin-right:8px"/>Attiva</label></div>
-    <div><div class="k">Scadenza promo</div><input id="a_promo_date" type="date" autocomplete="off"/></div>
-  </div>
-  <div style="margin-top:10px"><div class="k">Prezzo promo</div><input id="a_promo_price" inputmode="decimal" autocomplete="off"/></div>
-  <div class="hr"></div>
-  <div><div class="k">Post</div><textarea id="a_post" placeholder="Qui il post (auto)"></textarea></div>
-  <div style="margin-top:10px"><div class="k">Note</div><textarea id="a_note"></textarea></div>
-  <div style="margin-top:10px"><div class="k">Foto articolo</div><input id="a_photo" type="file" accept="image/*"/></div>
-  <div id="a_photo_prev" class="thumbs"></div>
+
   <div class="actions">
     <button class="btn primary" type="button" data-action="saveArt">Salva</button>
     <button class="btn" type="button" data-action="closeEdit">Annulla</button>
@@ -650,16 +674,22 @@ function buildPost(a){
   if(!a.codice) return '';
   const qemoji=emojiQualityForPost(a);
   let lines=[];
-  // no promo header unless user sets promoAttiva? we only show if promoAttiva true
   if(a.promoAttiva) lines.push('🔥PROMOZIONE🔥');
   lines.push(`${brand} ${modello} ${qemoji}`.trim());
-  if(qualityFromCode(a.codice)==='ORIGINALE') lines.push('QUALITÀ SUPERIORE');
+  const qual=qualityFromCode(a.codice);
+  if(qual==='ORIGINALE') lines.push('QUALITÀ SUPERIORE');
+  else if(qual) lines.push(`Qualità ${qual}`);
+  if((a.descrizione||'').trim()) lines.push((a.descrizione||'').trim());
+  const detail=[];
+  if(a.taglia) detail.push(`Taglia ${a.taglia}`);
+  if(a.variante) detail.push(a.variante);
+  if(a.colore) detail.push(a.colore);
+  if(a.misura) detail.push(`Mis. ${a.misura}`);
+  if(detail.length) lines.push(detail.join(' • '));
   if(a.scatola) lines.push('Con scatola 🎁');
   if(a.materiale) lines.push(`🧵 ${a.materiale}`);
-  if(a.misura) lines.push(`Mis. ${a.misura}`);
   if(a.colori) lines.push(a.colori);
   if(a.tracolla) lines.push(a.tracolla);
-  
   lines.push(`cod. ${a.codice}`);
   return lines.join('\n');
 }
@@ -1063,7 +1093,7 @@ async function openArtEdit(id){
   const set=(k,v)=>document.getElementById(k).value=(v===0?0:(v||''));
 
   if(!a){
-    ['a_cod','a_brand','a_mod','a_cat','a_desc','a_forn','a_mis','a_usd','a_promo_price','a_promo_date','a_note','a_post','a_qual','a_eur','a_sell','a_final']
+    ['a_cod','a_brand','a_mod','a_cat','a_desc','a_forn','a_taglia','a_variante','a_colore','a_mis','a_usd','a_promo_price','a_promo_date','a_note','a_post','a_qual','a_eur','a_sell','a_final','a_margin','a_margin_pct']
     .forEach(fid => document.getElementById(fid).value='');
     document.getElementById('a_promo_on').checked=false;
     document.getElementById('a_photo').value='';
@@ -1073,6 +1103,7 @@ async function openArtEdit(id){
   }
   set('a_cod', a?.codice); set('a_brand', a?.brand); set('a_mod', a?.modello);
   set('a_cat', a?.categoria); set('a_desc', a?.descrizione); set('a_forn', a?.fornitore);
+  set('a_taglia', a?.taglia); set('a_variante', a?.variante); set('a_colore', a?.colore);
   set('a_mis', a?.misura); set('a_usd', a?.costoUsd||'');
   document.getElementById('a_promo_on').checked = !!a?.promoAttiva;
   set('a_promo_date', a?.scadenzaPromo); set('a_promo_price', a?.prezzoPromo||'');
@@ -1099,6 +1130,8 @@ function renderArtAutoFields(){
     document.getElementById('a_eur').value='';
     document.getElementById('a_sell').value='';
     document.getElementById('a_final').value='';
+    document.getElementById('a_margin').value='';
+    document.getElementById('a_margin_pct').textContent='';
     document.getElementById('a_post').value='';
     return;
   }
@@ -1107,6 +1140,8 @@ function renderArtAutoFields(){
     document.getElementById('a_eur').value='';
     document.getElementById('a_sell').value='';
     document.getElementById('a_final').value='';
+    document.getElementById('a_margin').value='';
+    document.getElementById('a_margin_pct').textContent='';
     const draft={
       codice:code,
       brand:document.getElementById('a_brand').value.trim(),
@@ -1116,6 +1151,10 @@ function renderArtAutoFields(){
       scadenzaPromo:document.getElementById('a_promo_date').value.trim(),
       prezzoVendita:0,
       misura:document.getElementById('a_mis').value.trim(),
+      taglia:document.getElementById('a_taglia').value.trim(),
+      variante:document.getElementById('a_variante').value.trim(),
+      colore:document.getElementById('a_colore').value.trim(),
+      descrizione:document.getElementById('a_desc').value.trim(),
       fornitore:document.getElementById('a_forn').value.trim(),
       materiale:'', colori:'', tracolla:'', scatola:false
     };
@@ -1124,7 +1163,7 @@ function renderArtAutoFields(){
   }
 
   const usd=Number(usdRaw);
-  if(usdRaw===''){ document.getElementById('a_eur').value=''; document.getElementById('a_sell').value=''; document.getElementById('a_final').value=''; return; }
+  if(usdRaw===''){ document.getElementById('a_eur').value=''; document.getElementById('a_sell').value=''; document.getElementById('a_final').value=''; document.getElementById('a_margin').value=''; document.getElementById('a_margin_pct').textContent=''; return; }
   const r=calcFromUsd(usd, qual);
   document.getElementById('a_eur').value = isFinite(r.costo)?money(r.costo):'';
   document.getElementById('a_sell').value = isFinite(r.sell)?String(r.sell):'';
@@ -1132,7 +1171,11 @@ function renderArtAutoFields(){
   const promoPrice=Number(document.getElementById('a_promo_price').value||0);
   const promoDate=document.getElementById('a_promo_date').value.trim();
   const a={codice:code, prezzoVendita:r.sell, promoAttiva:promoOn, prezzoPromo:promoPrice, scadenzaPromo:promoDate};
-  document.getElementById('a_final').value = r.sell ? String(round5(currentPrice(a))) : '';
+  const finalPrice = r.sell ? round5(currentPrice(a)) : 0;
+  document.getElementById('a_final').value = finalPrice ? String(finalPrice) : '';
+  const margin = Math.max(0, finalPrice - (Number(r.costo)||0));
+  document.getElementById('a_margin').value = margin ? money(margin) : '';
+  document.getElementById('a_margin_pct').textContent = (finalPrice && margin) ? ('Margine ' + Math.round((margin/finalPrice)*100) + '%') : '';
   // auto post
   const draft={
     codice:code, brand:document.getElementById('a_brand').value.trim(),
@@ -1140,6 +1183,10 @@ function renderArtAutoFields(){
     promoAttiva:promoOn, prezzoPromo:promoPrice, scadenzaPromo:promoDate,
     prezzoVendita:r.sell,
     misura:document.getElementById('a_mis').value.trim(),
+    taglia:document.getElementById('a_taglia').value.trim(),
+    variante:document.getElementById('a_variante').value.trim(),
+    colore:document.getElementById('a_colore').value.trim(),
+    descrizione:document.getElementById('a_desc').value.trim(),
     fornitore:document.getElementById('a_forn').value.trim(),
     materiale:'', colori:'', tracolla:'', scatola:false
   };
@@ -1201,6 +1248,9 @@ async function saveArt(){
       categoria: document.getElementById('a_cat').value.trim(),
       descrizione: document.getElementById('a_desc').value.trim(),
       fornitore: document.getElementById('a_forn').value.trim(),
+      taglia: document.getElementById('a_taglia').value.trim(),
+      variante: document.getElementById('a_variante').value.trim(),
+      colore: document.getElementById('a_colore').value.trim(),
       misura: document.getElementById('a_mis').value.trim(),
       costoUsd: usd,
       costoEur: r.costo,
@@ -1499,7 +1549,7 @@ document.getElementById('qArt').addEventListener('input', renderArt);
 document.getElementById('qCli').addEventListener('input', renderCli);
 document.getElementById('qOrd').addEventListener('input', renderOrd);
 
-['a_cod','a_brand','a_mod','a_mis','a_usd','a_promo_on','a_promo_price','a_promo_date','a_forn'].forEach(id=>{
+['a_cod','a_brand','a_mod','a_mis','a_usd','a_promo_on','a_promo_price','a_promo_date','a_forn','a_desc','a_taglia','a_variante','a_colore'].forEach(id=>{
   const el=document.getElementById(id);
   el.addEventListener(id==='a_promo_on'?'change':'input', renderArtAutoFields);
 });
