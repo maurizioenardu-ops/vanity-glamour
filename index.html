@@ -26,7 +26,7 @@ body{-webkit-tap-highlight-color:transparent}
 #c_profit_month{color:#16a34a}
 #c_profit_total{color:#15803d}
 #c_inc_month,#f_inc{color:#2563eb}
-#c_due_total,#f_due{color:#ea580c}
+#c_due_total,#f_due,#c_wait_pay{color:#d97706}
 #f_profit{color:#15803d}
 #f_profit_month{color:#16a34a}
 
@@ -169,6 +169,7 @@ window.addEventListener('error',e=>{
       <div class="stat" data-go="ordini"><div class="k">Ordini in corso</div><div id="c_open_orders" class="v big">0</div><div class="sub">non ancora consegnati</div></div>
       <div class="stat" data-go="finanze"><div class="k">Guadagno mese</div><div id="c_profit_month" class="v big">0</div><div class="sub">solo ordini incassati del mese</div></div>
       <div class="stat" data-go="ordini"><div class="k">Da spedire</div><div id="c_ship_todo" class="v big">0</div><div class="sub">incassati ma senza tracking</div></div>
+      <div class="stat" data-go="ordini"><div class="k">In attesa di pagamento</div><div id="c_wait_pay" class="v big">0</div><div class="sub">ordini non ancora incassati</div></div>
     </div>
 
     <div class="card" style="margin-top:12px">
@@ -870,6 +871,7 @@ function renderHome(){
   const incTot=ordini.reduce((s,o)=>s+orderIncassato(o),0);
   const daIncassare=Math.max(0, totaleOrdini-incTot);
   const daSpedire=ordini.filter(o=>orderPaidStatus(o) && !trackingOf(o) && !['spedito','consegnato'].includes(statoNorm(o))).length;
+  const inAttesaPagamento=ordini.filter(o=>statoNorm(o)==='in attesa di pagamento').length;
   const spedite=ordini.filter(o=>!!trackingOf(o) && statoNorm(o)!=='consegnato').length;
   const consegnate=ordini.filter(o=>statoNorm(o)==='consegnato').length;
 
@@ -877,6 +879,7 @@ function renderHome(){
   document.getElementById('c_profit_month').textContent=money(guadagnoMese);
   const avgOrderEl=document.getElementById('c_avg_order'); if(avgOrderEl) avgOrderEl.textContent=money(mediaOrdini);
   document.getElementById('c_ship_todo').textContent=daSpedire;
+  document.getElementById('c_wait_pay').textContent=inAttesaPagamento;
   document.getElementById('c_inc_month').textContent=money(incMese);
   document.getElementById('c_due_total').textContent=money(daIncassare);
   document.getElementById('d_ship_todo').textContent=daSpedire;
