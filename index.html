@@ -58,7 +58,7 @@ body{-webkit-tap-highlight-color:transparent}
 .btn{border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px;font-weight:1000;cursor:pointer}
 .btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
 .btn.danger{background:#fee2e2;border-color:#fecaca}
-.btn.orderAdd{background:linear-gradient(180deg,#7dd3c7,#2f8f83);border:2px solid #111;color:#082f49;box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.btn.orderAdd{background:linear-gradient(180deg,#9ad7d0,#3f8f86);border:2px solid #111;color:#072f2b;box-shadow:0 3px 0 rgba(0,0,0,.20)}
 .btn.orderAdd.small{padding:8px 12px;border-radius:14px;font-size:13px;min-height:auto;line-height:1.15}
 .orderAddWrap{margin-top:10px;display:flex;justify-content:flex-start}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -76,15 +76,15 @@ textarea{min-height:90px;resize:vertical}
 .orderThumbWrap{display:flex;align-items:center;justify-content:center;width:58px;height:58px;border-radius:16px;border:1px solid var(--line);background:#f3f4f6;position:relative;overflow:hidden}
 .orderThumbMain{width:100%;height:100%;object-fit:cover;display:none}
 .orderThumbCount{position:absolute;right:4px;bottom:4px;background:rgba(15,23,42,.88);color:#fff;border-radius:999px;padding:2px 6px;font-size:10px;font-weight:1000;display:none}
-.formBlock{padding:14px;border:1px solid var(--line);border-radius:20px;margin-bottom:12px;box-shadow:0 10px 24px rgba(15,23,42,.05)}
-.formBlock.dati{background:linear-gradient(180deg,#fff8f2,#fffdfb)}
-.formBlock.varianti{background:linear-gradient(180deg,#f4f8ff,#fbfdff)}
-.formBlock.prezzi{background:linear-gradient(180deg,#fff8ea,#fffdf8)}
-.formBlock.postblk{background:linear-gradient(180deg,#faf5ff,#fffefe)}
-.blockTitle{font-size:18px;font-weight:1000;margin-bottom:10px;color:#111827}
-.inputSoft input,.inputSoft select,.inputSoft textarea{background:rgba(255,255,255,.92);border-color:#d9dee8;box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
+.formBlock{padding:16px;border:1px solid #e3e7ef;border-radius:24px;margin-bottom:14px;box-shadow:0 14px 30px rgba(15,23,42,.06)}
+.formBlock.dati{background:linear-gradient(180deg,#fff3ec,#fffaf7)}
+.formBlock.varianti{background:linear-gradient(180deg,#eef5ff,#fbfdff)}
+.formBlock.prezzi{background:linear-gradient(180deg,#fff5de,#fffdf7)}
+.formBlock.postblk{background:linear-gradient(180deg,#f7f0ff,#fffefe)}
+.blockTitle{font-size:20px;font-weight:1000;margin-bottom:12px;color:#0f172a}
+.inputSoft input,.inputSoft select,.inputSoft textarea{background:rgba(255,255,255,.96);border-color:#d9dee8;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 1px 0 rgba(255,255,255,.4)}
 .miniNote{margin-top:6px;font-size:11px;color:#64748b;font-weight:900}
-#mArtEdit .actions{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.96) 18%,#fff 55%);padding-top:12px;padding-bottom:2px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+#mArtEdit .actions{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.96) 12%,#fff 45%);padding-top:14px;padding-bottom:4px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 #mArtEdit .actions .btn{min-height:50px;font-size:16px}
 
 .heroSpot .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:1000;margin-bottom:6px}
@@ -314,6 +314,7 @@ window.addEventListener('error',e=>{
 
 <div id="mArtEdit" class="modalwrap"><div class="modal artModal">
   <div class="h2" id="artEditTitle">Nuovo articolo</div>
+  <div class="miniNote" style="font-size:13px;margin:2px 0 12px;color:#64748b">Scheda articolo più ordinata, colorata e pronta per la vendita.</div>
 
   <div class="formBlock dati inputSoft">
     <div class="blockTitle">Dati articolo</div>
