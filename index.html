@@ -7,7 +7,7 @@
 <link rel="manifest" href="manifest.json"/>
 <meta name="theme-color" content="#0f172a"/>
 <style>
-:root{--navy:#0f172a;--bg:#f5f7fb;--card:#fff;--line:#e5e7eb;--muted:#6b7280;--blue:#2563eb;--red:#dc2626}
+:root{--navy:#0f172a;--bg:#f8fafc;--card:#fff;--line:#e5e7eb;--muted:#6b7280;--blue:#2563eb;--red:#dc2626;--cream:#fff7ed;--soft:#eef4ff;--gold:#f59e0b}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;color:#111827}
 body{-webkit-tap-highlight-color:transparent}
@@ -16,17 +16,17 @@ body{-webkit-tap-highlight-color:transparent}
 .date{margin-top:4px;font-size:12px;opacity:.86}
 .app{max-width:560px;margin:0 auto;min-height:100vh;padding:12px 12px 84px}
 .tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:12px 0}
-.tab{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;font-weight:900;text-align:center;cursor:pointer}
+.tab{background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 8px;font-weight:900;text-align:center;cursor:pointer;box-shadow:0 6px 14px rgba(15,23,42,.04)}
 .tab.active{background:#fef3c7;border-color:#f59e0b}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.stat,.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;box-shadow:0 8px 18px rgba(15,23,42,.05)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.cards.dashMain{grid-template-columns:1fr 1fr}.cards.dashMain .stat{min-height:96px}
+.stat,.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:0 10px 24px rgba(15,23,42,.05)}
 .stat{cursor:pointer}
 .k{font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:900}
 .v{font-size:22px;font-weight:900;margin-top:4px}
 .h2{font-size:16px;font-weight:900;margin:2px 0 10px}
 .small{font-size:12px;color:var(--muted)}
-.btnGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.btnBig{border:0;border-radius:14px;padding:14px 12px;font-weight:1000;font-size:14px;cursor:pointer;touch-action:manipulation}
+.btnGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btnBig{border:0;border-radius:14px;padding:10px 12px;font-weight:1000;font-size:13px;cursor:pointer;touch-action:manipulation;min-height:44px}
 .btnBig.primary{background:var(--blue);color:#fff}
 .btnBig.gray{background:#eef2ff;color:#111827}
 .section{display:none}
@@ -59,6 +59,12 @@ textarea{min-height:90px;resize:vertical}
 .thumbs img{width:70px;height:70px;border-radius:12px;object-fit:cover;border:1px solid var(--line);cursor:pointer}
 .hr{height:1px;background:var(--line);margin:12px 0}
 .chartBars{display:grid;gap:10px;margin-top:8px}.chartRow{display:grid;grid-template-columns:68px minmax(0,1fr) auto;gap:10px;align-items:center}.barTrack{height:12px;background:#eef1f6;border-radius:999px;overflow:hidden}.barFill{height:100%;background:linear-gradient(90deg,var(--navy),#4a6ee0);border-radius:999px}.mutedBox{padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:#fafbfe}.smallGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.heroSpot{background:linear-gradient(135deg,#fff8ef 0%, #eef4ff 100%);border:1px solid #e6eaf2;border-radius:24px;padding:16px 16px 14px;margin-bottom:12px;box-shadow:0 12px 28px rgba(15,23,42,.06)}
+.heroSpot .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:1000;margin-bottom:6px}
+.heroSpot .title{font-size:22px;line-height:1.05;font-weight:1000;margin:0 0 6px}
+.heroSpot .desc{font-size:13px;color:#475569;line-height:1.35;margin:0 0 12px}
+.sparkTitle{display:flex;align-items:center;justify-content:space-between;margin:0 0 8px}.sparkTitle span{font-size:11px;text-transform:uppercase;color:#64748b;font-weight:1000}
+.sparkBars{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;align-items:end;height:92px}.sparkCol{display:flex;flex-direction:column;align-items:center;gap:6px}.sparkBarWrap{height:68px;width:100%;display:flex;align-items:flex-end}.sparkBar{width:100%;border-radius:14px 14px 8px 8px;background:linear-gradient(180deg,#60a5fa,#1d4ed8)}.sparkBar.soft{background:linear-gradient(180deg,#fbbf24,#f59e0b)}.sparkLbl{font-size:10px;color:#64748b;font-weight:900}.quickCard .h2{margin-bottom:8px}.substats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.micro{background:#f8fafc;border:1px solid #edf2f7;border-radius:14px;padding:10px 12px}.micro .k{font-size:10px}.micro .v{font-size:16px;margin-top:2px}.stat .v.big{font-size:24px}.stat .sub{margin-top:4px;font-size:11px;color:#64748b;font-weight:800}
 @media (max-width:520px){
   .smallGrid,.cards,.btnGrid,.grid2{grid-template-columns:1fr}
   .app{padding:10px 10px 88px}
@@ -104,25 +110,37 @@ window.addEventListener('error',e=>{
   </div>
 
   <div id="sec_home" class="section active">
-    <div class="cards">
-      <div class="stat" data-go="articoli"><div class="k">Articoli</div><div id="c_art" class="v">0</div></div>
-      <div class="stat" data-go="clienti"><div class="k">Clienti</div><div id="c_cli" class="v">0</div></div>
-      <div class="stat" data-go="ordini"><div class="k">Ordini</div><div id="c_ord" class="v">0</div></div>
-      <div class="stat" data-go="articoli"><div class="k">Promo</div><div id="c_promo" class="v">0</div></div>
+    <div class="heroSpot">
+      <div class="eyebrow">Novità in primo piano</div>
+      <div id="homeMood" class="title">Si parte bene</div>
+      <div id="homeMoodSub" class="desc">Panoramica vendite del momento.</div>
+      <div class="sparkTitle"><span>Andamento ultimi 6 mesi</span><span id="sparkHint">incassato</span></div>
+      <div id="homeSpark" class="sparkBars"></div>
     </div>
 
-    <div class="card">
+    <div class="cards dashMain">
+      <div class="stat" data-go="ordini"><div class="k">Ordini in corso</div><div id="c_open_orders" class="v big">0</div><div class="sub">non ancora consegnati</div></div>
+      <div class="stat" data-go="finanze"><div class="k">Guadagno mese</div><div id="c_profit_month" class="v big">0</div><div class="sub">margine del mese corrente</div></div>
+      <div class="stat" data-go="ordini"><div class="k">Media ordini</div><div id="c_avg_order" class="v big">0</div><div class="sub">valore medio per ordine</div></div>
+      <div class="stat" data-go="finanze"><div class="k">Guadagno totale</div><div id="c_profit_total" class="v big">0</div><div class="sub">margine complessivo</div></div>
+    </div>
+
+    <div class="card quickCard">
       <div class="h2">Azioni rapide</div>
       <div class="btnGrid">
-        <button class="btnBig primary" data-action="newArt">Nuovo articolo</button>
+        <button class="btnBig primary" data-action="newOrd">Nuovo ordine</button>
+        <button class="btnBig gray" data-action="newArt">Nuovo articolo</button>
         <button class="btnBig gray" data-action="newCli">Nuovo cliente</button>
-        <button class="btnBig gray" data-action="newOrd">Nuovo ordine</button>
         <button class="btnBig gray" data-go="impostazioni">Impostazioni</button>
+      </div>
+      <div class="substats">
+        <div class="micro"><div class="k">Incassato mese</div><div id="c_inc_month" class="v">0</div></div>
+        <div class="micro"><div class="k">Da incassare</div><div id="c_due_total" class="v">0</div></div>
       </div>
     </div>
 
     <div class="card" style="margin-top:12px">
-      <div class="h2">Info rapide (cliccabili)</div>
+      <div class="h2">Info rapide</div>
       <div id="dashList" class="list"></div>
     </div>
   </div>
@@ -130,7 +148,7 @@ window.addEventListener('error',e=>{
   <div id="sec_articoli" class="section">
     <div class="card">
       <div class="h2">Articoli</div>
-      <input id="qArt" placeholder="Cerca per codice, brand, modello..." autocomplete="off" autocapitalize="off" spellcheck="false"/>
+      <input id="qArt" placeholder="Cerca per codice, brand, modello, categoria..." autocomplete="off" autocapitalize="off" spellcheck="false"/>
     </div>
     <div style="height:10px"></div>
     <div id="listArt" class="list"></div>
@@ -674,29 +692,64 @@ function copyTextFrom(el){
 }
 
 /* ====== RENDER ====== */
+function dashboardMood(incMonth, prevMonth, openOrders, totalOrders){
+  const ratio = prevMonth>0 ? incMonth/prevMonth : (incMonth>0 ? 1.2 : 0);
+  if(totalOrders===0) return {title:'Si riparte da qui', sub:'Nessun ordine registrato: dashboard pronta a ripartire.'};
+  if(incMonth===0 && openOrders>0) return {title:'Vendite ferme, ordini da chiudere', sub:'Questo mese non risulta ancora incassato: conviene spingere le chiusure.'};
+  if(incMonth===0) return {title:'Mese molto lento', sub:'Poche vendite registrate: serve rimettere movimento.'};
+  if(openOrders>=6 && incMonth>0) return {title:'Bel movimento, occhio ai tempi', sub:'Le vendite girano ma hai parecchi ordini ancora aperti.'};
+  if(ratio>=1.25) return {title:'Vendite in spinta', sub:'Questo mese sta andando meglio del precedente.'};
+  if(ratio>=0.9) return {title:'Andamento stabile', sub:'Flusso regolare: numeri sotto controllo.'};
+  if(ratio>=0.5) return {title:'Si muove, ma può fare meglio', sub:'Le vendite ci sono, però il ritmo è ancora basso.'};
+  return {title:'Vendite basse, da scuotere', sub:'Il mese è fiacco: conviene spingere ordini e follow-up.'};
+}
+
 function renderHome(){
   const db=loadDB();
-  document.getElementById('c_art').textContent=db.articoli.length;
-  document.getElementById('c_cli').textContent=db.clienti.length;
-  document.getElementById('c_ord').textContent=db.ordini.length;
-  document.getElementById('c_promo').textContent=db.articoli.filter(promoValid).length;
+  const now=new Date(), curMonth=now.getMonth(), curYear=now.getFullYear();
+  const ordini=db.ordini||[];
+  const inCorso=ordini.filter(o=>String(o.stato||'').trim().toLowerCase()!=='consegnato').length;
+  const totaleOrdini=ordini.reduce((s,o)=>s+Number(o.totale||0),0);
+  const mediaOrdini=ordini.length ? totaleOrdini / ordini.length : 0;
+  const guadagnoTot=ordini.reduce((s,o)=>s+orderMargin(o,db),0);
+  const sameMonth=o=>{ const d=new Date((o.data||'')+'T12:00:00'); return !isNaN(d) && d.getMonth()===curMonth && d.getFullYear()===curYear; };
+  const guadagnoMese=ordini.filter(sameMonth).reduce((s,o)=>s+orderMargin(o,db),0);
+  const incMese=ordini.filter(sameMonth).reduce((s,o)=>s+orderIncassato(o),0);
+  const incTot=ordini.reduce((s,o)=>s+orderIncassato(o),0);
+  const daIncassare=Math.max(0, totaleOrdini-incTot);
 
-  const last=db.ordini.slice().sort((a,b)=>(b._ts||0)-(a._ts||0))[0];
+  document.getElementById('c_open_orders').textContent=inCorso;
+  document.getElementById('c_profit_month').textContent=money(guadagnoMese);
+  document.getElementById('c_avg_order').textContent=money(mediaOrdini);
+  document.getElementById('c_profit_total').textContent=money(guadagnoTot);
+  document.getElementById('c_inc_month').textContent=money(incMese);
+  document.getElementById('c_due_total').textContent=money(daIncassare);
+
+  const months=[];
+  for(let i=5;i>=0;i--){
+    const d=new Date(curYear, curMonth-i, 1);
+    const label=d.toLocaleDateString('it-IT',{month:'short'}).replace('.','');
+    const value=ordini.filter(o=>{ const od=new Date((o.data||'')+'T12:00:00'); return !isNaN(od) && od.getMonth()===d.getMonth() && od.getFullYear()===d.getFullYear(); }).reduce((s,o)=>s+orderIncassato(o),0);
+    months.push({label:label.charAt(0).toUpperCase()+label.slice(1), value});
+  }
+  const max=Math.max(1,...months.map(m=>m.value));
+  document.getElementById('homeSpark').innerHTML=months.map((m,idx)=>`<div class="sparkCol"><div class="sparkBarWrap"><div class="sparkBar ${idx===months.length-1?'soft':''}" style="height:${Math.max(12,Math.round((m.value/max)*100))}%" title="${esc(m.label)}: ${money(m.value)}"></div></div><div class="sparkLbl">${esc(m.label)}</div></div>`).join('');
+
+  const prevMonth=months.length>1 ? months[months.length-2].value : 0;
+  const mood=dashboardMood(incMese, prevMonth, inCorso, ordini.length);
+  document.getElementById('homeMood').textContent=mood.title;
+  document.getElementById('homeMoodSub').textContent=mood.sub;
+
+  const last=ordini.slice().sort((a,b)=>(b._ts||0)-(a._ts||0))[0];
   const exp=db.articoli.filter(promoValid).sort((a,b)=>String(a.scadenzaPromo).localeCompare(String(b.scadenzaPromo)))[0];
-  const stuck=db.ordini.filter(o=>{
-    const days=15;
-    const ts=o._ts||0;
-    return ts && (Date.now()-ts)>(days*24*3600*1000) && !['Consegnato'].includes(o.stato);
-  })[0];
-
   const lines=[];
   lines.push(last?`Ultimo ordine: ${last.stato} • ${last.data||''}`:'Ultimo ordine: nessuno');
-  lines.push(exp?`Promo in scadenza: ${exp.brand||''} ${exp.modello||''} • ${exp.scadenzaPromo}`:'Promo in scadenza: nessuna');
-  lines.push(stuck?`Ordini fermi: ${stuck.id} • ${stuck.stato}`:'Ordini fermi: nessuno');
+  lines.push(exp?`Promo attiva: ${exp.brand||''} ${exp.modello||''}`:'Promo attiva: nessuna');
+  lines.push(`Ordini aperti: ${inCorso} • Incassato mese ${money(incMese)}`);
 
   const list=document.getElementById('dashList');
   list.innerHTML=lines.map((t,i)=>{
-    const target=(i===0||i===2)?'ordini':'articoli';
+    const target=(i===1)?'articoli':'ordini';
     return `<div class="row" data-go="${target}" style="grid-template-columns:1fr"><div class="main"><div class="t">${esc(t)}</div></div></div>`;
   }).join('');
 }
@@ -705,7 +758,7 @@ function renderArt(){
   const db=loadDB();
   const q=document.getElementById('qArt').value.trim().toLowerCase();
   const items=db.articoli.filter(a=>{
-    const hay=((a.codice||'')+' '+(a.brand||'')+' '+(a.modello||'')).toLowerCase();
+    const hay=((a.codice||'')+' '+(a.brand||'')+' '+(a.modello||'')+' '+(a.categoria||'')+' '+(a.descrizione||'')).toLowerCase();
     return !q || hay.includes(q);
   }).sort((a,b)=>String(b._ts||0).localeCompare(String(a._ts||0)));
   const el=document.getElementById('listArt');
@@ -921,7 +974,7 @@ function renderFinanze(){
     const k=o.stato||'Sconosciuto';
     bySt[k]??={tot:0,inc:0,n:0};
     bySt[k].tot+=Number(o.totale||0);
-    bySt[k].inc+=Number(o.incassato||0);
+    bySt[k].inc+=orderIncassato(o);
     bySt[k].n+=1;
   });
   const sRows=Object.entries(bySt).sort((a,b)=>b[1].inc-a[1].inc);
@@ -1278,7 +1331,7 @@ function fillArtSelect(db, filter=''){
   const prev=sel.value;
   const q=filter.toLowerCase();
   const items=db.articoli.filter(a=>{
-    const hay=((a.codice||'')+' '+(a.brand||'')+' '+(a.modello||'')).toLowerCase();
+    const hay=((a.codice||'')+' '+(a.brand||'')+' '+(a.modello||'')+' '+(a.categoria||'')+' '+(a.descrizione||'')).toLowerCase();
     return !q || hay.includes(q);
   });
   sel.innerHTML='<option value="">Seleziona</option>'+items.map(a=>`<option value="${a.id}">${esc(a.brand||'')} ${esc(a.modello||'')} • ${esc(a.codice||'')}</option>`).join('');
