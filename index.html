@@ -93,7 +93,15 @@ textarea{min-height:90px;resize:vertical}
   .navBottom .inner{gap:2px}
   .navBottom button{font-size:10px;padding:10px 2px 12px}
   .card,.stat,.modal{border-radius:14px}
-}</style>
+}
+.btn.orderAdd{background:linear-gradient(180deg,#ffe28a,#f3bf3b);border:2px solid #111;color:#111;box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.btn.orderAdd:hover{filter:brightness(.98)}
+.btn.orderAdd.small{padding:8px 12px;border-radius:14px;font-size:13px;min-height:auto;line-height:1.15}
+.priceCol{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.priceCol .k,.priceCol .t{text-align:right}
+.orderAddWrap{margin-top:10px;display:flex;justify-content:flex-start}
+
+</style>
 <script>
 window.addEventListener('error',e=>{
   const x=document.getElementById('dateLine');
@@ -259,6 +267,7 @@ window.addEventListener('error',e=>{
     <div><div class="k">Prezzo vendita</div><div id="vArtPrezzo" class="t">-</div></div>
     <div><div class="k">Prezzo in uso</div><div id="vArtPrezzoUse" class="priceHot">-</div><div id="vArtPromoPill"></div></div>
   </div>
+  <div class="orderAddWrap"><button class="btn orderAdd" type="button" data-action="addArtToOrderFromView">Aggiungi a ordine</button></div>
   <div style="margin-top:10px"><div class="k">Post</div><textarea id="vArtPost" readonly></textarea></div>
   <div class="actions">
     <button class="btn primary" type="button" data-action="copyPost">Copia post</button>
@@ -644,10 +653,14 @@ function currentPrice(a){
 }
 
 
-function orderIncassato(o){
+function orderPaidStatus(o){
   const stato=String(o?.stato||'').trim().toLowerCase();
   const autoPaidStatuses=new Set(['pagato','in lavorazione','spedito','consegnato']);
-  if(autoPaidStatuses.has(stato)) return Number(o?.totale||0);
+  return autoPaidStatuses.has(stato);
+}
+
+function orderIncassato(o){
+  if(orderPaidStatus(o)) return Number(o?.totale||0);
   return Number(o?.incassato||0);
 }
 
@@ -748,9 +761,9 @@ function renderHome(){
   const inCorso=ordini.filter(o=>String(o.stato||'').trim().toLowerCase()!=='consegnato').length;
   const totaleOrdini=ordini.reduce((s,o)=>s+Number(o.totale||0),0);
   const mediaOrdini=ordini.length ? totaleOrdini / ordini.length : 0;
-  const guadagnoTot=ordini.reduce((s,o)=>s+orderMargin(o,db),0);
+  const guadagnoTot=ordini.reduce((s,o)=>s+(orderPaidStatus(o)?orderMargin(o,db):0),0);
   const sameMonth=o=>{ const d=new Date((o.data||'')+'T12:00:00'); return !isNaN(d) && d.getMonth()===curMonth && d.getFullYear()===curYear; };
-  const guadagnoMese=ordini.filter(sameMonth).reduce((s,o)=>s+orderMargin(o,db),0);
+  const guadagnoMese=ordini.filter(sameMonth).reduce((s,o)=>s+(orderPaidStatus(o)?orderMargin(o,db):0),0);
   const incMese=ordini.filter(sameMonth).reduce((s,o)=>s+orderIncassato(o),0);
   const incTot=ordini.reduce((s,o)=>s+orderIncassato(o),0);
   const daIncassare=Math.max(0, totaleOrdini-incTot);
@@ -808,8 +821,9 @@ function renderArt(){
         <div class="s">${esc(a.brand||'')} • ${esc(a.codice||'')} • ${esc(qualityFromCode(a.codice))}</div>
         ${promo}
       </div>
-      <div style="text-align:right">
+      <div class="priceCol">
         <div class="k">Prezzo</div><div class="t">${money(currentPrice(a))}</div>
+        <button class="btn orderAdd small" type="button" data-action="addArtToOrder" data-id="${a.id}">Aggiungi a ordine</button>
       </div>
     </div>`;
   }).join('') || `<div class="card"><div class="small">Nessun articolo</div></div>`;
@@ -990,13 +1004,13 @@ function renderFinanze(){
   const db=loadDB();
   const fatt=db.ordini.reduce((s,o)=>s+Number(o.totale||0),0);
   const inc=db.ordini.reduce((s,o)=>s+orderIncassato(o),0);
-  const profit=db.ordini.reduce((s,o)=>s+orderMargin(o,db),0);
+  const profit=db.ordini.reduce((s,o)=>s+(orderPaidStatus(o)?orderMargin(o,db):0),0);
   const due=Math.max(0,fatt-inc);
   const now=new Date(), curMonth=now.getMonth(), curYear=now.getFullYear();
   const sameMonth=o=>{ const d=new Date((o.data||'')+'T12:00:00'); return !isNaN(d) && d.getMonth()===curMonth && d.getFullYear()===curYear; };
   const sameYear=o=>{ const d=new Date((o.data||'')+'T12:00:00'); return !isNaN(d) && d.getFullYear()===curYear; };
-  const profitMonth=db.ordini.filter(sameMonth).reduce((s,o)=>s+orderMargin(o,db),0);
-  const profitYear=db.ordini.filter(sameYear).reduce((s,o)=>s+orderMargin(o,db),0);
+  const profitMonth=db.ordini.filter(sameMonth).reduce((s,o)=>s+(orderPaidStatus(o)?orderMargin(o,db):0),0);
+  const profitYear=db.ordini.filter(sameYear).reduce((s,o)=>s+(orderPaidStatus(o)?orderMargin(o,db):0),0);
   const incMonth=db.ordini.filter(sameMonth).reduce((s,o)=>s+orderIncassato(o),0);
   const fattMonth=db.ordini.filter(sameMonth).reduce((s,o)=>s+Number(o.totale||0),0);
   document.getElementById('f_fatt').textContent=money(fatt);
@@ -1050,7 +1064,7 @@ function renderFinanze(){
     const d=new Date(curYear, curMonth-i, 1);
     const m=d.getMonth(), y=d.getFullYear();
     const rows=db.ordini.filter(o=>{ const od=new Date((o.data||'')+'T12:00:00'); return !isNaN(od)&&od.getMonth()===m&&od.getFullYear()===y; });
-    trend.push({label:monthNames[m], value:rows.reduce((s,o)=>s+orderMargin(o,db),0)});
+    trend.push({label:monthNames[m], value:rows.reduce((s,o)=>s+(orderPaidStatus(o)?orderMargin(o,db):0),0)});
   }
   document.getElementById('finTrendChart').innerHTML=renderBarChart(trend,true);
 
@@ -1058,7 +1072,7 @@ function renderFinanze(){
   for(let m=0;m<12;m++){
     const rows=db.ordini.filter(o=>{ const od=new Date((o.data||'')+'T12:00:00'); return !isNaN(od)&&od.getMonth()===m&&od.getFullYear()===curYear; });
     yearRows.push({label:monthNames[m]+' inc', value:rows.reduce((s,o)=>s+Number(o.incassato||0),0)});
-    yearRows.push({label:monthNames[m]+' marg', value:rows.reduce((s,o)=>s+orderMargin(o,db),0)});
+    yearRows.push({label:monthNames[m]+' marg', value:rows.reduce((s,o)=>s+(orderPaidStatus(o)?orderMargin(o,db):0),0)});
   }
   document.getElementById('finYearChart').innerHTML=`<div class="smallGrid"><div class="mutedBox"><div class="k">Incassato mese corrente</div><div class="v">${money(incMonth)}</div><div class="small">Fatturato mese ${money(fattMonth)}</div></div><div class="mutedBox"><div class="k">Margine medio ordine</div><div class="v">${money(db.ordini.length ? profit/db.ordini.length : 0)}</div><div class="small">Su ${db.ordini.length} ordini</div></div></div>` + renderBarChart(yearRows,true);
   renderStorageInfo();
@@ -1355,7 +1369,7 @@ function deleteCli(){
 /* ====== ORDINI ====== */
 let currentOrdId=null;
 let ordRows=[];
-function openOrdEdit(id){
+function openOrdEdit(id, prefillArticleId=null){
   const db=loadDB(); const o=id?db.ordini.find(x=>x.id===id):null;
   currentOrdId=id||null;
   document.getElementById('ordEditTitle').textContent=o?'Modifica ordine':'Nuovo ordine';
@@ -1370,6 +1384,12 @@ function openOrdEdit(id){
   document.getElementById('o_art').value='';
   document.getElementById('o_price').value='';
   ordRows=(o?.righe||[]).slice();
+  if(prefillArticleId){
+    const a=db.articoli.find(x=>x.id===prefillArticleId);
+    if(a && !ordRows.some(r=>r.articoloId===prefillArticleId)){
+      ordRows.push({articoloId:a.id, codice:a?.codice||'', modello:a?.modello||'', prezzo:Number(currentPrice(a)||0)});
+    }
+  }
   renderOrdRows();
   show('mOrdEdit');
 }
@@ -1530,6 +1550,8 @@ document.addEventListener('click',(ev)=>{
   }
   if(a==='hardReset'){ if(confirm('Reset totale?')){ [KEY, ...(typeof LEGACY_KEYS!=='undefined'?LEGACY_KEYS:[])].forEach(k=>localStorage.removeItem(k)); location.reload(); } return; }
   if(a==='copyPost') return copyTextFrom(document.getElementById('vArtPost'));
+  if(a==='addArtToOrder'){ const id=el.dataset.id; if(id) return openOrdEdit(null, id); return; }
+  if(a==='addArtToOrderFromView'){ if(currentArtId) { hide('mArtView'); return openOrdEdit(null, currentArtId); } return; }
   if(a==='editFromView'){ hide('mArtView'); return openArtEdit(currentArtId); }
   if(a==='closeView') return hide('mArtView');
   if(a==='closeEdit') return hide('mArtEdit');
