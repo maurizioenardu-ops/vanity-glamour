@@ -7,7 +7,7 @@
 <link rel="manifest" href="manifest.json"/>
 <meta name="theme-color" content="#0f172a"/>
 <style>
-:root{--navy:#0f172a;--bg:#f8fafc;--card:#fff;--line:#e5e7eb;--muted:#6b7280;--blue:#2563eb;--red:#dc2626;--cream:#fff7ed;--soft:#eef4ff;--gold:#f59e0b}
+:root{--navy:#0f172a;--bg:#f5f7fb;--card:#fff;--line:#e5e7eb;--muted:#6b7280;--blue:#2563eb;--red:#dc2626}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;color:#111827}
 body{-webkit-tap-highlight-color:transparent}
@@ -16,24 +16,17 @@ body{-webkit-tap-highlight-color:transparent}
 .date{margin-top:4px;font-size:12px;opacity:.86}
 .app{max-width:560px;margin:0 auto;min-height:100vh;padding:12px 12px 84px}
 .tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:12px 0}
-.tab{background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 8px;font-weight:900;text-align:center;cursor:pointer;box-shadow:0 6px 14px rgba(15,23,42,.04)}
+.tab{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;font-weight:900;text-align:center;cursor:pointer}
 .tab.active{background:#fef3c7;border-color:#f59e0b}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.cards.dashMain{grid-template-columns:1fr 1fr}.cards.dashMain .stat{min-height:96px}
-.stat,.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:0 10px 24px rgba(15,23,42,.05)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.stat,.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;box-shadow:0 8px 18px rgba(15,23,42,.05)}
 .stat{cursor:pointer}
 .k{font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:900}
 .v{font-size:22px;font-weight:900;margin-top:4px}
-#c_profit_month{color:#16a34a}
-#c_profit_total{color:#15803d}
-#c_inc_month,#f_inc{color:#2563eb}
-#c_due_total,#f_due{color:#ea580c}
-#f_profit{color:#15803d}
-#f_profit_month{color:#16a34a}
-
 .h2{font-size:16px;font-weight:900;margin:2px 0 10px}
 .small{font-size:12px;color:var(--muted)}
-.btnGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.btnBig{border:0;border-radius:14px;padding:10px 12px;font-weight:1000;font-size:13px;cursor:pointer;touch-action:manipulation;min-height:44px}
+.btnGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btnBig{border:0;border-radius:14px;padding:14px 12px;font-weight:1000;font-size:14px;cursor:pointer;touch-action:manipulation}
 .btnBig.primary{background:var(--blue);color:#fff}
 .btnBig.gray{background:#eef2ff;color:#111827}
 .section{display:none}
@@ -54,94 +47,41 @@ body{-webkit-tap-highlight-color:transparent}
 /* modal */
 .modalwrap{position:fixed;inset:0;background:rgba(15,23,42,.4);display:none;align-items:center;justify-content:center;padding:14px;z-index:50}
 .modal{background:#fff;width:100%;max-width:560px;border-radius:20px;border:1px solid var(--line);padding:14px;max-height:85vh;overflow:auto}
+.inlineMount{position:static;background:none;padding:0;display:block!important}
+.inlineMount .modal{max-width:none;max-height:none;border-radius:16px;box-shadow:0 8px 18px rgba(15,23,42,.05)}
+.inlineHost{margin-top:10px}
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
 .btn{border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px;font-weight:1000;cursor:pointer}
 .btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
 .btn.danger{background:#fee2e2;border-color:#fecaca}
-.btn.orderAdd{background:linear-gradient(180deg,#9ad7d0,#3f8f86);border:2px solid #111;color:#072f2b;box-shadow:0 3px 0 rgba(0,0,0,.20)}
-.btn.orderAdd.small{padding:8px 12px;border-radius:14px;font-size:13px;min-height:auto;line-height:1.15}
-.orderAddWrap{margin-top:10px;display:flex;justify-content:flex-start}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 input,select,textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:14px;font-weight:700;font-size:14px}
 textarea{min-height:90px;resize:vertical}
-#a_post,#vArtPost{resize:none;overflow:hidden;min-height:120px}
 .hero{width:100%;height:190px;border-radius:16px;object-fit:cover;border:1px solid var(--line);background:#f3f4f6}
 .thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
 .thumbs img{width:70px;height:70px;border-radius:12px;object-fit:cover;border:1px solid var(--line);cursor:pointer}
 .hr{height:1px;background:var(--line);margin:12px 0}
-.chartBars{display:grid;gap:10px;margin-top:8px}.chartRow{display:grid;grid-template-columns:68px minmax(0,1fr) auto;gap:10px;align-items:center}.barTrack{height:12px;background:#eef1f6;border-radius:999px;overflow:hidden}.barFill{height:100%;background:linear-gradient(90deg,var(--navy),#4a6ee0);border-radius:999px}.mutedBox{padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:#fafbfe}.smallGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-.heroSpot{background:linear-gradient(135deg,#fff8ef 0%, #eef4ff 100%);border:1px solid #e6eaf2;border-radius:24px;padding:16px 16px 14px;margin-bottom:12px;box-shadow:0 12px 28px rgba(15,23,42,.06)}
-.qualOrig{color:#16a34a;font-weight:1000}
-.qualStd{color:#6b7280;font-weight:1000}
-.pricePaid{color:#16a34a;font-weight:1000}
-.orderThumbWrap{display:flex;align-items:center;justify-content:center;width:58px;height:58px;border-radius:16px;border:1px solid var(--line);background:#f3f4f6;position:relative;overflow:hidden}
-.orderThumbMain{width:100%;height:100%;object-fit:cover;display:none}
-.orderThumbCount{position:absolute;right:4px;bottom:4px;background:rgba(15,23,42,.88);color:#fff;border-radius:999px;padding:2px 6px;font-size:10px;font-weight:1000;display:none}
-.formBlock{padding:16px;border:1px solid #e3e7ef;border-radius:24px;margin-bottom:14px;box-shadow:0 14px 30px rgba(15,23,42,.06)}
-.formBlock.dati{background:linear-gradient(180deg,#fff3ec,#fffaf7)}
-.formBlock.varianti{background:linear-gradient(180deg,#eef5ff,#fbfdff)}
-.formBlock.prezzi{background:linear-gradient(180deg,#fff5de,#fffdf7)}
-.formBlock.postblk{background:linear-gradient(180deg,#f7f0ff,#fffefe)}
-.blockTitle{font-size:20px;font-weight:1000;margin-bottom:12px;color:#0f172a}
-.inputSoft input,.inputSoft select,.inputSoft textarea{background:rgba(255,255,255,.96);border-color:#d9dee8;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 1px 0 rgba(255,255,255,.4)}
-.miniNote{margin-top:6px;font-size:11px;color:#64748b;font-weight:900}
-#mArtEdit .actions{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.96) 12%,#fff 45%);padding-top:14px;padding-bottom:4px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-#mArtEdit .actions .btn{min-height:50px;font-size:16px}
+.heroDash{padding:14px 14px 10px}
+.heroTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.heroLabel{font-size:11px;text-transform:uppercase;color:var(--muted);font-weight:1000;letter-spacing:.04em}
+.heroTitle{font-size:24px;font-weight:1000;line-height:1.05;margin-top:2px}
+.heroSub{font-size:13px;color:var(--muted);margin-top:6px;font-weight:800}
+.heroRight{font-size:11px;text-transform:uppercase;color:var(--muted);font-weight:1000;text-align:right;white-space:nowrap}
+.chartWrap{margin-top:12px}
+.chartBars{height:126px;display:grid;grid-template-columns:repeat(6,1fr);gap:10px;align-items:end}
+.barCol{display:flex;flex-direction:column;align-items:center;justify-content:end;gap:8px}
+.bar{width:100%;max-width:52px;min-height:12px;border-radius:16px 16px 10px 10px;background:linear-gradient(180deg,#60a5fa 0%, #2563eb 62%, #f59e0b 100%)}
+.bar.empty{opacity:.22}
+.barLabel{font-size:11px;color:var(--muted);font-weight:900}
+.dashStats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.dashStatCard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;box-shadow:0 8px 18px rgba(15,23,42,.05)}
+.dashStatCard .big{font-size:19px;font-weight:1000;margin:4px 0 2px}
+.dashStatCard .big.moneyPos{color:#16a34a}
+.dashStatCard .big.warn{color:#d97706}
+.dashStatCard .big.neg{color:#dc2626}
+.contiStats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+@media (max-width:420px){.tabs{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.tab{padding:12px 8px;font-size:13px}.contiStats,.dashStats{grid-template-columns:1fr 1fr}.dashStatCard .big{font-size:17px}}
 
-.heroSpot .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:1000;margin-bottom:6px}
-.heroSpot .title{font-size:22px;line-height:1.05;font-weight:1000;margin:0 0 6px}
-.heroSpot .desc{font-size:13px;color:#475569;line-height:1.35;margin:0 0 12px}
-.sparkTitle{display:flex;align-items:center;justify-content:space-between;margin:0 0 8px}.sparkTitle span{font-size:11px;text-transform:uppercase;color:#64748b;font-weight:1000}
-.sparkBars{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;align-items:end;height:92px}.sparkCol{display:flex;flex-direction:column;align-items:center;gap:6px}.sparkBarWrap{height:68px;width:100%;display:flex;align-items:flex-end}.sparkBar{width:100%;border-radius:14px 14px 8px 8px;background:linear-gradient(180deg,#60a5fa,#1d4ed8)}.sparkBar.soft{background:linear-gradient(180deg,#fbbf24,#f59e0b)}.sparkLbl{font-size:10px;color:#64748b;font-weight:900}.quickCard .h2{margin-bottom:8px}.substats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.micro{background:#f8fafc;border:1px solid #edf2f7;border-radius:14px;padding:10px 12px}.micro .k{font-size:10px}.micro .v{font-size:16px;margin-top:2px}.stat .v.big{font-size:24px}.stat .sub{margin-top:4px;font-size:11px;color:#64748b;font-weight:800}
-
-#mArtView .modal,#mArtEdit .modal,#mOrdEdit .modal,#mCliEdit .modal{max-width:760px}
-@media (max-width:700px){
-  #mArtView .modal,#mArtEdit .modal,#mOrdEdit .modal,#mCliEdit .modal{width:100vw;max-width:none;height:100vh;max-height:none;border-radius:0;padding:14px 14px 96px}
-  #mArtView.modalwrap,#mArtEdit.modalwrap,#mOrdEdit.modalwrap,#mCliEdit.modalwrap{padding:0}
-  #mArtView .actions,#mArtEdit .actions,#mOrdEdit .actions,#mCliEdit .actions{position:sticky;bottom:-2px;background:linear-gradient(180deg,rgba(248,250,252,0),#fff 18%,#fff 100%);padding-top:10px;margin-top:12px}
-}
-@media (max-width:520px){
-  .smallGrid,.cards,.btnGrid,.grid2{grid-template-columns:1fr}
-  .app{padding:10px 10px 88px}
-  .tabs{gap:6px}
-  .tab{padding:10px 6px;font-size:12px;border-radius:14px}
-  .top{padding:14px 12px 12px}
-  .top h1{font-size:18px}
-  .modalwrap{padding:8px}
-  .modal{max-height:88vh;padding:12px;border-radius:18px}
-  .row{grid-template-columns:54px minmax(0,1fr) auto;gap:8px;padding:9px}
-  .thumb{width:54px;height:54px}
-  input,select,textarea,.btn,.btnBig{font-size:16px}
-  .chartRow{grid-template-columns:56px minmax(0,1fr) auto;gap:8px}
-  .v{font-size:20px}
-}
-
-#o_rows .orderRowItem{grid-template-columns:56px 1fr auto;align-items:center}
-#o_rows .orderRowThumb{width:56px;height:56px;border-radius:14px;border:1px solid var(--line);background:#f3f4f6;object-fit:cover;display:none}
-#o_rows .orderRowThumbWrap{width:56px;height:56px;border-radius:14px;border:1px solid var(--line);background:#f3f4f6;display:flex;align-items:center;justify-content:center;overflow:hidden}
-#o_rows .orderRowCode{font-size:13px;font-weight:1000;color:#0f172a}
-#o_rows .orderRowPrice{font-size:12px;color:#64748b;font-weight:900;margin-top:4px}
-#mOrdEdit .modal{background:linear-gradient(180deg,#ffffff,#fbfdff)}
-#mOrdEdit .actions:last-child{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.98) 18%,#fff 55%);padding-top:12px;padding-bottom:2px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-#mOrdEdit .actions:last-child .btn{min-height:50px;font-size:16px}
-[data-editbar="1"]{display:none !important}
-[data-editbar="1"].showbar{display:grid !important}
-#mCliEdit [data-editbar="1"].showbar,#mOrdEdit [data-editbar="1"].showbar,#mArtEdit [data-editbar="1"].showbar{display:grid !important}
-#mOrdEdit .ordBlock{padding:14px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,#fff8f2,#fffdfb);margin-bottom:12px;box-shadow:0 10px 24px rgba(15,23,42,.05)}
-#mOrdEdit .ordBlock.soft{background:linear-gradient(180deg,#f4f8ff,#fbfdff)}
-#mOrdEdit .ordBlock.gold{background:linear-gradient(180deg,#fff8ea,#fffdf8)}
-
-@media (max-width:390px){
-  .app{max-width:100%;padding-left:8px;padding-right:8px}
-  .tab{font-size:11px;padding:9px 4px}
-  .navBottom .inner{gap:2px}
-  .navBottom button{font-size:10px;padding:10px 2px 12px}
-  .card,.stat,.modal{border-radius:14px}
-}
-.btn[disabled], .btn.is-disabled{background:#d9dde6 !important;color:#7d8596 !important;border-color:#aeb6c5 !important;box-shadow:none !important;opacity:1 !important;filter:grayscale(.1)}
-.btn[disabled]::after, .btn.is-disabled::after{content:" OFF";font-size:.8em}
-.actions[data-editbar="1"]{display:none !important}
-.actions[data-editbar="1"].show{display:grid !important;grid-template-columns:1fr 1fr 1fr;gap:10px}
 </style>
 <script>
 window.addEventListener('error',e=>{
@@ -151,7 +91,6 @@ window.addEventListener('error',e=>{
 </script>
 </head>
 <body>
-
 <div class="top">
   <h1>Vanity &amp; Glamour</h1>
   <div id="dateLine" class="date">--/--/----</div>
@@ -163,41 +102,44 @@ window.addEventListener('error',e=>{
     <div class="tab" data-go="articoli">Articoli</div>
     <div class="tab" data-go="clienti">Clienti</div>
     <div class="tab" data-go="ordini">Ordini</div>
-    <div class="tab" data-go="finanze">Finanze</div>
+    <div class="tab" data-go="conti">Conti</div>
   </div>
 
   <div id="sec_home" class="section active">
-    <div class="heroSpot">
-      <div class="eyebrow">Novità in primo piano</div>
-      <div id="homeMood" class="title">Si parte bene</div>
-      <div id="homeMoodSub" class="desc">Panoramica vendite del momento.</div>
-      <div class="sparkTitle"><span>Andamento ultimi 6 mesi</span><span id="sparkHint">incassato</span></div>
-      <div id="homeSpark" class="sparkBars"></div>
+    <div class="card heroDash">
+      <div class="heroTop">
+        <div>
+          <div class="heroLabel">Novità in primo piano</div>
+          <div class="heroTitle">Vendite in spinta</div>
+          <div id="heroSub" class="heroSub">Questo mese sta andando meglio del precedente.</div>
+        </div>
+        <div class="heroRight">Incassato</div>
+      </div>
+      <div class="chartWrap">
+        <div class="heroLabel">Andamento ultimi 6 mesi</div>
+        <div id="chartBars" class="chartBars"></div>
+      </div>
     </div>
 
-    <div class="cards dashMain">
-      <div class="stat" data-go="ordini"><div class="k">Ordini in corso</div><div id="c_open_orders" class="v big">0</div><div class="sub">non ancora consegnati</div></div>
-      <div class="stat" data-go="finanze"><div class="k">Guadagno mese</div><div id="c_profit_month" class="v big">0</div><div class="sub">margine del mese corrente</div></div>
-      <div class="stat" data-go="ordini"><div class="k">In attesa di pagamento</div><div id="c_wait_payment" class="v big" style="color:#d97706">0</div><div class="sub">ordini non ancora incassati</div></div>
-      <div class="stat" data-go="finanze"><div class="k">Guadagno totale</div><div id="c_profit_total" class="v big">0</div><div class="sub">margine complessivo</div></div>
+    <div class="dashStats">
+      <div class="dashStatCard"><div class="k">Ordini in corso</div><div id="c_ord_corso" class="big">0</div><div class="small">non ancora consegnati</div></div>
+      <div class="dashStatCard"><div class="k">Guadagno mese</div><div id="c_gain_month" class="big moneyPos">€0,00</div><div class="small">margine del mese corrente</div></div>
+      <div class="dashStatCard"><div class="k">In attesa di pagamento</div><div id="c_wait_pay" class="big warn">0</div><div class="small">ordini non ancora incassati</div></div>
+      <div class="dashStatCard"><div class="k">Guadagno totale</div><div id="c_gain_total" class="big moneyPos">€0,00</div><div class="small">margine complessivo</div></div>
     </div>
 
-    <div class="card quickCard">
+    <div class="card">
       <div class="h2">Azioni rapide</div>
       <div class="btnGrid">
-        <button class="btnBig primary" data-action="newOrd">Nuovo ordine</button>
-        <button class="btnBig gray" data-action="newArt">Nuovo articolo</button>
+        <button class="btnBig primary" data-action="newArt">Nuovo articolo</button>
         <button class="btnBig gray" data-action="newCli">Nuovo cliente</button>
-        <button class="btnBig gray" data-go="impostazioni">Impostazioni</button>
-      </div>
-      <div class="substats">
-        <div class="micro"><div class="k">Incassato mese</div><div id="c_inc_month" class="v">0</div></div>
-        <div class="micro"><div class="k">Da incassare</div><div id="c_due_total" class="v">0</div></div>
+        <button class="btnBig gray" data-action="newOrd">Nuovo ordine</button>
+        <button class="btnBig gray" data-go="conti">Conti</button>
       </div>
     </div>
 
     <div class="card" style="margin-top:12px">
-      <div class="h2">Info rapide</div>
+      <div class="h2">Info rapide (cliccabili)</div>
       <div id="dashList" class="list"></div>
     </div>
   </div>
@@ -205,10 +147,11 @@ window.addEventListener('error',e=>{
   <div id="sec_articoli" class="section">
     <div class="card">
       <div class="h2">Articoli</div>
-      <input id="qArt" placeholder="Cerca per codice, brand, modello, categoria, colore, taglia, variante..." autocomplete="off" autocapitalize="off" spellcheck="false"/>
+      <input id="qArt" placeholder="Cerca per codice, brand, modello..." autocomplete="off" autocapitalize="off" spellcheck="false"/>
     </div>
     <div style="height:10px"></div>
     <div id="listArt" class="list"></div>
+    <div id="artInlineHost" class="inlineHost"></div>
   </div>
 
   <div id="sec_clienti" class="section">
@@ -218,6 +161,22 @@ window.addEventListener('error',e=>{
     </div>
     <div style="height:10px"></div>
     <div id="listCli" class="list"></div>
+    <div id="cliInlineView" class="card" style="display:none;margin-top:10px">
+      <div class="h2">Scheda cliente</div>
+      <div class="grid2">
+        <div><div class="k">Nome</div><div id="vCliNome" class="t">-</div></div>
+        <div><div class="k">Telefono</div><div id="vCliTel" class="t">-</div></div>
+      </div>
+      <div style="margin-top:10px"><div class="k">Città</div><div id="vCliCitta" class="t">-</div></div>
+      <div style="margin-top:10px"><div class="k">Shipping Address</div><textarea id="vCliAddress" readonly></textarea></div>
+      <div style="margin-top:10px"><div class="k">Note</div><textarea id="vCliNote" readonly></textarea></div>
+      <div class="actions">
+        <button class="btn primary" type="button" data-action="copyCliAddress">Copia indirizzo</button>
+        <button class="btn" type="button" data-action="editCliFromView">Modifica</button>
+        <button class="btn" type="button" data-action="closeCliInline">Chiudi</button>
+      </div>
+    </div>
+    <div id="cliEditInlineHost" class="inlineHost"></div>
   </div>
 
   <div id="sec_ordini" class="section">
@@ -227,43 +186,29 @@ window.addEventListener('error',e=>{
     </div>
     <div style="height:10px"></div>
     <div id="listOrd" class="list"></div>
+    <div id="ordInlineHost" class="inlineHost"></div>
   </div>
 
-
-  <div id="sec_finanze" class="section">
-    <div class="cards">
-      <div class="card"><div class="k">Fatturato ordini</div><div id="f_fatt" class="v">0</div></div>
-      <div class="card"><div class="k">Incassato totale</div><div id="f_inc" class="v">0</div></div>
-      <div class="card"><div class="k">Da incassare</div><div id="f_due" class="v">0</div></div>
-      <div class="card"><div class="k">Guadagno totale</div><div id="f_profit" class="v">0</div></div>
-      <div class="card"><div class="k">Guadagno mese</div><div id="f_profit_month" class="v">0</div></div>
-      <div class="card"><div class="k">Guadagno anno</div><div id="f_profit_year" class="v">0</div></div>
-    </div>
+  <div id="sec_conti" class="section">
     <div class="card">
-      <div class="h2">Riepilogo per stato ordine</div>
-      <div id="finByStatus" class="list"></div>
+      <div class="h2">Conti</div>
+      <div class="small">Riepilogo economico veloce</div>
+    </div>
+    <div class="contiStats">
+      <div class="dashStatCard"><div class="k">Incassato</div><div id="f_incassato" class="big moneyPos">€0,00</div><div class="small">totale già entrato</div></div>
+      <div class="dashStatCard"><div class="k">Da incassare</div><div id="f_da_incassare" class="big warn">€0,00</div><div class="small">ordini ancora aperti</div></div>
+      <div class="dashStatCard"><div class="k">Costo merce</div><div id="f_costi" class="big neg">€0,00</div><div class="small">spesa stimata articoli</div></div>
+      <div class="dashStatCard"><div class="k">Utile stimato</div><div id="f_utile" class="big moneyPos">€0,00</div><div class="small">margine complessivo</div></div>
     </div>
     <div class="card" style="margin-top:12px">
-      <div class="h2">Andamento ultimi 6 mesi</div>
-      <div id="finTrendChart"></div>
-    </div>
-    <div class="card" style="margin-top:12px">
-      <div class="h2">Incassato vs guadagno anno</div>
-      <div id="finYearChart"></div>
-    </div>
-    <div class="card" style="margin-top:12px">
-      <div class="h2">Categorie per ricavo</div>
-      <div id="finByCat" class="list"></div>
-    </div>
-    <div class="card" style="margin-top:12px">
-      <div class="h2">Spazio archivio foto</div>
-      <div id="storageInfo" class="small">Calcolo in corso…</div>
+      <div class="h2">Dettaglio</div>
+      <div id="financeList" class="list"></div>
     </div>
   </div>
 
   <div id="sec_impostazioni" class="section">
     <div class="card">
-      <div class="h2">Impostazioni</div>
+      <div class="h2">Strumenti</div>
       <div class="small">Backup e strumenti</div>
       <div class="actions">
         <button class="btn" data-action="exportFull">Export DB (tutto)</button>
@@ -271,15 +216,9 @@ window.addEventListener('error',e=>{
         <label class="btn" style="display:inline-block">
           Import JSON<input id="importFile" type="file" accept="application/json" style="display:none"/>
         </label>
-        <button class="btn" data-action="refreshDiag">Aggiorna diagnostica</button>
-        <button class="btn danger" data-action="repairArchive">Ripara archivio</button>
         <button class="btn danger" data-action="hardReset">Reset totale</button>
       </div>
       <div class="small" style="margin-top:10px" id="importHint"></div>
-    </div>
-    <div class="card" style="margin-top:12px">
-      <div class="h2">Diagnostica archivio</div>
-      <div id="diagBox" class="small">Lettura archivio in corso…</div>
     </div>
   </div>
 </div>
@@ -290,8 +229,8 @@ window.addEventListener('error',e=>{
     <button data-go="articoli">Articoli</button>
     <button data-go="clienti">Clienti</button>
     <button data-go="ordini">Ordini</button>
-    <button data-go="finanze">Finanze</button>
-    <button data-go="impostazioni">Impost.</button>
+    <button data-go="conti">Conti</button>
+    <button data-go="impostazioni">Strumenti</button>
   </div>
 </div>
 
@@ -307,87 +246,55 @@ window.addEventListener('error',e=>{
   </div>
   <div class="grid2" style="margin-top:10px">
     <div><div class="k">Prezzo vendita</div><div id="vArtPrezzo" class="t">-</div></div>
-    <div>
-      <div class="k">Prezzo in uso</div>
-      <div id="vArtPrezzoUse" class="priceHot">-</div>
-      <div id="vArtPromoPill"></div>
-      <div class="orderAddWrap"><button class="btn orderAdd" type="button" data-action="addArtToOrderFromView">Aggiungi a ordine</button></div>
-    </div>
+    <div><div class="k">Prezzo in uso</div><div id="vArtPrezzoUse" class="priceHot">-</div><div id="vArtPromoPill"></div></div>
   </div>
   <div style="margin-top:10px"><div class="k">Post</div><textarea id="vArtPost" readonly></textarea></div>
   <div class="actions">
     <button class="btn primary" type="button" data-action="copyPost">Copia post</button>
     <button class="btn" type="button" data-action="editFromView">Modifica</button>
-    <button class="btn tiny" style="border:2px solid #111;background:#fff7d6;padding:7px 10px;font-size:12px;min-height:auto" type="button" data-action="duplicateArtFromView">Duplica</button>
     <button class="btn" type="button" data-action="closeView">Chiudi</button>
   </div>
 </div></div>
 
-<div id="mArtEdit" class="modalwrap"><div class="modal artModal">
+<div id="mArtEdit" class="modalwrap"><div class="modal">
   <div class="h2" id="artEditTitle">Nuovo articolo</div>
-  <div class="miniNote" id="artEditSubnote" style="font-size:13px;margin:2px 0 12px;color:#64748b">Scheda articolo più ordinata, colorata e pronta per la vendita.</div>
-
-  <div class="formBlock dati inputSoft">
-    <div class="blockTitle">Dati articolo</div>
-    <div class="grid2">
-      <div><div class="k">Codice articolo</div><input id="a_cod" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
-      <div><div class="k">Brand</div><input id="a_brand" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
-    </div>
-    <div class="grid2" style="margin-top:10px">
-      <div><div class="k">Modello</div><input id="a_mod" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
-      <div><div class="k">Categoria</div><input id="a_cat" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
-    </div>
-    <div style="margin-top:10px"><div class="k">Fornitore</div><input id="a_forn" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+  <div class="grid2">
+    <div><div class="k">Codice articolo</div><input id="a_cod" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+    <div><div class="k">Brand</div><input id="a_brand" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
   </div>
-
-  <div class="formBlock varianti inputSoft">
-    <div class="blockTitle">Varianti e dettagli</div>
-    <div class="grid2">
-      <div><div class="k">Taglia</div><input id="a_taglia" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
-      <div><div class="k">Variante</div><input id="a_variante" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
-    </div>
-    <div class="grid2" style="margin-top:10px">
-      <div><div class="k">Colore</div><input id="a_colore" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
-      <div><div class="k">Materiale</div><input id="a_materiale" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="es. Pelle, Tela, Denim..."/></div>
-    </div>
-    <div style="margin-top:10px"><div class="k">Misura</div><input id="a_mis" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+  <div class="grid2" style="margin-top:10px">
+    <div><div class="k">Modello</div><input id="a_mod" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+    <div><div class="k">Categoria</div><input id="a_cat" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
   </div>
-
-  <div class="formBlock prezzi inputSoft">
-    <div class="blockTitle">Prezzi e margine</div>
-    <div class="grid2">
-      <div><div class="k">Qualità (auto)</div><input id="a_qual" readonly/></div>
-      <div><div class="k">Costo USD</div><input id="a_usd" inputmode="decimal" autocomplete="off"/></div>
-    </div>
-    <div class="grid2" style="margin-top:10px">
-      <div><div class="k">Costo EUR (auto)</div><input id="a_eur" readonly/></div>
-      <div><div class="k">Prezzo vendita (auto)</div><input id="a_sell" readonly/></div>
-    </div>
-    <div class="grid2" style="margin-top:10px">
-      <div><div class="k">Prezzo finale in uso</div><input id="a_final" readonly/></div>
-      <div><div class="k">Margine</div><input id="a_margin" readonly/><div id="a_margin_pct" class="miniNote"></div></div>
-    </div>
-    <div class="hr"></div>
-    <div class="grid2">
-      <div><div class="k">Promo attiva</div><label class="pill" style="justify-content:center;cursor:pointer"><input id="a_promo_on" type="checkbox" style="width:auto;margin-right:8px"/>Attiva</label></div>
-      <div><div class="k">Scadenza promo</div><input id="a_promo_date" type="date" autocomplete="off"/></div>
-    </div>
-    <div style="margin-top:10px"><div class="k">Prezzo promo</div><input id="a_promo_price" inputmode="decimal" autocomplete="off"/></div>
+  <div style="margin-top:10px"><div class="k">Descrizione</div><input id="a_desc" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+  <div class="grid2" style="margin-top:10px">
+    <div><div class="k">Fornitore</div><input id="a_forn" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+    <div><div class="k">Qualità (auto)</div><input id="a_qual" readonly/></div>
   </div>
-
-  <div class="formBlock postblk inputSoft">
-    <div class="blockTitle">Post e contenuti</div>
-    <div><div class="k">Descrizione</div><textarea id="a_desc" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Dettagli utili per il post..."></textarea></div>
-    <div style="margin-top:10px"><div class="k">Post</div><textarea id="a_post" placeholder="Qui il post (auto)"></textarea></div>
-    <div style="margin-top:10px"><div class="k">Note</div><textarea id="a_note"></textarea></div>
-    <div style="margin-top:10px"><div class="k">Foto articolo</div><input id="a_photo" type="file" accept="image/*"/></div>
-    <div id="a_photo_prev" class="thumbs"></div>
+  <div class="grid2" style="margin-top:10px">
+    <div><div class="k">Misura</div><input id="a_mis" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+    <div><div class="k">Costo USD</div><input id="a_usd" inputmode="decimal" autocomplete="off"/></div>
   </div>
-
-  <div class="actions" id="artEditActions" data-editbar="1" hidden>
-    <button class="btn primary" type="button" data-action="saveArt" disabled>Salva</button>
-    <button class="btn" type="button" data-action="closeEdit" disabled>Annulla</button>
-    <button class="btn danger" type="button" data-action="deleteArt" disabled>Elimina</button>
+  <div class="grid2" style="margin-top:10px">
+    <div><div class="k">Costo EUR (auto)</div><input id="a_eur" readonly/></div>
+    <div><div class="k">Prezzo vendita (auto)</div><input id="a_sell" readonly/></div>
+  </div>
+  <div style="margin-top:10px"><div class="k">Prezzo finale in uso</div><input id="a_final" readonly/></div>
+  <div class="hr"></div>
+  <div class="grid2">
+    <div><div class="k">Promo attiva</div><label class="pill" style="justify-content:center;cursor:pointer"><input id="a_promo_on" type="checkbox" style="width:auto;margin-right:8px"/>Attiva</label></div>
+    <div><div class="k">Scadenza promo</div><input id="a_promo_date" type="date" autocomplete="off"/></div>
+  </div>
+  <div style="margin-top:10px"><div class="k">Prezzo promo</div><input id="a_promo_price" inputmode="decimal" autocomplete="off"/></div>
+  <div class="hr"></div>
+  <div><div class="k">Post</div><textarea id="a_post" placeholder="Qui il post (auto)"></textarea></div>
+  <div style="margin-top:10px"><div class="k">Note</div><textarea id="a_note"></textarea></div>
+  <div style="margin-top:10px"><div class="k">Foto articolo</div><input id="a_photo" type="file" accept="image/*"/></div>
+  <div id="a_photo_prev" class="thumbs"></div>
+  <div class="actions">
+    <button class="btn primary" type="button" data-action="saveArt">Salva</button>
+    <button class="btn" type="button" data-action="closeEdit">Annulla</button>
+    <button class="btn danger" type="button" data-action="deleteArt">Elimina</button>
   </div>
 </div></div>
 
@@ -403,90 +310,54 @@ window.addEventListener('error',e=>{
     <div><div class="k">Città</div><input id="c_citta" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
   </div>
   <div style="margin-top:10px"><div class="k">Provincia</div><select id="c_prov"></select></div>
-  <div class="card" id="cliShippingBlock" style="display:none !important;margin-top:12px;padding:12px;border:2px dashed rgba(12,23,48,.18);background:linear-gradient(180deg,#f7fbff,#eef6ff)">
-    <div class="h3" style="margin-bottom:8px">📦 Spedizione e monitoraggio</div>
-    <div class="grid2">
-      <div><div class="k">Corriere</div><input id="c_corriere" placeholder="GLS, BRT, SDA..." autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
-      <div><div class="k">Numero spedizione</div><input id="c_track" placeholder="Tracking" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
-    </div>
-    <div style="margin-top:10px"><div class="k">Link monitoraggio</div><input id="c_track_url" placeholder="https://..." autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
-  </div>
   <div style="margin-top:10px"><div class="k">Note</div><textarea id="c_note"></textarea></div>
-  <div class="actions" id="cliEditActions" data-editbar="1" hidden>
-    <button class="btn primary" type="button" data-action="saveCli" disabled>Salva</button>
-    <button class="btn" type="button" data-action="closeCli" disabled>Annulla</button>
-    <button class="btn danger" type="button" data-action="deleteCli" disabled>Elimina</button>
+  <div class="actions">
+    <button class="btn primary" type="button" data-action="saveCli">Salva</button>
+    <button class="btn" type="button" data-action="closeCli">Annulla</button>
+    <button class="btn danger" type="button" data-action="deleteCli">Elimina</button>
   </div>
 </div></div>
 
 <div id="mOrdEdit" class="modalwrap"><div class="modal">
   <div class="h2" id="ordEditTitle">Nuovo ordine</div>
-  <div class="ordBlock">
-    <div class="grid2">
-      <div><div class="k">Cliente (cerca)</div><input id="o_cli_q" placeholder="Cerca cliente..." autocomplete="off" autocapitalize="off" spellcheck="false"/><select id="o_cli"></select></div>
-      <div><div class="k">Stato</div>
-        <select id="o_stato">
-          <option>Richiesto</option>
-          <option>In attesa di pagamento</option>
-          <option>Pagato</option>
-          <option>In lavorazione</option>
-          <option>Spedito</option>
-          <option>Consegnato</option>
-        </select>
-      </div>
-    </div>
-    <div class="grid2" style="margin-top:10px">
-      <div><div class="k">Data</div><input id="o_data" type="date" autocomplete="off"/></div>
-      <div><div class="k">Note</div><input id="o_note" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
-    </div>
-    <div class="grid2" style="margin-top:10px">
-      <div><div class="k">Sconto cliente (€)</div><input id="o_discount" inputmode="decimal" placeholder="0" autocomplete="off"/></div>
-      <div><div class="k">Totale righe</div><div id="o_subtot" class="small" style="font-weight:900;font-size:18px;padding:12px 14px;border-radius:14px;background:#f8f4ee;border:1px solid #eadbc3">0,00</div></div>
+  <div class="grid2">
+    <div><div class="k">Cliente (cerca)</div><input id="o_cli_q" placeholder="Cerca cliente..." autocomplete="off" autocapitalize="off" spellcheck="false"/><select id="o_cli"></select></div>
+    <div><div class="k">Stato</div>
+      <select id="o_stato">
+        <option>Richiesto</option>
+        <option>In attesa di pagamento</option>
+        <option>Pagato</option>
+        <option>In lavorazione</option>
+        <option>Spedito</option>
+        <option>Consegnato</option>
+      </select>
     </div>
   </div>
-  <div class="ordBlock" style="background:linear-gradient(180deg,#fff8ef,#fff2df);border-color:#f0c98b;box-shadow:0 10px 24px rgba(164,106,0,.08)">
-    <div class="h2">📦 Tracking spedizione</div>
-    <div class="small" style="display:none"></div>
-    <div>
-      <div class="k">Numero spedizione</div>
-      <input id="o_tracking" placeholder="Inserisci tracking" autocomplete="off" autocapitalize="off" spellcheck="false" style="font-size:16px;font-weight:800;border:2px solid #d8a24d;background:#fffdfa"/>
-    </div>
-    <div class="actions" style="margin-top:10px;gap:8px;flex-wrap:wrap">
-      <button class="btn tiny" type="button" data-action="copyTracking" style="min-height:auto;padding:9px 12px;background:#fff;border:2px solid #111">Copia</button>
-      <button class="btn tiny" type="button" data-action="openTracking17" style="min-height:auto;padding:9px 12px;background:#f4f7ff;border:2px solid #111">17TRACK</button>
-      <button class="btn tiny" type="button" data-action="toggleTrackingWidget" style="min-height:auto;padding:9px 12px;background:#e9fff5;border:2px solid #111">Mostra tracking</button>
-      <button class="btn tiny" type="button" data-action="markDelivered" style="min-height:auto;padding:9px 12px;background:#ecfdf5;border:2px solid #111;color:#166534">Segna consegnato</button>
-    </div>
-    <div id="o_tracking_wrap" style="display:none;margin-top:12px">
-      <div class="small" style="margin-bottom:8px;color:#7a4b00;font-weight:700">Monitoraggio rapido integrato</div>
-      <iframe id="o_tracking_iframe" title="Tracking spedizione" style="width:100%;height:360px;border:2px solid #f0c98b;border-radius:16px;background:#fff" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </div>
+  <div class="grid2" style="margin-top:10px">
+    <div><div class="k">Data</div><input id="o_data" type="date" autocomplete="off"/></div>
+    <div><div class="k">Note</div><input id="o_note" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
   </div>
-  <div class="ordBlock soft">
-    <div class="h2">Righe ordine</div>
-    <div class="grid2">
-      <div><div class="k">Articolo (cerca)</div><input id="o_art_q" placeholder="Cerca articolo..." autocomplete="off" autocapitalize="off" spellcheck="false"/><select id="o_art"></select></div>
-      <div><div class="k">Prezzo</div><input id="o_price" inputmode="decimal" autocomplete="off"/></div>
-    </div>
-    <div class="actions">
-      <button class="btn orderAdd" type="button" data-action="addRow">Aggiungi riga</button>
-    </div>
-    <div id="o_rows" class="list"></div>
+  <div class="hr"></div>
+  <div class="h2">Righe ordine</div>
+  <div class="grid2">
+    <div><div class="k">Articolo (cerca)</div><input id="o_art_q" placeholder="Cerca articolo..." autocomplete="off" autocapitalize="off" spellcheck="false"/><select id="o_art"></select></div>
+    <div><div class="k">Prezzo</div><input id="o_price" inputmode="decimal" autocomplete="off"/></div>
   </div>
-  <div class="ordBlock gold" style="margin-top:10px"><div class="k">Totale</div><div id="o_tot" class="priceHot">0</div></div>
-  <div class="actions" id="ordEditActions" data-editbar="1" hidden>
-    <button class="btn primary" type="button" data-action="saveOrd" disabled>Salva</button>
-    <button class="btn" type="button" data-action="closeOrd" disabled>Annulla</button>
-    <button class="btn danger" type="button" data-action="deleteOrd" disabled>Elimina</button>
+  <div class="actions">
+    <button class="btn" type="button" data-action="addRow">Aggiungi riga</button>
+  </div>
+  <div id="o_rows" class="list"></div>
+  <div class="card" style="margin-top:10px"><div class="k">Totale</div><div id="o_tot" class="priceHot">0</div></div>
+  <div class="actions">
+    <button class="btn primary" type="button" data-action="saveOrd">Salva</button>
+    <button class="btn" type="button" data-action="closeOrd">Annulla</button>
+    <button class="btn danger" type="button" data-action="deleteOrd">Elimina</button>
   </div>
 </div></div>
 
 <script>
 /* ====== DB ====== */
-const KEY='vg_db_full_v6';
-const LEGACY_KEYS=['vg_db_full_v5'];
-const PHOTO_DB='vg_photos_v1';
-const PHOTO_STORE='photos';
+const KEY='vg_db_full_v5';
 const PROVINCE=[ "AG","AL","AN","AO","AP","AQ","AR","AT","AV","BA","BG","BI","BL","BN","BO","BR","BS","BT","BZ","CA","CB","CE","CH","CL","CN","CO","CR","CS","CT","CZ","EN","FC","FE","FG","FI","FM","FR","GE","GO","GR","IM","IS","KR","LC","LE","LI","LO","LT","LU","MB","MC","ME","MI","MN","MO","MS","MT","NA","NO","NU","OR","PA","PC","PD","PE","PG","PI","PN","PO","PR","PT","PU","PV","PZ","RA","RC","RE","RG","RI","RM","RN","RO","SA","SI","SO","SP","SR","SS","SU","SV","TA","TE","TN","TO","TP","TR","TS","TV","UD","VA","VB","VC","VE","VI","VR","VT","VV" ];
 const uid=()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36);
 const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[m]));
@@ -496,192 +367,16 @@ const round5=n=>Math.round(n/5)*5;
 function defDB(){
   return {version:'v5',articoli:[],clienti:[],ordini:[],createdAt:new Date().toISOString()};
 }
-function normalizeDBShape(o){
-  if(!o || typeof o!=='object') return defDB();
-  const db={
-    version:o.version||'v6',
-    articoli:Array.isArray(o.articoli)?o.articoli:[],
-    clienti:Array.isArray(o.clienti)?o.clienti:[],
-    ordini:Array.isArray(o.ordini)?o.ordini:[],
-    createdAt:o.createdAt||new Date().toISOString()
-  };
-  db.articoli=db.articoli.map(x=>({
-    ...x,
-    foto: [],
-    photoIds:Array.isArray(x?.photoIds)?x.photoIds.filter(Boolean).slice(0,6):[]
-  }));
-  db.ordini=db.ordini.map(x=>({
-    ...x,
-    righe:Array.isArray(x?.righe)?x.righe:[],
-    totale:Number(x?.totale||0),
-    incassato:Number(x?.incassato||0)
-  }));
-  return db;
-}
-function mergeById(arrA=[], arrB=[]){
-  const map=new Map();
-  [...arrA, ...arrB].forEach(it=>{
-    if(!it || !it.id) return;
-    const prev=map.get(it.id);
-    if(!prev){ map.set(it.id, it); return; }
-    const prevScore=(prev._ts||0)+(Array.isArray(prev.righe)?prev.righe.length:0);
-    const nextScore=(it._ts||0)+(Array.isArray(it.righe)?it.righe.length:0);
-    if(nextScore>=prevScore) map.set(it.id, {...prev, ...it});
-  });
-  return Array.from(map.values());
-}
 function loadDB(){
   try{
-    const legacyKeys = (typeof LEGACY_KEYS!=='undefined' ? LEGACY_KEYS : []);
-    const keys=[...legacyKeys, KEY];
-    const found=[];
-    keys.forEach(k=>{
-      const raw=localStorage.getItem(k);
-      if(!raw) return;
-      try{ found.push({key:k, db:normalizeDBShape(JSON.parse(raw))}); }catch(_e){}
-    });
-    if(!found.length) return defDB();
-
-    let merged=defDB();
-    found.forEach(({db})=>{
-      merged={
-        version:'v6',
-        createdAt: merged.createdAt||db.createdAt||new Date().toISOString(),
-        articoli: mergeById(merged.articoli, db.articoli),
-        clienti: mergeById(merged.clienti, db.clienti),
-        ordini: mergeById(merged.ordini, db.ordini)
-      };
-    });
-
-    const mergedRaw = JSON.stringify(merged);
-    const rawMain=localStorage.getItem(KEY);
-    if(rawMain!==mergedRaw) localStorage.setItem(KEY, mergedRaw);
-
-    // Dopo la migrazione, le chiavi legacy non devono più rimettere in vita record cancellati.
-    legacyKeys.forEach(k=>{ try{ localStorage.removeItem(k); }catch(_e){} });
-    return merged;
+    const raw=localStorage.getItem(KEY);
+    if(!raw) return defDB();
+    const o=JSON.parse(raw);
+    if(!o || !Array.isArray(o.articoli) || !Array.isArray(o.clienti) || !Array.isArray(o.ordini)) return defDB();
+    return o;
   }catch(e){ return defDB(); }
 }
-function saveDB(db){
-  try{
-    localStorage.setItem(KEY, JSON.stringify(db));
-    const legacyKeys = (typeof LEGACY_KEYS!=='undefined' ? LEGACY_KEYS : []);
-    legacyKeys.forEach(k=>{ try{ localStorage.removeItem(k); }catch(_e){} });
-  }catch(err){
-    const msg=String(err?.message||err||'');
-    if(/quota|storage/i.test(msg)) alert('Salvataggio fallito: archivio locale pieno o sporco.');
-    else alert('Salvataggio fallito: '+msg);
-    return false;
-  }
-  try{ renderAll(); }catch(err){ console.error('Render post-salvataggio fallito', err); }
-  return true;
-}
-
-function openPhotoDB(){
-  return new Promise((res,rej)=>{
-    const req=indexedDB.open(PHOTO_DB,1);
-    req.onupgradeneeded=()=>{
-      const db=req.result;
-      if(!db.objectStoreNames.contains(PHOTO_STORE)) db.createObjectStore(PHOTO_STORE);
-    };
-    req.onsuccess=()=>res(req.result);
-    req.onerror=()=>rej(req.error||new Error('IndexedDB non disponibile'));
-  });
-}
-async function idbSet(key,val){
-  const db=await openPhotoDB();
-  return new Promise((res,rej)=>{
-    const tx=db.transaction(PHOTO_STORE,'readwrite');
-    tx.objectStore(PHOTO_STORE).put(val,key);
-    tx.oncomplete=()=>res(true);
-    tx.onerror=()=>rej(tx.error||new Error('Errore salvataggio foto'));
-    tx.onabort=()=>rej(tx.error||new Error('Salvataggio foto abortito'));
-  });
-}
-async function idbGet(key){
-  const db=await openPhotoDB();
-  return new Promise((res,rej)=>{
-    const tx=db.transaction(PHOTO_STORE,'readonly');
-    const req=tx.objectStore(PHOTO_STORE).get(key);
-    req.onsuccess=()=>res(req.result||null);
-    req.onerror=()=>rej(req.error||new Error('Errore lettura foto'));
-  });
-}
-async function idbDelete(key){
-  const db=await openPhotoDB();
-  return new Promise((res,rej)=>{
-    const tx=db.transaction(PHOTO_STORE,'readwrite');
-    tx.objectStore(PHOTO_STORE).delete(key);
-    tx.oncomplete=()=>res(true);
-    tx.onerror=()=>rej(tx.error||new Error('Errore eliminazione foto'));
-    tx.onabort=()=>rej(tx.error||new Error('Eliminazione foto abortita'));
-  });
-}
-async function idbListKeys(){
-  const db=await openPhotoDB();
-  return new Promise((res,rej)=>{
-    const tx=db.transaction(PHOTO_STORE,'readonly');
-    const store=tx.objectStore(PHOTO_STORE);
-    const req=store.getAllKeys ? store.getAllKeys() : null;
-    if(req){
-      req.onsuccess=()=>res((req.result||[]).map(String));
-      req.onerror=()=>rej(req.error||new Error('Errore lettura chiavi foto'));
-      return;
-    }
-    const out=[];
-    const cur=store.openCursor();
-    cur.onsuccess=(e)=>{
-      const cursor=e.target.result;
-      if(cursor){ out.push(String(cursor.key)); cursor.continue(); }
-      else res(out);
-    };
-    cur.onerror=()=>rej(cur.error||new Error('Errore cursore foto'));
-  });
-}
-async function idbCount(){
-  const db=await openPhotoDB();
-  return new Promise((res,rej)=>{
-    const tx=db.transaction(PHOTO_STORE,'readonly');
-    const req=tx.objectStore(PHOTO_STORE).count();
-    req.onsuccess=()=>res(Number(req.result||0));
-    req.onerror=()=>rej(req.error||new Error('Errore conteggio foto'));
-  });
-}
-async function getArticlePics(a){
-  if(!a) return [];
-  if(Array.isArray(a.photoIds) && a.photoIds.length){
-    const out=[];
-    for(const id of a.photoIds){ const x=await idbGet(id); if(x) out.push(x); }
-    return out;
-  }
-  return Array.isArray(a.foto)?a.foto.filter(Boolean):[];
-}
-async function migratePhotosToIndexedDB(){
-  const db=loadDB();
-  let changed=false;
-  for(const a of db.articoli||[]){
-    if(Array.isArray(a.foto) && a.foto.length && (!Array.isArray(a.photoIds) || !a.photoIds.length)){
-      a.photoIds=[];
-      for(const src of a.foto.slice(0,6)){
-        const pid='ph_'+uid();
-        await idbSet(pid,src);
-        a.photoIds.push(pid);
-      }
-      a.foto=[];
-      changed=true;
-    }
-    if(!Array.isArray(a.photoIds)) a.photoIds=[];
-  }
-  if(changed) localStorage.setItem(KEY, JSON.stringify(db));
-}
-async function estimateStorageInfo(){
-  if(navigator.storage && navigator.storage.estimate){
-    const e=await navigator.storage.estimate();
-    return {usage:Number(e.usage||0), quota:Number(e.quota||0)};
-  }
-  return null;
-}
-function fmtMB(n){ return (n/1024/1024).toFixed(2)+' MB'; }
+function saveDB(db){ localStorage.setItem(KEY, JSON.stringify(db)); renderAll(); }
 
 /* ====== DATE LINE ====== */
 function setDateLine(){
@@ -734,39 +429,6 @@ function currentPrice(a){
   return promoValid(a) ? Number(a.prezzoPromo) : Number(a.prezzoVendita||0);
 }
 
-function qualityHtml(code){
-  const q=qualityFromCode(code);
-  if(q==='ORIGINALE') return `<span class="qualOrig">${q}</span>`;
-  return `<span class="qualStd">${q||'-'}</span>`;
-}
-function orderAmountClass(o){ return orderPaidStatus(o)?'pricePaid':'priceHot'; }
-
-function orderPaidStatus(o){
-  const stato=String(o?.stato||'').trim().toLowerCase();
-  const autoPaidStatuses=new Set(['pagato','in lavorazione','spedito','consegnato']);
-  return autoPaidStatuses.has(stato);
-}
-
-function orderIncassato(o){
-  const total=Number(o?.totale||0);
-  const manual=Number(o?.incassato||0);
-  if(orderPaidStatus(o)) return total;
-  return Math.min(total, Math.max(0, manual));
-}
-
-function orderMargin(o, db){
-  const righe=Array.isArray(o?.righe)?o.righe:[];
-  let margin=0;
-  for(const r of righe){
-    const prezzo=Number(r?.prezzo||0);
-    const art=(db?.articoli||[]).find(x=>x.id===r.articoloId || (r.codice && x.codice===r.codice));
-    const costo=Number(art?.costoEur||r?.costoEur||0);
-    margin += Math.max(0, prezzo - costo);
-  }
-  const sconto=Math.max(0, Number(o?.scontoCliente||o?.sconto||0));
-  return Math.max(0, margin - sconto);
-}
-
 /* ====== POST (rules) ====== */
 function emojiQualityForPost(a){
   const q=qualityFromCode(a.codice);
@@ -778,21 +440,16 @@ function buildPost(a){
   if(!a.codice) return '';
   const qemoji=emojiQualityForPost(a);
   let lines=[];
+  // no promo header unless user sets promoAttiva? we only show if promoAttiva true
   if(a.promoAttiva) lines.push('🔥PROMOZIONE🔥');
   lines.push(`${brand} ${modello} ${qemoji}`.trim());
-  const qual=qualityFromCode(a.codice);
-  if(qual==='ORIGINALE') lines.push('QUALITÀ SUPERIORE');
-  else if(qual && qual!=='STANDARD') lines.push(`Qualità ${qual}`);
-  if((a.descrizione||'').trim()) lines.push((a.descrizione||'').trim());
-  const detail=[];
-  if(a.taglia) detail.push(`Taglia ${a.taglia}`);
-  if(a.variante) detail.push(a.variante);
-  if(a.colore) detail.push(a.colore);
-  if(a.misura) detail.push(`Mis. ${a.misura}`);
-  if(detail.length) lines.push(detail.join(' • '));
+  if(qualityFromCode(a.codice)==='ORIGINALE') lines.push('QUALITÀ SUPERIORE');
   if(a.scatola) lines.push('Con scatola 🎁');
+  if(a.materiale) lines.push(`🧵 ${a.materiale}`);
+  if(a.misura) lines.push(`Mis. ${a.misura}`);
   if(a.colori) lines.push(a.colori);
   if(a.tracolla) lines.push(a.tracolla);
+  
   lines.push(`cod. ${a.codice}`);
   return lines.join('\n');
 }
@@ -806,29 +463,41 @@ function go(name){
   history.pushState({page:name},'', '#'+name);
 }
 window.addEventListener('popstate',(e)=>{
-  const state=e.state||{};
-  const page=state.page || location.hash.replace('#','') || 'home';
+  const page=(e.state&&e.state.page) || location.hash.replace('#','') || 'home';
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   const sec=document.getElementById('sec_'+page); if(sec) sec.classList.add('active');
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.go===page));
   document.querySelectorAll('.navBottom button').forEach(b=>b.classList.toggle('active', b.dataset.go===page));
-  document.querySelectorAll('.modalwrap').forEach(m=>m.style.display='none');
-  if(state.overlay && document.getElementById(state.overlay)){ document.getElementById(state.overlay).style.display='flex'; }
 });
 
 /* ====== UI helpers ====== */
-function currentPageName(){ return document.querySelector('.section.active')?.id?.replace('sec_','') || location.hash.replace('#','') || 'home'; }
-function currentOverlay(){ return [...document.querySelectorAll('.modalwrap')].find(m=>m.style.display==='flex')?.id || null; }
-function show(id){
-  const el=document.getElementById(id); if(!el) return;
-  el.style.display='flex';
-  history.pushState({page:currentPageName(), overlay:id},'', '#'+currentPageName());
+function show(id){ document.getElementById(id).style.display='flex'; }
+function hide(id){ document.getElementById(id).style.display='none'; }
+function mountInline(id, hostId){
+  const box=document.getElementById(id);
+  const host=document.getElementById(hostId);
+  if(!box || !host) return;
+  host.appendChild(box);
+  box.classList.add('inlineMount');
+  box.style.display='block';
+  const m=box.querySelector('.modal');
+  if(m) m.style.margin='0';
 }
-function hide(id,fromPop=false){
-  const el=document.getElementById(id); if(!el) return;
-  if(!fromPop && history.state && history.state.overlay===id){ history.back(); return; }
-  el.style.display='none';
+function unmountInline(id){
+  const box=document.getElementById(id);
+  if(!box) return;
+  box.classList.remove('inlineMount');
+  box.style.display='none';
 }
+function closeArtPanels(){
+  unmountInline('mArtView');
+  unmountInline('mArtEdit');
+}
+function closeCliPanels(){
+  closeCliView();
+  unmountInline('mCliEdit');
+}
+
 function toast(msg){
   let t=document.getElementById('vg_toast');
   if(!t){ t=document.createElement('div'); t.id='vg_toast';
@@ -844,120 +513,117 @@ function copyTextFrom(el){
   navigator.clipboard?.writeText(t).then(()=>toast('Copiato')).catch(()=>{ try{ el.select(); document.execCommand('copy'); toast('Copiato'); }catch(e){ alert('Copia non disponibile'); } });
 }
 
-
-function autoGrowTextarea(el){
-  if(!el) return;
-  el.style.height='auto';
-  el.style.height=Math.max(el.scrollHeight, 120)+'px';
-}
-
-function bindAutoGrow(ids){
-  ids.forEach(id=>{
-    const el=document.getElementById(id);
-    if(!el) return;
-    const run=()=>autoGrowTextarea(el);
-    el.addEventListener('input', run);
-    setTimeout(run,0);
-  });
-}
-
 /* ====== RENDER ====== */
-function dashboardMood(incMonth, prevMonth, openOrders, totalOrders){
-  const ratio = prevMonth>0 ? incMonth/prevMonth : (incMonth>0 ? 1.2 : 0);
-  if(totalOrders===0) return {title:'Si riparte da qui', sub:'Nessun ordine registrato: dashboard pronta a ripartire.'};
-  if(incMonth===0 && openOrders>0) return {title:'Vendite ferme, ordini da chiudere', sub:'Questo mese non risulta ancora incassato: conviene spingere le chiusure.'};
-  if(incMonth===0) return {title:'Mese molto lento', sub:'Poche vendite registrate: serve rimettere movimento.'};
-  if(openOrders>=6 && incMonth>0) return {title:'Bel movimento, occhio ai tempi', sub:'Le vendite girano ma hai parecchi ordini ancora aperti.'};
-  if(ratio>=1.25) return {title:'Vendite in spinta', sub:'Questo mese sta andando meglio del precedente.'};
-  if(ratio>=0.9) return {title:'Andamento stabile', sub:'Flusso regolare: numeri sotto controllo.'};
-  if(ratio>=0.5) return {title:'Si muove, ma può fare meglio', sub:'Le vendite ci sono, però il ritmo è ancora basso.'};
-  return {title:'Vendite basse, da scuotere', sub:'Il mese è fiacco: conviene spingere ordini e follow-up.'};
+function monthKey(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
+function monthLabel(d){ return ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'][d.getMonth()]; }
+function getLast6MonthsData(db){
+  const now=new Date();
+  const months=[];
+  for(let i=5;i>=0;i--){
+    const d=new Date(now.getFullYear(), now.getMonth()-i, 1);
+    months.push({key:monthKey(d), label:monthLabel(d), total:0});
+  }
+  const map=Object.fromEntries(months.map(m=>[m.key,m]));
+  const paidStates=['Consegnato','Pagato'];
+  db.ordini.forEach(o=>{
+    const dt=o.data?new Date(o.data+'T12:00:00'):new Date(o._ts||Date.now());
+    const key=monthKey(dt);
+    if(map[key] && paidStates.includes(o.stato)) map[key].total += Number(o.totale||0);
+  });
+  return months;
 }
 
 function renderHome(){
   const db=loadDB();
-  const now=new Date(), curMonth=now.getMonth(), curYear=now.getFullYear();
-  const ordini=db.ordini||[];
-  const inCorso=ordini.filter(o=>String(o.stato||'').trim().toLowerCase()!=='consegnato').length;
-  const totaleOrdini=ordini.reduce((s,o)=>s+Number(o.totale||0),0);
-  const inAttesaPagamento=ordini.filter(o=>!orderPaidStatus(o)).length;
-  const guadagnoTot=ordini.reduce((s,o)=>s+(orderPaidStatus(o)?orderMargin(o,db):0),0);
-  const sameMonth=o=>{ const d=new Date((o.data||'')+'T12:00:00'); return !isNaN(d) && d.getMonth()===curMonth && d.getFullYear()===curYear; };
-  const guadagnoMese=ordini.filter(sameMonth).reduce((s,o)=>s+(orderPaidStatus(o)?orderMargin(o,db):0),0);
-  const incMese=ordini.filter(sameMonth).reduce((s,o)=>s+orderIncassato(o),0);
-  const incTot=ordini.reduce((s,o)=>s+orderIncassato(o),0);
-  const daIncassare=Math.max(0, totaleOrdini-incTot);
 
-  document.getElementById('c_open_orders').textContent=inCorso;
-  document.getElementById('c_profit_month').textContent=money(guadagnoMese);
-  document.getElementById('c_wait_payment').textContent=inAttesaPagamento;
-  document.getElementById('c_profit_total').textContent=money(guadagnoTot);
-  document.getElementById('c_inc_month').textContent=money(incMese);
-  document.getElementById('c_due_total').textContent=money(daIncassare);
+  const paidStates=['Consegnato','Pagato'];
+  const waitingStates=['In attesa di pagamento','Richiesto','Ordinato','Spedito','Pronto'];
+  const ordiniInCorso=db.ordini.filter(o=>!paidStates.includes(o.stato)).length;
+  const attesaPagamento=db.ordini.filter(o=>waitingStates.includes(o.stato)).length;
+  document.getElementById('c_ord_corso').textContent=ordiniInCorso;
+  document.getElementById('c_wait_pay').textContent=attesaPagamento;
 
-  const months=[];
-  for(let i=5;i>=0;i--){
-    const d=new Date(curYear, curMonth-i, 1);
-    const label=d.toLocaleDateString('it-IT',{month:'short'}).replace('.','');
-    const value=ordini.filter(o=>{ const od=new Date((o.data||'')+'T12:00:00'); return !isNaN(od) && od.getMonth()===d.getMonth() && od.getFullYear()===d.getFullYear(); }).reduce((s,o)=>s+orderIncassato(o),0);
-    months.push({label:label.charAt(0).toUpperCase()+label.slice(1), value});
-  }
-  const max=Math.max(1,...months.map(m=>m.value));
-  document.getElementById('homeSpark').innerHTML=months.map((m,idx)=>`<div class="sparkCol"><div class="sparkBarWrap"><div class="sparkBar ${idx===months.length-1?'soft':''}" style="height:${Math.max(12,Math.round((m.value/max)*100))}%" title="${esc(m.label)}: ${money(m.value)}"></div></div><div class="sparkLbl">${esc(m.label)}</div></div>`).join('');
+  const currentMonthKey=monthKey(new Date());
+  let gainMonth=0, gainTotal=0;
+  db.ordini.forEach(o=>{
+    const dt=o.data?new Date(o.data+'T12:00:00'):new Date(o._ts||Date.now());
+    const orderCost=(o.righe||[]).reduce((s,r)=>{
+      const art=db.articoli.find(a=>a.id===r.articoloId);
+      return s + Number(art?.costoEur||0);
+    },0);
+    const margin=Number(o.totale||0)-orderCost;
+    gainTotal += margin;
+    if(monthKey(dt)===currentMonthKey) gainMonth += margin;
+  });
+  document.getElementById('c_gain_month').textContent=money(gainMonth);
+  document.getElementById('c_gain_total').textContent=money(gainTotal);
 
-  const prevMonth=months.length>1 ? months[months.length-2].value : 0;
-  const mood=dashboardMood(incMese, prevMonth, inCorso, ordini.length);
-  document.getElementById('homeMood').textContent=mood.title;
-  document.getElementById('homeMoodSub').textContent=mood.sub;
+  const months=getLast6MonthsData(db);
+  const max=Math.max(...months.map(m=>m.total),1);
+  const chart=document.getElementById('chartBars');
+  chart.innerHTML=months.map(m=>{
+    const h=Math.max(12, Math.round((m.total/max)*100));
+    const cls=m.total===0?'bar empty':'bar';
+    return `<div class="barCol"><div class="${cls}" style="height:${h}px" title="${esc(m.label)} ${money(m.total)}"></div><div class="barLabel">${esc(m.label)}</div></div>`;
+  }).join('');
+  const prev=months[4]?.total||0;
+  const curr=months[5]?.total||0;
+  const heroSub=document.getElementById('heroSub');
+  heroSub.textContent = curr>prev ? 'Questo mese sta andando meglio del precedente.' : (curr<prev ? 'Questo mese sta andando più piano del precedente.' : 'Questo mese è in linea con il precedente.');
 
-  const last=ordini.slice().sort((a,b)=>(b._ts||0)-(a._ts||0))[0];
+  const last=db.ordini.slice().sort((a,b)=>(b._ts||0)-(a._ts||0))[0];
   const exp=db.articoli.filter(promoValid).sort((a,b)=>String(a.scadenzaPromo).localeCompare(String(b.scadenzaPromo)))[0];
+  const stuck=db.ordini.filter(o=>{
+    const days=15;
+    const ts=o._ts||0;
+    return ts && (Date.now()-ts)>(days*24*3600*1000) && !['Consegnato'].includes(o.stato);
+  })[0];
+
   const lines=[];
   lines.push(last?`Ultimo ordine: ${last.stato} • ${last.data||''}`:'Ultimo ordine: nessuno');
-  lines.push(exp?`Promo attiva: ${exp.brand||''} ${exp.modello||''}`:'Promo attiva: nessuna');
-  lines.push(`Ordini aperti: ${inCorso} • Incassato mese ${money(incMese)}`);
+  lines.push(exp?`Promo in scadenza: ${exp.brand||''} ${exp.modello||''} • ${exp.scadenzaPromo}`:'Promo in scadenza: nessuna');
+  lines.push(stuck?`Ordini fermi: ${stuck.id} • ${stuck.stato}`:'Ordini fermi: nessuno');
 
   const list=document.getElementById('dashList');
   list.innerHTML=lines.map((t,i)=>{
-    const target=(i===1)?'articoli':'ordini';
+    const target=(i===0||i===2)?'ordini':'articoli';
     return `<div class="row" data-go="${target}" style="grid-template-columns:1fr"><div class="main"><div class="t">${esc(t)}</div></div></div>`;
   }).join('');
+}
+
+
+function shuffleArray(arr){
+  const out=arr.slice();
+  for(let i=out.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [out[i],out[j]]=[out[j],out[i]];
+  }
+  return out;
 }
 
 function renderArt(){
   const db=loadDB();
   const q=document.getElementById('qArt').value.trim().toLowerCase();
-  const items=db.articoli.filter(a=>{
-    const hay=((a.codice||'')+' '+(a.brand||'')+' '+(a.modello||'')+' '+(a.categoria||'')+' '+(a.descrizione||'')+' '+(a.colore||'')+' '+(a.taglia||'')+' '+(a.variante||'')).toLowerCase();
+  const items=shuffleArray(db.articoli.filter(a=>{
+    const hay=((a.codice||'')+' '+(a.brand||'')+' '+(a.modello||'')).toLowerCase();
     return !q || hay.includes(q);
-  }).sort((a,b)=>String(b._ts||0).localeCompare(String(a._ts||0)));
+  }));
   const el=document.getElementById('listArt');
   el.innerHTML=items.map(a=>{
     const promo=pseudoPromoBadge(a);
+    const img=(a.foto&&a.foto[0])||'';
     return `<div class="row" data-open="art" data-id="${a.id}">
-      <img class="thumb artThumb" data-photo-for="${a.id}" style="display:none"/>
+      <img class="thumb" src="${img}" onerror="this.style.display='none'"/>
       <div>
         <div class="t">${esc(a.modello||'-')}</div>
-        <div class="s">${esc(a.brand||'')} • ${esc(a.codice||'')} • ${qualityHtml(a.codice)}</div>
+        <div class="s">${esc(a.brand||'')} • ${esc(a.codice||'')} • ${esc(qualityFromCode(a.codice))}</div>
         ${promo}
       </div>
       <div style="text-align:right">
         <div class="k">Prezzo</div><div class="t">${money(currentPrice(a))}</div>
-        <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px;align-items:flex-end">
-          <button class="btn orderAdd small" type="button" data-action="addArtToOrder" data-id="${a.id}">Aggiungi a ordine</button>
-          <button class="btn tiny" style="border:2px solid #111;background:#fff7d6;padding:7px 10px;font-size:12px;min-height:auto" type="button" data-action="duplicateArt" data-id="${a.id}">Duplica</button>
-        </div>
       </div>
     </div>`;
   }).join('') || `<div class="card"><div class="small">Nessun articolo</div></div>`;
-  hydrateArticleThumbs(items);
-}
-async function hydrateArticleThumbs(items){
-  for(const a of items){
-    const pics=await getArticlePics(a);
-    const el=document.querySelector('[data-photo-for="'+a.id+'"]');
-    if(el && pics[0]){ el.src=pics[0]; el.style.display='block'; }
-  }
 }
 function pseudoPromoBadge(a){
   if(!a.promoAttiva) return '';
@@ -978,9 +644,7 @@ function renderCli(){
     <div class="row" data-open="cli" data-id="${c.id}" style="grid-template-columns:1fr auto">
       <div>
         <div class="t">${esc(c.nome||'-')}</div>
-        <div class="s">${esc(c.citta||'')} (${esc(c.provincia||'')})</div>
-        ${c.trackingNumero||c.tracking ? `<div class="s" style="margin-top:4px">📦 ${esc(c.corriere||'Spedizione')} • ${esc(c.trackingNumero||c.tracking||'')}</div>` : ''}
-        ${(c.trackingUrl||c.monitoraggioUrl) ? `<div class="s" style="margin-top:4px"><a href="${escAttr(c.trackingUrl||c.monitoraggioUrl||'')}" target="_blank" rel="noopener">Apri monitoraggio</a></div>` : ''}
+        <div class="s">${esc(c.telefono||'')} • ${esc(c.citta||'')} (${esc(c.provincia||'')})</div>
       </div>
       <div class="pill">${esc(c.provincia||'-')}</div>
     </div>
@@ -998,331 +662,99 @@ function renderOrd(){
   const el=document.getElementById('listOrd');
   el.innerHTML=items.map(o=>{
     const c=db.clienti.find(x=>x.id===o.clienteId);
-    const count=(Array.isArray(o.righe)?o.righe.length:0);
-    return `<div class="row" data-open="ord" data-id="${o.id}" style="grid-template-columns:58px 1fr auto">
-      <div class="orderThumbWrap">
-        <img class="orderThumbMain" data-order-photo="${o.id}"/>
-        <span class="orderThumbCount" data-order-count="${o.id}" ${count>1?'':'style=\"display:none\"'}>${count}</span>
-      </div>
+    return `<div class="row" data-open="ord" data-id="${o.id}" style="grid-template-columns:1fr auto">
       <div>
-        <div class="t">${esc(c?c.nome:'-')} • <span class="${orderAmountClass(o)}">${money(o.totale||0)}</span></div>
-        <div class="s">${esc(o.stato||'-')} • ${esc(o.data||'')}${Number(o.scontoCliente||o.sconto||0)>0 ? ' • sconto '+money(o.scontoCliente||o.sconto||0) : ''}${(o.trackingNumber||o.tracking)? ' • tracking '+esc(o.trackingNumber||o.tracking) : ''}</div>
+        <div class="t">${esc(c?c.nome:'-')} • <span class="priceHot">${money(o.totale||0)}</span></div>
+        <div class="s">${esc(o.stato||'-')} • ${esc(o.data||'')}</div>
       </div>
       <div class="pill">${esc(o.stato||'-')}</div>
     </div>`;
   }).join('') || `<div class="card"><div class="small">Nessun ordine</div></div>`;
-  hydrateOrderThumbs(items, db);
 }
-
-async function hydrateOrderThumbs(items, db){
-  for(const o of items){
-    const main=document.querySelector('[data-order-photo="'+o.id+'"]');
-    const cnt=document.querySelector('[data-order-count="'+o.id+'"]');
-    const rows=Array.isArray(o.righe)?o.righe:[];
-    let first='';
-    let count=0;
-    for(const r of rows){
-      const a=db.articoli.find(x=>x.id===r.articoloId);
-      if(!a) continue;
-      const pics=await getArticlePics(a);
-      if(pics[0] && !first) first=pics[0];
-      if(pics[0]) count++;
-    }
-    if(main && first){ main.src=first; main.style.display='block'; }
-    if(cnt && count>1){ cnt.textContent=String(rows.length); cnt.style.display='inline-block'; }
-  }
-}
-
-function renderBarChart(rows, moneyValues=true){
-  if(!rows.length) return `<div class="small">Nessun dato.</div>`;
-  const max=Math.max(...rows.map(r=>r.value),1);
-  return `<div class="chartBars">${rows.map(r=>`<div class="chartRow"><div class="k">${esc(r.label)}</div><div class="barTrack"><div class="barFill" style="width:${Math.max(4,(r.value/max)*100)}%"></div></div><div class="t">${moneyValues?money(r.value):r.value}</div></div>`).join('')}</div>`;
-}
-async function renderStorageInfo(){
-  const box=document.getElementById('storageInfo');
-  if(!box) return;
-  try{
-    const est=await estimateStorageInfo();
-    if(!est || !est.quota){ box.textContent='Il browser non espone il limite preciso, ma con IndexedDB hai molto più margine rispetto a localStorage.'; return; }
-    const perc=((est.usage/est.quota)*100).toFixed(1);
-    box.innerHTML=`<div class="mutedBox">Usati <b>${fmtMB(est.usage)}</b> su circa <b>${fmtMB(est.quota)}</b> disponibili (${perc}%).</div>`;
-  }catch(e){ box.textContent='Impossibile leggere la quota del browser.'; }
-}
-async function getDiagnostics(){
+function renderConti(){
   const db=loadDB();
-  const articleRefs=new Set();
-  let embeddedPhotos=0;
-  let duplicatedRefs=0;
-  let articoliConFoto=0;
-  for(const a of db.articoli||[]){
-    const ids=Array.isArray(a.photoIds)?a.photoIds.filter(Boolean).map(String):[];
-    const uniq=new Set(ids);
-    if(ids.length) articoliConFoto++;
-    duplicatedRefs += Math.max(0, ids.length-uniq.size);
-    uniq.forEach(id=>articleRefs.add(id));
-    if(Array.isArray(a.foto) && a.foto.length) embeddedPhotos += a.foto.length;
-  }
-  let idbKeys=[]; let quota=null; let idbError='';
-  try{ idbKeys=await idbListKeys(); }catch(e){ idbError=String(e?.message||e||''); }
-  try{ quota=await estimateStorageInfo(); }catch(_e){}
-  const idbSetKeys=new Set(idbKeys.map(String));
-  let missingRefs=0;
-  articleRefs.forEach(id=>{ if(!idbSetKeys.has(String(id))) missingRefs++; });
-  let orphanPhotos=0;
-  idbSetKeys.forEach(id=>{ if(!articleRefs.has(String(id))) orphanPhotos++; });
-  const legacyKeys=[...(typeof LEGACY_KEYS!=='undefined'?LEGACY_KEYS:[])].filter(k=>!!localStorage.getItem(k));
-  return {
-    articoli: db.articoli.length,
-    clienti: db.clienti.length,
-    ordini: db.ordini.length,
-    articoliConFoto,
-    referencedPhotos: articleRefs.size,
-    photosInIDB: idbKeys.length,
-    embeddedPhotos,
-    duplicatedRefs,
-    missingRefs,
-    orphanPhotos,
-    legacyKeys,
-    quota,
-    idbError
-  };
-}
-async function renderDiagnostics(){
-  const box=document.getElementById('diagBox');
-  if(!box) return;
-  box.innerHTML='Lettura archivio in corso…';
-  try{
-    const d=await getDiagnostics();
-    const storageLine=d.quota&&d.quota.quota ? `Usati <b>${fmtMB(d.quota.usage||0)}</b> su circa <b>${fmtMB(d.quota.quota||0)}</b>.` : 'Quota browser non disponibile.';
-    box.innerHTML=`
-      <div class="smallGrid">
-        <div class="mutedBox"><div class="k">Articoli</div><div class="v">${d.articoli}</div></div>
-        <div class="mutedBox"><div class="k">Clienti</div><div class="v">${d.clienti}</div></div>
-        <div class="mutedBox"><div class="k">Ordini</div><div class="v">${d.ordini}</div></div>
-        <div class="mutedBox"><div class="k">Articoli con foto</div><div class="v">${d.articoliConFoto}</div></div>
-        <div class="mutedBox"><div class="k">Foto referenziate</div><div class="v">${d.referencedPhotos}</div></div>
-        <div class="mutedBox"><div class="k">Foto in IndexedDB</div><div class="v">${d.photosInIDB}</div></div>
-      </div>
-      <div class="smallGrid" style="margin-top:10px">
-        <div class="mutedBox"><div class="k">Foto vecchie nel DB</div><div class="v">${d.embeddedPhotos}</div><div class="small">Da pulire</div></div>
-        <div class="mutedBox"><div class="k">Riferimenti doppi</div><div class="v">${d.duplicatedRefs}</div><div class="small">Stesso file agganciato più volte</div></div>
-        <div class="mutedBox"><div class="k">Foto mancanti</div><div class="v">${d.missingRefs}</div><div class="small">Articolo punta a foto non trovate</div></div>
-        <div class="mutedBox"><div class="k">Foto orfane</div><div class="v">${d.orphanPhotos}</div><div class="small">Occupano spazio ma nessun articolo le usa</div></div>
-      </div>
-      <div class="mutedBox" style="margin-top:10px">${storageLine}</div>
-      <div class="mutedBox" style="margin-top:10px">Chiavi archivio trovate: <b>${([KEY,...d.legacyKeys].filter((v,i,a)=>a.indexOf(v)===i).join(', ')||KEY)}</b></div>
-      ${d.idbError?`<div class="mutedBox" style="margin-top:10px;color:#991b1b">Errore IndexedDB: ${esc(d.idbError)}</div>`:''}
-    `;
-  }catch(e){
-    box.innerHTML=`<div class="mutedBox" style="color:#991b1b">Diagnostica fallita: ${esc(String(e?.message||e||'Errore sconosciuto'))}</div>`;
-  }
-}
-async function repairArchive(){
-  const db=loadDB();
-  const referenced=new Set();
-  for(const a of db.articoli||[]){
-    if(Array.isArray(a.foto) && a.foto.length){
-      if(!Array.isArray(a.photoIds)) a.photoIds=[];
-      for(const src of a.foto.slice(0,6)){
-        const pid='ph_'+uid();
-        await idbSet(pid,src);
-        a.photoIds.push(pid);
-      }
-      a.foto=[];
-    }
-    const ids=Array.isArray(a.photoIds)?a.photoIds.filter(Boolean).map(String):[];
-    const uniq=[];
-    const seen=new Set();
-    for(const id of ids){
-      if(seen.has(id)) continue;
-      seen.add(id);
-      uniq.push(id);
-    }
-    a.photoIds=uniq.slice(0,6);
-    a.photoIds.forEach(id=>referenced.add(String(id)));
-  }
-  const keys=await idbListKeys().catch(()=>[]);
-  for(const key of keys){
-    if(!referenced.has(String(key))){
-      try{ await idbDelete(key); }catch(_e){}
-    }
-  }
-  if(!saveDB(db)) throw new Error('Riparazione completata a metà: database principale non salvato.');
-  await renderDiagnostics();
-}
-function renderFinanze(){
-  const db=loadDB();
-  const fatt=db.ordini.reduce((s,o)=>s+Number(o.totale||0),0);
-  const inc=db.ordini.reduce((s,o)=>s+orderIncassato(o),0);
-  const profit=db.ordini.reduce((s,o)=>s+(orderPaidStatus(o)?orderMargin(o,db):0),0);
-  const due=Math.max(0,fatt-inc);
-  const now=new Date(), curMonth=now.getMonth(), curYear=now.getFullYear();
-  const sameMonth=o=>{ const d=new Date((o.data||'')+'T12:00:00'); return !isNaN(d) && d.getMonth()===curMonth && d.getFullYear()===curYear; };
-  const sameYear=o=>{ const d=new Date((o.data||'')+'T12:00:00'); return !isNaN(d) && d.getFullYear()===curYear; };
-  const profitMonth=db.ordini.filter(sameMonth).reduce((s,o)=>s+(orderPaidStatus(o)?orderMargin(o,db):0),0);
-  const profitYear=db.ordini.filter(sameYear).reduce((s,o)=>s+(orderPaidStatus(o)?orderMargin(o,db):0),0);
-  const incMonth=db.ordini.filter(sameMonth).reduce((s,o)=>s+orderIncassato(o),0);
-  const fattMonth=db.ordini.filter(sameMonth).reduce((s,o)=>s+Number(o.totale||0),0);
-  document.getElementById('f_fatt').textContent=money(fatt);
-  document.getElementById('f_inc').textContent=money(inc);
-  document.getElementById('f_due').textContent=money(due);
-  document.getElementById('f_profit').textContent=money(profit);
-  document.getElementById('f_profit_month').textContent=money(profitMonth);
-  document.getElementById('f_profit_year').textContent=money(profitYear);
-
-  const bySt={};
-  db.ordini.forEach(o=>{
-    const k=o.stato||'Sconosciuto';
-    bySt[k]??={tot:0,inc:0,n:0};
-    bySt[k].tot+=Number(o.totale||0);
-    bySt[k].inc+=orderIncassato(o);
-    bySt[k].n+=1;
-  });
-  const sRows=Object.entries(bySt).sort((a,b)=>b[1].inc-a[1].inc);
-  document.getElementById('finByStatus').innerHTML=sRows.length ? sRows.map(([k,v])=>`
-    <div class="row" style="grid-template-columns:1fr auto">
-      <div>
-        <div class="t">${esc(k)}</div>
-        <div class="s">${v.n} ordini • totale ${money(v.tot)}</div>
-      </div>
-      <div class="priceHot">${money(v.inc)}</div>
-    </div>
-  `).join('') : `<div class="small">Nessun dato.</div>`;
-
-  const byCat={};
-  db.ordini.forEach(o=>(o.righe||[]).forEach(r=>{
-    const a=db.articoli.find(x=>x.id===r.articoloId);
-    const k=(a?.categoria||r.categoria||'Senza categoria').trim()||'Senza categoria';
-    byCat[k]??={rev:0,qty:0};
-    byCat[k].rev+=Number(r.prezzo||0);
-    byCat[k].qty+=1;
-  }));
-  const cRows=Object.entries(byCat).sort((a,b)=>b[1].rev-a[1].rev);
-  document.getElementById('finByCat').innerHTML=cRows.length ? cRows.map(([k,v])=>`
-    <div class="row" style="grid-template-columns:1fr auto">
-      <div>
-        <div class="t">${esc(k)}</div>
-        <div class="s">${v.qty} righe ordine</div>
-      </div>
-      <div class="priceHot">${money(v.rev)}</div>
-    </div>
-  `).join('') : `<div class="small">Nessun dato.</div>`;
-
-  const monthNames=['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
-  const trend=[];
-  for(let i=5;i>=0;i--){
-    const d=new Date(curYear, curMonth-i, 1);
-    const m=d.getMonth(), y=d.getFullYear();
-    const rows=db.ordini.filter(o=>{ const od=new Date((o.data||'')+'T12:00:00'); return !isNaN(od)&&od.getMonth()===m&&od.getFullYear()===y; });
-    trend.push({label:monthNames[m], value:rows.reduce((s,o)=>s+(orderPaidStatus(o)?orderMargin(o,db):0),0)});
-  }
-  document.getElementById('finTrendChart').innerHTML=renderBarChart(trend,true);
-
-  const yearRows=[];
-  for(let m=0;m<12;m++){
-    const rows=db.ordini.filter(o=>{ const od=new Date((o.data||'')+'T12:00:00'); return !isNaN(od)&&od.getMonth()===m&&od.getFullYear()===curYear; });
-    yearRows.push({label:monthNames[m]+' inc', value:rows.reduce((s,o)=>s+orderIncassato(o),0)});
-    yearRows.push({label:monthNames[m]+' marg', value:rows.reduce((s,o)=>s+(orderPaidStatus(o)?orderMargin(o,db):0),0)});
-  }
-  document.getElementById('finYearChart').innerHTML=`<div class="smallGrid"><div class="mutedBox"><div class="k">Incassato mese corrente</div><div class="v">${money(incMonth)}</div><div class="small">Fatturato mese ${money(fattMonth)}</div></div><div class="mutedBox"><div class="k">Margine medio ordine</div><div class="v">${money(db.ordini.length ? profit/db.ordini.length : 0)}</div><div class="small">Su ${db.ordini.length} ordini</div></div></div>` + renderBarChart(yearRows,true);
-  renderStorageInfo();
+  const pagati=['Pagato','Spedito','Consegnato'];
+  const incassato=db.ordini.filter(o=>pagati.includes(o.stato)).reduce((s,o)=>s+Number(o.totale||0),0);
+  const daIncassare=db.ordini.filter(o=>!pagati.includes(o.stato)).reduce((s,o)=>s+Number(o.totale||0),0);
+  const costi=db.ordini.reduce((sum,o)=>sum+(o.righe||[]).reduce((rSum,r)=>{
+    const art=db.articoli.find(a=>a.id===r.articoloId);
+    return rSum+Number(art?.costoEur||0);
+  },0),0);
+  const utile=incassato-costi;
+  document.getElementById('f_incassato').textContent=money(incassato);
+  document.getElementById('f_da_incassare').textContent=money(daIncassare);
+  document.getElementById('f_costi').textContent=money(costi);
+  document.getElementById('f_utile').textContent=money(utile);
+  const consegnati=db.ordini.filter(o=>o.stato==='Consegnato').length;
+  const aperti=db.ordini.filter(o=>!['Consegnato'].includes(o.stato)).length;
+  document.getElementById('financeList').innerHTML=`
+    <div class="row" style="grid-template-columns:1fr auto"><div><div class="t">Ordini aperti</div><div class="s">Da seguire</div></div><div class="pill">${aperti}</div></div>
+    <div class="row" style="grid-template-columns:1fr auto"><div><div class="t">Ordini consegnati</div><div class="s">Chiusi</div></div><div class="pill">${consegnati}</div></div>
+    <div class="row" style="grid-template-columns:1fr"><div><div class="t">Nota</div><div class="s">Il costo merce è stimato dai costi EUR degli articoli presenti negli ordini.</div></div></div>`;
 }
 
-function renderAll(){ renderHome(); renderArt(); renderCli(); renderOrd(); renderFinanze(); }
 
+function buildShippingAddress(c){
+  const parts=[
+    'Shipping Address',
+    (c.nome||'').trim(),
+    (c.indirizzo||'').trim(),
+    [c.cap||'', c.citta||''].filter(Boolean).join(' '),
+    (c.provincia||'').trim(),
+    'ITALY',
+    (c.telefono||'').trim()
+  ].map(x=>String(x||'').trim()).filter(Boolean);
+  return parts.join('\n');
+}
 
-const dirtyState={art:false,cli:false,ord:false};
-function actionWrapId(form){ return form==='art' ? "artEditActions" : form==='cli' ? "cliEditActions" : "ordEditActions"; }
-function resetEditState(form){
-  dirtyState[form]=false;
-  const wrap=document.getElementById(actionWrapId(form));
-  if(wrap){ wrap.hidden=true; wrap.classList.remove('showbar'); wrap.style.display='none'; }
-}
-function markEdited(form){
-  if(dirtyState[form]) return;
-  dirtyState[form]=true;
-  const wrap=document.getElementById(actionWrapId(form));
-  if(wrap){
-    wrap.hidden=false;
-    wrap.classList.add('showbar');
-    wrap.style.display='grid';
-  }
-  const saveSel=form==='art' ? "[data-action=\"saveArt\"]" : form==='cli' ? "[data-action=\"saveCli\"]" : "[data-action=\"saveOrd\"]";
-  const cancelSel=form==='art' ? "[data-action=\"closeEdit\"]" : form==='cli' ? "[data-action=\"closeCli\"]" : "[data-action=\"closeOrd\"]";
-  const delSel=form==='art' ? "[data-action=\"deleteArt\"]" : form==='cli' ? "[data-action=\"deleteCli\"]" : "[data-action=\"deleteOrd\"]";
-  const saveBtn=document.querySelector(saveSel); if(saveBtn) saveBtn.disabled=false;
-  const cancelBtn=document.querySelector(cancelSel); if(cancelBtn) cancelBtn.disabled=false;
-  const delBtn=document.querySelector(delSel);
-  if(delBtn){
-    delBtn.disabled=false;
-    const hasId = form==='art' ? !!currentArtId : form==='cli' ? !!currentCliId : !!currentOrdId;
-    delBtn.style.display = hasId ? "" : "none";
-  }
-}
-function initDirty(form){ resetEditState(form); }
-function refreshDirty(form){ markEdited(form); }
+function renderAll(){ renderHome(); renderArt(); renderCli(); renderOrd(); renderConti(); }
 
 /* ====== ART view/edit ====== */
 let currentArtId=null;
-async function openArtView(id){
+function openArtView(id){
+  closeArtPanels();
   const db=loadDB(); const a=db.articoli.find(x=>x.id===id); if(!a) return;
   currentArtId=id;
-  const pics=await getArticlePics(a);
+  const pics=a.foto||[];
   const hero=document.getElementById('vArtHero');
   const thumbs=document.getElementById('vArtThumbs');
   hero.src=pics[0]||''; hero.style.display=pics[0]?'block':'none';
   thumbs.innerHTML=pics.map(src=>`<img src="${src}" onclick="document.getElementById('vArtHero').src='${src}'"/>`).join('');
   document.getElementById('vArtCod').textContent=a.codice||'-';
-  const qHtml=qualityHtml(a.codice); document.getElementById('vArtQual').innerHTML=qHtml;
+  document.getElementById('vArtQual').textContent=qualityFromCode(a.codice)||'-';
   document.getElementById('vArtPrezzo').textContent=money(a.prezzoVendita||0);
   document.getElementById('vArtPrezzoUse').textContent=money(currentPrice(a));
   const pill=document.getElementById('vArtPromoPill');
   pill.innerHTML = promoValid(a)?`<div class="pill promo" style="margin-top:6px"><span class="dot"></span>PROMO attiva</div>`:(a.promoAttiva?`<div class="pill" style="margin-top:6px">PROMO impostata</div>`:'');
   document.getElementById('vArtPost').value=buildPost(a);
-  bindAutoGrow(['vArtPost']);
-  show('mArtView');
+  mountInline('mArtView','artInlineHost');
+  document.getElementById('mArtView').scrollIntoView({behavior:'smooth',block:'start'});
 }
-async function openArtEdit(id, mode='edit'){
+function openArtEdit(id){
+  closeArtPanels();
   const db=loadDB();
   const a=id?db.articoli.find(x=>x.id===id):null;
-  currentArtId=(mode==='duplicate')?null:(id||null);
-  document.getElementById('artEditTitle').textContent = !a ? 'Nuovo articolo' : (mode==='duplicate' ? 'Duplica articolo' : 'Modifica articolo');
-  document.getElementById('artEditSubnote').textContent = mode==='duplicate'
-    ? 'Copia pronta: cambia codice e dettagli, senza creare duplicati.'
-    : 'Scheda articolo più ordinata, colorata e pronta per la vendita.';
-  const set=(k,v)=>document.getElementById(k).value=(v===0?0:(v||''));
+  currentArtId=id||null;
+  document.getElementById('artEditTitle').textContent = a?'Modifica articolo':'Nuovo articolo';
 
   if(!a){
-    ['a_cod','a_brand','a_mod','a_cat','a_desc','a_forn','a_taglia','a_variante','a_colore','a_materiale','a_mis','a_usd','a_promo_price','a_promo_date','a_note','a_post','a_qual','a_eur','a_sell','a_final','a_margin','a_margin_pct']
-    .forEach(fid => document.getElementById(fid).value='');
+    ['a_cod','a_brand','a_mod','a_cat','a_desc','a_forn','a_mis','a_usd','a_promo_price','a_promo_date','a_note','a_post']
+    .forEach(id => document.getElementById(id).value='');
     document.getElementById('a_promo_on').checked=false;
-    document.getElementById('a_photo').value='';
-    renderArtPhotoPrev([]);
-    show('mArtEdit');
-    initDirty('art');
-    return;
   }
-  set('a_cod', mode==='duplicate' ? '' : a?.codice); set('a_brand', a?.brand); set('a_mod', a?.modello);
+  const set=(k,v)=>document.getElementById(k).value=v||'';
+  set('a_cod', a?.codice); set('a_brand', a?.brand); set('a_mod', a?.modello);
   set('a_cat', a?.categoria); set('a_desc', a?.descrizione); set('a_forn', a?.fornitore);
-  set('a_taglia', a?.taglia); set('a_variante', a?.variante); set('a_colore', a?.colore);
-  set('a_materiale', a?.materiale); set('a_mis', a?.misura); set('a_usd', a?.costoUsd||'');
+  set('a_mis', a?.misura); set('a_usd', a?.costoUsd||'');
   document.getElementById('a_promo_on').checked = !!a?.promoAttiva;
   set('a_promo_date', a?.scadenzaPromo); set('a_promo_price', a?.prezzoPromo||'');
   document.getElementById('a_note').value=a?.note||'';
-  document.getElementById('a_post').value=mode==='duplicate' ? '' : (a?.post||'');
+  document.getElementById('a_post').value=a?.post||'';
   document.getElementById('a_photo').value='';
   renderArtAutoFields();
-  renderArtPhotoPrev(mode==='duplicate' ? [] : await getArticlePics(a));
-  show('mArtEdit');
-  initDirty('art');
-  if(mode==='duplicate'){
-    const codeInput=document.getElementById('a_cod');
-    setTimeout(()=>{ try{ codeInput.focus(); codeInput.select(); }catch(e){} }, 60);
-  }
-}
-function duplicateArt(id){
-  hide('mArtView');
-  openArtEdit(id,'duplicate');
+  renderArtPhotoPrev(a?.foto||[]);
+  mountInline('mArtEdit','artInlineHost');
+  document.getElementById('mArtEdit').scrollIntoView({behavior:'smooth',block:'start'});
 }
 function renderArtPhotoPrev(pics){
   const box=document.getElementById('a_photo_prev');
@@ -1330,50 +762,9 @@ function renderArtPhotoPrev(pics){
 }
 function renderArtAutoFields(){
   const code=document.getElementById('a_cod').value.trim();
-  const usdRaw=document.getElementById('a_usd').value.trim();
-  const hasCode=code!=='';
-  const hasUsd=usdRaw!=='' && !Number.isNaN(Number(usdRaw));
-  const qual=hasCode ? qualityFromCode(code) : '';
+  const usd=Number(document.getElementById('a_usd').value||0);
+  const qual=qualityFromCode(code);
   document.getElementById('a_qual').value=qual||'';
-
-  if(!hasCode && !hasUsd){
-    document.getElementById('a_eur').value='';
-    document.getElementById('a_sell').value='';
-    document.getElementById('a_final').value='';
-    document.getElementById('a_margin').value='';
-    document.getElementById('a_margin_pct').textContent='';
-    document.getElementById('a_post').value='';
-    return;
-  }
-
-  if(!hasUsd){
-    document.getElementById('a_eur').value='';
-    document.getElementById('a_sell').value='';
-    document.getElementById('a_final').value='';
-    document.getElementById('a_margin').value='';
-    document.getElementById('a_margin_pct').textContent='';
-    const draft={
-      codice:code,
-      brand:document.getElementById('a_brand').value.trim(),
-      modello:document.getElementById('a_mod').value.trim(),
-      promoAttiva:document.getElementById('a_promo_on').checked,
-      prezzoPromo:Number(document.getElementById('a_promo_price').value||0),
-      scadenzaPromo:document.getElementById('a_promo_date').value.trim(),
-      prezzoVendita:0,
-      misura:document.getElementById('a_mis').value.trim(),
-      taglia:document.getElementById('a_taglia').value.trim(),
-      variante:document.getElementById('a_variante').value.trim(),
-      colore:document.getElementById('a_colore').value.trim(),
-      descrizione:document.getElementById('a_desc').value.trim(),
-      fornitore:document.getElementById('a_forn').value.trim(),
-      materiale:document.getElementById('a_materiale').value.trim(), colori:'', tracolla:'', scatola:false
-    };
-    document.getElementById('a_post').value = buildPost(draft);
-    return;
-  }
-
-  const usd=Number(usdRaw);
-  if(usdRaw===''){ document.getElementById('a_eur').value=''; document.getElementById('a_sell').value=''; document.getElementById('a_final').value=''; document.getElementById('a_margin').value=''; document.getElementById('a_margin_pct').textContent=''; return; }
   const r=calcFromUsd(usd, qual);
   document.getElementById('a_eur').value = isFinite(r.costo)?money(r.costo):'';
   document.getElementById('a_sell').value = isFinite(r.sell)?String(r.sell):'';
@@ -1381,11 +772,7 @@ function renderArtAutoFields(){
   const promoPrice=Number(document.getElementById('a_promo_price').value||0);
   const promoDate=document.getElementById('a_promo_date').value.trim();
   const a={codice:code, prezzoVendita:r.sell, promoAttiva:promoOn, prezzoPromo:promoPrice, scadenzaPromo:promoDate};
-  const finalPrice = r.sell ? round5(currentPrice(a)) : 0;
-  document.getElementById('a_final').value = finalPrice ? String(finalPrice) : '';
-  const margin = Math.max(0, finalPrice - (Number(r.costo)||0));
-  document.getElementById('a_margin').value = margin ? money(margin) : '';
-  document.getElementById('a_margin_pct').textContent = (finalPrice && margin) ? ('Margine ' + Math.round((margin/finalPrice)*100) + '%') : '';
+  document.getElementById('a_final').value = String(round5(currentPrice(a)));
   // auto post
   const draft={
     codice:code, brand:document.getElementById('a_brand').value.trim(),
@@ -1393,12 +780,8 @@ function renderArtAutoFields(){
     promoAttiva:promoOn, prezzoPromo:promoPrice, scadenzaPromo:promoDate,
     prezzoVendita:r.sell,
     misura:document.getElementById('a_mis').value.trim(),
-    taglia:document.getElementById('a_taglia').value.trim(),
-    variante:document.getElementById('a_variante').value.trim(),
-    colore:document.getElementById('a_colore').value.trim(),
-    descrizione:document.getElementById('a_desc').value.trim(),
     fornitore:document.getElementById('a_forn').value.trim(),
-    materiale:document.getElementById('a_materiale').value.trim(), colori:'', tracolla:'', scatola:false
+    materiale:'', colori:'', tracolla:'', scatola:false
   };
   document.getElementById('a_post').value = buildPost(draft);
 }
@@ -1411,110 +794,86 @@ async function fileToDataURL(file){
     r.readAsDataURL(file);
   });
 }
-async function compressImageFile(file,maxSide=1600,quality=0.78){
-  const src=await fileToDataURL(file);
-  return new Promise((res,rej)=>{
-    const img=new Image();
-    img.onload=()=>{
-      let w=img.width,h=img.height;
-      const scale=Math.min(1,maxSide/Math.max(w,h));
-      w=Math.max(1,Math.round(w*scale));
-      h=Math.max(1,Math.round(h*scale));
-      const canvas=document.createElement('canvas');
-      canvas.width=w; canvas.height=h;
-      const ctx=canvas.getContext('2d');
-      ctx.drawImage(img,0,0,w,h);
-      let out=canvas.toDataURL('image/jpeg',quality);
-      if(out.length>1600000) out=canvas.toDataURL('image/jpeg',0.62);
-      res(out);
-    };
-    img.onerror=()=>rej(new Error('Impossibile leggere la foto selezionata'));
-    img.src=src;
-  });
-}
 
 async function saveArt(){
-  try{
-    const db=loadDB();
-    const code=document.getElementById('a_cod').value.trim();
-    if(!code){ alert('Codice articolo obbligatorio'); return; }
+  const db=loadDB();
+  const code=document.getElementById('a_cod').value.trim();
+  if(!code){ alert('Codice articolo obbligatorio'); return; }
 
-    const exists = db.articoli.find(a => 
-      a.codice.toLowerCase() === code.toLowerCase() 
-      && a.id !== currentArtId
-    );
-    if(exists){
-      alert('Codice articolo già esistente');
-      return;
-    }
-    const qual=qualityFromCode(code);
-    const usd=Number(document.getElementById('a_usd').value||0);
-    const r=calcFromUsd(usd, qual);
-    const obj={
-      id: currentArtId||uid(),
-      codice: code,
-      brand: document.getElementById('a_brand').value.trim(),
-      modello: document.getElementById('a_mod').value.trim(),
-      categoria: document.getElementById('a_cat').value.trim(),
-      descrizione: document.getElementById('a_desc').value.trim(),
-      fornitore: document.getElementById('a_forn').value.trim(),
-      taglia: document.getElementById('a_taglia').value.trim(),
-      variante: document.getElementById('a_variante').value.trim(),
-      colore: document.getElementById('a_colore').value.trim(),
-      materiale: document.getElementById('a_materiale').value.trim(),
-      misura: document.getElementById('a_mis').value.trim(),
-      costoUsd: usd,
-      costoEur: r.costo,
-      prezzoVendita: r.sell,
-      promoAttiva: document.getElementById('a_promo_on').checked,
-      prezzoPromo: Number(document.getElementById('a_promo_price').value||0),
-      scadenzaPromo: document.getElementById('a_promo_date').value.trim(),
-      post: document.getElementById('a_post').value,
-      note: document.getElementById('a_note').value,
-      foto: [],
-      photoIds: []
-    };
-    const old=currentArtId?db.articoli.find(x=>x.id===currentArtId):null;
-    obj.photoIds = Array.isArray(old?.photoIds) ? old.photoIds.slice() : [];
-    const f=document.getElementById('a_photo').files[0];
-    if(f){
-      const data=await compressImageFile(f);
-      const pid='ph_'+uid();
-      await idbSet(pid,data);
-      obj.photoIds.unshift(pid);
-      obj.photoIds=obj.photoIds.slice(0,6);
-    }
-    obj._ts=Date.now();
-    const i=db.articoli.findIndex(x=>x.id===obj.id);
-    if(i>=0) db.articoli[i]=obj; else db.articoli.unshift(obj);
-    if(!saveDB(db)){
-      const newPid = obj.photoIds?.[0];
-      if(f && newPid && (!old || !Array.isArray(old.photoIds) || old.photoIds[0]!==newPid)) { try{ await idbDelete(newPid); }catch(_e){} }
-      return;
-    }
-    hide('mArtEdit');
-    toast('Salvato');
-  }catch(err){
-    alert('Errore salvataggio articolo: '+String(err?.message||err||'Errore sconosciuto'));
+  const exists = db.articoli.find(a => 
+    a.codice.toLowerCase() === code.toLowerCase() 
+    && a.id !== currentArtId
+  );
+  if(exists){
+    alert('Codice articolo già esistente');
+    return;
   }
+  const qual=qualityFromCode(code);
+  const usd=Number(document.getElementById('a_usd').value||0);
+  const r=calcFromUsd(usd, qual);
+  const obj={
+    id: currentArtId||uid(),
+    codice: code,
+    brand: document.getElementById('a_brand').value.trim(),
+    modello: document.getElementById('a_mod').value.trim(),
+    categoria: document.getElementById('a_cat').value.trim(),
+    descrizione: document.getElementById('a_desc').value.trim(),
+    fornitore: document.getElementById('a_forn').value.trim(),
+    misura: document.getElementById('a_mis').value.trim(),
+    costoUsd: usd,
+    costoEur: r.costo,
+    prezzoVendita: r.sell,
+    promoAttiva: document.getElementById('a_promo_on').checked,
+    prezzoPromo: Number(document.getElementById('a_promo_price').value||0),
+    scadenzaPromo: document.getElementById('a_promo_date').value.trim(),
+    post: document.getElementById('a_post').value,
+    note: document.getElementById('a_note').value,
+    foto: []
+  };
+  // keep existing photos if editing
+  const old=currentArtId?db.articoli.find(x=>x.id===currentArtId):null;
+  obj.foto = (old?.foto||[]).slice();
+  const f=document.getElementById('a_photo').files[0];
+  if(f){
+    const data=await fileToDataURL(f);
+    obj.foto.unshift(data);
+    obj.foto=obj.foto.slice(0,6);
+  }
+  obj._ts=Date.now();
+  const i=db.articoli.findIndex(x=>x.id===obj.id);
+  if(i>=0) db.articoli[i]=obj; else db.articoli.unshift(obj);
+  saveDB(db);
+  unmountInline('mArtEdit');
+  openArtView(obj.id);
+  toast('Salvato');
 }
-async function deleteArt(){
-  if(!currentArtId) return hide('mArtEdit');
+function deleteArt(){
+  if(!currentArtId) return unmountInline('mArtEdit');
   if(!confirm('Eliminare articolo?')) return;
   const db=loadDB();
-  const old=db.articoli.find(a=>a.id===currentArtId);
-  for(const pid of (old?.photoIds||[])) await idbDelete(pid);
   db.articoli=db.articoli.filter(a=>a.id!==currentArtId);
-  currentArtId=null;
-  if(!saveDB(db)) return;
-  hide('mArtEdit');
-  renderArt();
-  toast('Articolo eliminato');
+  saveDB(db);
+  closeArtPanels();
 }
 
 /* ====== CLIENTI ====== */
 let currentCliId=null;
+function openCliView(id){
+  const db=loadDB(); const c=db.clienti.find(x=>x.id===id); if(!c) return;
+  currentCliId=id;
+  document.getElementById('vCliNome').textContent=c.nome||'-';
+  document.getElementById('vCliTel').textContent=c.telefono||'-';
+  document.getElementById('vCliCitta').textContent=[c.citta||'-', c.provincia?`(${c.provincia})`:'' ].filter(Boolean).join(' ');
+  document.getElementById('vCliAddress').value=buildShippingAddress(c);
+  document.getElementById('vCliNote').value=c.note||'';
+  document.getElementById('cliInlineView').style.display='block';
+  document.getElementById('cliInlineView').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function closeCliView(){
+  document.getElementById('cliInlineView').style.display='none';
+}
 function openCliEdit(id){
+  closeCliPanels();
   const db=loadDB(); const c=id?db.clienti.find(x=>x.id===id):null;
   currentCliId=id||null;
   document.getElementById('cliEditTitle').textContent=c?'Modifica cliente':'Nuovo cliente';
@@ -1524,12 +883,9 @@ function openCliEdit(id){
   document.getElementById('c_cap').value=c?.cap||'';
   document.getElementById('c_citta').value=c?.citta||'';
   document.getElementById('c_prov').value=c?.provincia||'';
-  document.getElementById('c_corriere').value=c?.corriere||'';
-  document.getElementById('c_track').value=c?.trackingNumero||c?.tracking||'';
-  document.getElementById('c_track_url').value=c?.trackingUrl||c?.monitoraggioUrl||'';
   document.getElementById('c_note').value=c?.note||'';
-  show('mCliEdit');
-  initDirty('cli');
+  mountInline('mCliEdit','cliEditInlineHost');
+  document.getElementById('mCliEdit').scrollIntoView({behavior:'smooth',block:'start'});
 }
 function saveCli(){
   const db=loadDB();
@@ -1552,55 +908,38 @@ function saveCli(){
     cap: document.getElementById('c_cap').value.trim(),
     citta: document.getElementById('c_citta').value.trim(),
     provincia: document.getElementById('c_prov').value,
-    corriere: document.getElementById('c_corriere').value.trim(),
-    trackingNumero: document.getElementById('c_track').value.trim(),
-    trackingUrl: document.getElementById('c_track_url').value.trim(),
     note: document.getElementById('c_note').value,
     _ts: Date.now()
   };
   const i=db.clienti.findIndex(x=>x.id===obj.id);
   if(i>=0) db.clienti[i]=obj; else db.clienti.unshift(obj);
-  if(!saveDB(db)) return; hide('mCliEdit'); toast('Salvato');
+  saveDB(db); unmountInline('mCliEdit'); openCliView(obj.id); toast('Salvato');
 }
 function deleteCli(){
-  if(!currentCliId) return hide('mCliEdit');
+  if(!currentCliId) return unmountInline('mCliEdit');
   if(!confirm('Eliminare cliente?')) return;
   const db=loadDB();
   db.clienti=db.clienti.filter(c=>c.id!==currentCliId);
-  if(!saveDB(db)) return; hide('mCliEdit');
+  saveDB(db); unmountInline('mCliEdit'); closeCliView();
 }
 
 /* ====== ORDINI ====== */
 let currentOrdId=null;
 let ordRows=[];
-function openOrdEdit(id, prefillArticleId=null){
+function openOrdEdit(id){
   const db=loadDB(); const o=id?db.ordini.find(x=>x.id===id):null;
   currentOrdId=id||null;
   document.getElementById('ordEditTitle').textContent=o?'Modifica ordine':'Nuovo ordine';
-  document.getElementById('o_cli_q').value='';
-  document.getElementById('o_art_q').value='';
   fillClientSelect(db);
   fillArtSelect(db);
   document.getElementById('o_cli').value=o?.clienteId||'';
   document.getElementById('o_stato').value=o?.stato||'Richiesto';
   document.getElementById('o_data').value=o?.data||todayStr();
   document.getElementById('o_note').value=o?.note||'';
-  document.getElementById('o_discount').value=(o?.scontoCliente||o?.sconto)?String(Number(o?.scontoCliente||o?.sconto||0)):'';
-  document.getElementById('o_tracking').value=o?.trackingNumber||o?.tracking||'';
-  document.getElementById('o_art').value='';
-  document.getElementById('o_price').value='';
   ordRows=(o?.righe||[]).slice();
-  if(prefillArticleId){
-    const a=db.articoli.find(x=>x.id===prefillArticleId);
-    if(a && !ordRows.some(r=>r.articoloId===prefillArticleId)){
-      ordRows.push({articoloId:a.id, codice:a?.codice||'', modello:a?.modello||'', prezzo:Number(currentPrice(a)||0)});
-    }
-  }
   renderOrdRows();
-  updateOrderPriceFromSelection();
-  refreshTrackingWidget(false);
-  show('mOrdEdit');
-  initDirty('ord');
+  mountInline('mOrdEdit','ordInlineHost');
+  document.getElementById('mOrdEdit').scrollIntoView({behavior:'smooth',block:'start'});
 }
 function todayStr(){
   const d=new Date();
@@ -1617,26 +956,12 @@ function fillClientSelect(db, filter=''){
 }
 function fillArtSelect(db, filter=''){
   const sel=document.getElementById('o_art');
-  const prev=sel.value;
   const q=filter.toLowerCase();
   const items=db.articoli.filter(a=>{
-    const hay=((a.codice||'')+' '+(a.brand||'')+' '+(a.modello||'')+' '+(a.categoria||'')+' '+(a.descrizione||'')+' '+(a.colore||'')+' '+(a.taglia||'')+' '+(a.variante||'')).toLowerCase();
+    const hay=((a.codice||'')+' '+(a.brand||'')+' '+(a.modello||'')).toLowerCase();
     return !q || hay.includes(q);
   });
   sel.innerHTML='<option value="">Seleziona</option>'+items.map(a=>`<option value="${a.id}">${esc(a.brand||'')} ${esc(a.modello||'')} • ${esc(a.codice||'')}</option>`).join('');
-  if(prev && items.some(a=>a.id===prev)) sel.value=prev;
-}
-function updateOrderPriceFromSelection(){
-  const db=loadDB();
-  const artId=document.getElementById('o_art').value;
-  const priceInput=document.getElementById('o_price');
-  if(!artId){
-    priceInput.value='';
-    return;
-  }
-  const a=db.articoli.find(x=>x.id===artId);
-  const price=currentPrice(a);
-  priceInput.value = price ? String(price) : '';
 }
 function addRow(){
   const db=loadDB();
@@ -1645,137 +970,52 @@ function addRow(){
   const a=db.articoli.find(x=>x.id===artId);
   const prezzo=Number(document.getElementById('o_price').value||currentPrice(a)||0);
   ordRows.push({articoloId:artId, codice:a?.codice||'', modello:a?.modello||'', prezzo});
-  document.getElementById('o_art').value='';
-  document.getElementById('o_art_q').value='';
   document.getElementById('o_price').value='';
-  fillArtSelect(db);
   renderOrdRows();
-  refreshDirty('ord');
 }
-
-async function renderOrdRows(){
+function renderOrdRows(){
   const box=document.getElementById('o_rows');
-  box.innerHTML=ordRows.map((r,i)=>`<div class="row orderRowItem">
-    <div class="orderRowThumbWrap"><img class="orderRowThumb" data-row-photo="${i}" alt=""/></div>
-    <div><div class="t">${esc(r.codice)} • ${esc(r.modello)}</div><div class="orderRowPrice">${money(r.prezzo||0)}</div></div>
+  box.innerHTML=ordRows.map((r,i)=>`<div class="row" style="grid-template-columns:1fr auto">
+    <div><div class="t">${esc(r.codice)} • ${esc(r.modello)}</div><div class="s">${money(r.prezzo||0)}</div></div>
     <button class="btn danger" data-action="delRow" data-i="${i}">X</button>
   </div>`).join('') || `<div class="small">Nessuna riga</div>`;
-  const db=loadDB();
-  for(let i=0;i<ordRows.length;i++){
-    const r=ordRows[i];
-    const a=db.articoli.find(x=>x.id===r.articoloId);
-    const pics=a ? await getArticlePics(a) : [];
-    const img=box.querySelector('[data-row-photo="'+i+'"]');
-    if(img && pics[0]){ img.src=pics[0]; img.style.display='block'; }
-  }
-  const subtot=ordRows.reduce((s,r)=>s+Number(r.prezzo||0),0);
-  const sconto=Math.max(0, Number(document.getElementById('o_discount')?.value||0));
-  const tot=Math.max(0, subtot - sconto);
-  const subt=document.getElementById('o_subtot');
-  if(subt) subt.textContent=money(subtot);
+  const tot=ordRows.reduce((s,r)=>s+Number(r.prezzo||0),0);
   document.getElementById('o_tot').textContent=money(tot);
 }
-
-function trackingValue(){
-  return (document.getElementById('o_tracking')?.value||'').trim();
-}
-function trackingUrl17(){
-  const tr=trackingValue();
-  return tr ? `https://t.17track.net/it#nums=${encodeURIComponent(tr)}` : '';
-}
-function trackingWidgetUrl(){
-  const tr=trackingValue();
-  return tr ? `https://parcelsapp.com/widget?trackingNumber=${encodeURIComponent(tr)}` : '';
-}
-function refreshTrackingWidget(forceOpen){
-  const wrap=document.getElementById('o_tracking_wrap');
-  const iframe=document.getElementById('o_tracking_iframe');
-  const btn=document.querySelector('[data-action="toggleTrackingWidget"]');
-  const url=trackingWidgetUrl();
-  const shouldOpen = !!url && (forceOpen || wrap.dataset.open==='1');
-  if(!url){
-    wrap.style.display='none';
-    wrap.dataset.open='0';
-    iframe.removeAttribute('src');
-    if(btn) btn.textContent='Mostra tracking';
-    return;
-  }
-  if(shouldOpen){
-    wrap.style.display='block';
-    wrap.dataset.open='1';
-    iframe.src=url;
-    if(btn) btn.textContent='Nascondi tracking';
-  } else {
-    wrap.style.display='none';
-    wrap.dataset.open='0';
-    iframe.removeAttribute('src');
-    if(btn) btn.textContent='Mostra tracking';
-  }
-}
-function copyTracking(){
-  const tr=trackingValue();
-  if(!tr){ alert('Inserisci prima un numero tracking'); return; }
-  navigator.clipboard?.writeText(tr).then(()=>toast('Tracking copiato')).catch(()=>alert('Copia non riuscita'));
-}
-function openTracking17(){
-  const url=trackingUrl17();
-  if(!url){ alert('Inserisci prima un numero tracking'); return; }
-  window.open(url,'_blank');
-}
-function toggleTrackingWidget(){
-  const tr=trackingValue();
-  if(!tr){ alert('Inserisci prima un numero tracking'); return; }
-  const wrap=document.getElementById('o_tracking_wrap');
-  refreshTrackingWidget(wrap.dataset.open!=='1');
-}
-function markDelivered(){
-  const tr=trackingValue();
-  if(!tr){ alert('Inserisci prima un numero tracking'); return; }
-  document.getElementById('o_stato').value='Consegnato';
-  refreshDirty('ord');
-  toast('Stato impostato su Consegnato');
-}
-
 function saveOrd(){
   const db=loadDB();
   const cli=document.getElementById('o_cli').value;
   if(!cli){ alert('Seleziona un cliente'); return; }
   if(!ordRows.length){ alert('Aggiungi almeno una riga'); return; }
-  const subtot=ordRows.reduce((s,r)=>s+Number(r.prezzo||0),0);
-  const sconto=Math.max(0, Number(document.getElementById('o_discount').value||0));
-  const tot=Math.max(0, subtot - sconto);
+  const tot=ordRows.reduce((s,r)=>s+Number(r.prezzo||0),0);
   const obj={
     id: currentOrdId||('ORD-'+uid().slice(0,6).toUpperCase()),
     clienteId: cli,
     stato: document.getElementById('o_stato').value,
     data: document.getElementById('o_data').value.trim()||todayStr(),
     note: document.getElementById('o_note').value.trim(),
-    trackingNumber: document.getElementById('o_tracking').value.trim(),
     righe: ordRows.slice(),
-    subtotale: subtot,
-    scontoCliente: sconto,
     totale: tot,
     _ts: Date.now()
   };
   const i=db.ordini.findIndex(x=>x.id===obj.id);
   if(i>=0) db.ordini[i]=obj; else db.ordini.unshift(obj);
-  if(!saveDB(db)) return; hide('mOrdEdit'); toast('Salvato');
+  saveDB(db); unmountInline('mOrdEdit'); toast('Salvato');
 }
 function deleteOrd(){
-  if(!currentOrdId) return hide('mOrdEdit');
+  if(!currentOrdId) return unmountInline('mOrdEdit');
   if(!confirm('Eliminare ordine?')) return;
   const db=loadDB();
   db.ordini=db.ordini.filter(o=>o.id!==currentOrdId);
-  if(!saveDB(db)) return; hide('mOrdEdit');
+  saveDB(db); unmountInline('mOrdEdit');
 }
 
 /* ====== IMPORT/EXPORT ====== */
-async function exportDB(mode){
+function exportDB(mode){
   const db=loadDB();
   const out=JSON.parse(JSON.stringify(db));
-  for(const art of out.articoli){
-    if(mode==='lite') art.foto=[];
-    else art.foto=await getArticlePics(art);
+  if(mode==='lite'){
+    out.articoli=out.articoli.map(a=>{ a.foto=[]; return a; });
   }
   out.exportedAt=new Date().toISOString();
   const blob=new Blob([JSON.stringify(out,null,2)],{type:'application/json'});
@@ -1784,28 +1024,18 @@ async function exportDB(mode){
   a.download=`vanity_glamour_${mode}_${Date.now()}.json`;
   a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),1500);
-  document.getElementById('importHint').textContent = `Export fatto (${mode}). Database esportato correttamente.`;
+  document.getElementById('importHint').textContent = `Export fatto (${mode}). Questo JSON contiene TUTTO il database (clienti+articoli+ordini).`;
 }
 function importDB(file){
   const r=new FileReader();
-  r.onload=async()=>{
+  r.onload=()=>{
     try{
       const o=JSON.parse(r.result);
       if(!o || !Array.isArray(o.articoli)||!Array.isArray(o.clienti)||!Array.isArray(o.ordini)) throw new Error('JSON non compatibile');
-      for(const art of o.articoli){
-        art.photoIds=[];
-        if(Array.isArray(art.foto) && art.foto.length){
-          for(const src of art.foto.slice(0,6)){
-            const pid='ph_'+uid();
-            await idbSet(pid,src);
-            art.photoIds.push(pid);
-          }
-        }
-        art.foto=[];
-      }
+      // default: SOSTITUISCI
       localStorage.setItem(KEY, JSON.stringify(o));
       renderAll();
-      document.getElementById('importHint').textContent = 'Import OK. Database ricaricato con foto su IndexedDB.';
+      document.getElementById('importHint').textContent = 'Import OK. Operazione: SOSTITUISCI (database rimpiazzato).';
       toast('Import OK');
     }catch(e){
       alert('Import fallito: '+(e.message||e));
@@ -1822,7 +1052,7 @@ document.addEventListener('click',(ev)=>{
   if(el.dataset.open){
     const id=el.dataset.id;
     if(el.dataset.open==='art') openArtView(id);
-    if(el.dataset.open==='cli') openCliEdit(id);
+    if(el.dataset.open==='cli') openCliView(id);
     if(el.dataset.open==='ord') openOrdEdit(id);
     return;
   }
@@ -1832,59 +1062,37 @@ document.addEventListener('click',(ev)=>{
   if(a==='newOrd') return openOrdEdit(null);
   if(a==='exportFull') return exportDB('full');
   if(a==='exportLite') return exportDB('lite');
-  if(a==='refreshDiag'){ renderDiagnostics(); toast('Diagnostica aggiornata'); return; }
-  if(a==='repairArchive'){
-    if(!confirm('Riparo archivio foto e pulizia riferimenti sporchi?')) return;
-    repairArchive().then(()=>toast('Archivio riparato')).catch(err=>alert('Riparazione fallita: '+String(err?.message||err||'')));
-    return;
-  }
-  if(a==='hardReset'){ if(confirm('Reset totale?')){ [KEY, ...(typeof LEGACY_KEYS!=='undefined'?LEGACY_KEYS:[])].forEach(k=>localStorage.removeItem(k)); location.reload(); } return; }
+  if(a==='hardReset'){ if(confirm('Reset totale?')){ localStorage.removeItem(KEY); location.reload(); } return; }
   if(a==='copyPost') return copyTextFrom(document.getElementById('vArtPost'));
-  if(a==='addArtToOrder'){ const id=el.dataset.id; if(id) return openOrdEdit(null, id); return; }
-  if(a==='duplicateArt'){ const id=el.dataset.id; if(id) return duplicateArt(id); return; }
-  if(a==='addArtToOrderFromView'){ if(currentArtId) { hide('mArtView'); return openOrdEdit(null, currentArtId); } return; }
-  if(a==='editFromView'){ hide('mArtView'); return openArtEdit(currentArtId); }
-  if(a==='duplicateArtFromView'){ if(currentArtId) return duplicateArt(currentArtId); return; }
-  if(a==='closeView') return hide('mArtView');
-  if(a==='closeEdit') return hide('mArtEdit');
+  if(a==='editFromView'){ unmountInline('mArtView'); return openArtEdit(currentArtId); }
+  if(a==='closeView') return unmountInline('mArtView');
+  if(a==='closeEdit') return unmountInline('mArtEdit');
   if(a==='saveArt') return saveArt();
   if(a==='deleteArt') return deleteArt();
   if(a==='saveCli') return saveCli();
-  if(a==='closeCli') return hide('mCliEdit');
+  if(a==='closeCli') return unmountInline('mCliEdit');
   if(a==='deleteCli') return deleteCli();
-  if(a==='copyTracking') return copyTracking();
-  if(a==='openTracking17') return openTracking17();
-  if(a==='toggleTrackingWidget') return toggleTrackingWidget();
-  if(a==='markDelivered') return markDelivered();
+  if(a==='copyCliAddress') return copyTextFrom(document.getElementById('vCliAddress'));
+  if(a==='editCliFromView'){ closeCliView(); return openCliEdit(currentCliId); }
+  if(a==='closeCliInline') return closeCliView();
   if(a==='saveOrd') return saveOrd();
-  if(a==='closeOrd') return hide('mOrdEdit');
+  if(a==='closeOrd') return unmountInline('mOrdEdit');
   if(a==='deleteOrd') return deleteOrd();
   if(a==='addRow') return addRow();
-  if(a==='delRow'){ const i=Number(el.dataset.i); ordRows.splice(i,1); renderOrdRows(); refreshDirty('ord'); return; }
+  if(a==='delRow'){ const i=Number(el.dataset.i); ordRows.splice(i,1); renderOrdRows(); return; }
 });
 
 document.getElementById('qArt').addEventListener('input', renderArt);
 document.getElementById('qCli').addEventListener('input', renderCli);
 document.getElementById('qOrd').addEventListener('input', renderOrd);
 
-['a_cod','a_brand','a_mod','a_mis','a_usd','a_promo_on','a_promo_price','a_promo_date','a_forn','a_desc','a_taglia','a_variante','a_colore','a_materiale'].forEach(id=>{
+['a_cod','a_brand','a_mod','a_mis','a_usd','a_promo_on','a_promo_price','a_promo_date','a_forn'].forEach(id=>{
   const el=document.getElementById(id);
-  el.addEventListener(id==='a_promo_on'?'change':'input', ()=>{ renderArtAutoFields(); refreshDirty('art'); });
+  el.addEventListener(id==='a_promo_on'?'change':'input', renderArtAutoFields);
 });
 
 document.getElementById('o_cli_q').addEventListener('input',()=>fillClientSelect(loadDB(), document.getElementById('o_cli_q').value));
-document.getElementById('o_art_q').addEventListener('input',()=>{
-  fillArtSelect(loadDB(), document.getElementById('o_art_q').value);
-  updateOrderPriceFromSelection();
-});
-document.getElementById('o_art').addEventListener('change', ()=>{ updateOrderPriceFromSelection(); refreshDirty('ord'); });
-document.getElementById('o_discount').addEventListener('input', ()=>{ renderOrdRows(); refreshDirty('ord'); });
-document.getElementById('o_tracking').addEventListener('input', ()=>{ refreshTrackingWidget(false); refreshDirty('ord'); });
-
-
-['a_cat','a_note','a_post','a_photo'].forEach(id=>{ const el=document.getElementById(id); el.addEventListener(id==='a_photo'?'change':'input', ()=>refreshDirty('art')); });
-['c_nome','c_tel','c_ind','c_cap','c_citta','c_prov','c_corriere','c_track','c_track_url','c_note'].forEach(id=>{ const el=document.getElementById(id); el.addEventListener(id==='c_prov'?'change':'input', ()=>refreshDirty('cli')); });
-['o_cli','o_stato','o_data','o_note','o_price'].forEach(id=>{ const el=document.getElementById(id); el.addEventListener((id==='o_cli'||id==='o_stato'||id==='o_data')?'change':'input', ()=>refreshDirty('ord')); });
+document.getElementById('o_art_q').addEventListener('input',()=>fillArtSelect(loadDB(), document.getElementById('o_art_q').value));
 
 document.getElementById('importFile').addEventListener('change',(e)=>{
   const f=e.target.files[0];
@@ -1897,75 +1105,10 @@ const provSel=document.getElementById('c_prov');
 provSel.innerHTML='<option value="">Seleziona</option>'+PROVINCE.map(p=>`<option value="${p}">${p}</option>`).join('');
 
 /* init */
-
-['mArtEdit','mCliEdit','mOrdEdit'].forEach(mid=>{
-  const el=document.getElementById(mid);
-  if(!el) return;
-  const form=mid==='mArtEdit'?'art':(mid==='mCliEdit'?'cli':'ord');
-  ['input','change'].forEach(evt=>el.addEventListener(evt,(ev)=>{
-    const t=ev.target;
-    if(!t) return;
-    if(t.closest('[data-editbar="1"]')) return;
-    if(t.matches('input, textarea, select')) markEdited(form);
-  },true));
-});
 renderAll();
-renderDiagnostics();
 const initial=location.hash.replace('#','')||'home';
 history.replaceState({page:initial},'', '#'+initial);
 go(initial);
-</script>
-
-<script>
-(function(){
-  function capitalizeFieldValue(value){
-    if(!value) return value;
-    const m = value.match(/^(\s*)(.)/s);
-    if(!m) return value;
-    const lead = m[1] || '';
-    const ch = m[2] || '';
-    return lead + ch.toLocaleUpperCase('it-IT') + value.slice(lead.length + ch.length);
-  }
-
-  function applyLiveInitialCaps(root){
-    const selector = 'input[type="text"], input[type="search"], textarea';
-    const bind = (el) => {
-      if(!el || el.dataset.initcapBound === '1') return;
-      el.dataset.initcapBound = '1';
-      const handler = () => {
-        const oldValue = el.value;
-        const nextValue = capitalizeFieldValue(oldValue);
-        if(nextValue === oldValue) return;
-        const start = el.selectionStart;
-        const end = el.selectionEnd;
-        el.value = nextValue;
-        try {
-          if(typeof start === 'number' && typeof end === 'number') el.setSelectionRange(start, end);
-        } catch(e) {}
-        el.dispatchEvent(new Event('change', { bubbles:true }));
-      };
-      el.addEventListener('input', handler);
-      el.addEventListener('blur', handler);
-      handler();
-    };
-
-    (root || document).querySelectorAll(selector).forEach(bind);
-
-    const mo = new MutationObserver((mutations) => {
-      for(const mu of mutations){
-        mu.addedNodes.forEach((node) => {
-          if(!(node instanceof Element)) return;
-          if(node.matches && node.matches(selector)) bind(node);
-          if(node.querySelectorAll) node.querySelectorAll(selector).forEach(bind);
-        });
-      }
-    });
-    mo.observe(document.body, { childList:true, subtree:true });
-  }
-
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => applyLiveInitialCaps(document));
-  else applyLiveInitialCaps(document);
-})();
 </script>
 </body>
 </html>
