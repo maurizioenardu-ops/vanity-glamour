@@ -348,8 +348,9 @@ window.addEventListener('error',e=>{
     </div>
     <div class="grid2" style="margin-top:10px">
       <div><div class="k">Colore</div><input id="a_colore" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
-      <div><div class="k">Misura</div><input id="a_mis" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
+      <div><div class="k">Materiale</div><input id="a_materiale" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="es. Pelle, Tela, Denim..."/></div>
     </div>
+    <div style="margin-top:10px"><div class="k">Misura</div><input id="a_mis" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
   </div>
 
   <div class="formBlock prezzi inputSoft">
@@ -790,7 +791,6 @@ function buildPost(a){
   if(a.misura) detail.push(`Mis. ${a.misura}`);
   if(detail.length) lines.push(detail.join(' • '));
   if(a.scatola) lines.push('Con scatola 🎁');
-  if(a.materiale) lines.push(`🧵 ${a.materiale}`);
   if(a.colori) lines.push(a.colori);
   if(a.tracolla) lines.push(a.tracolla);
   lines.push(`cod. ${a.codice}`);
@@ -1293,7 +1293,7 @@ async function openArtEdit(id, mode='edit'){
   const set=(k,v)=>document.getElementById(k).value=(v===0?0:(v||''));
 
   if(!a){
-    ['a_cod','a_brand','a_mod','a_cat','a_desc','a_forn','a_taglia','a_variante','a_colore','a_mis','a_usd','a_promo_price','a_promo_date','a_note','a_post','a_qual','a_eur','a_sell','a_final','a_margin','a_margin_pct']
+    ['a_cod','a_brand','a_mod','a_cat','a_desc','a_forn','a_taglia','a_variante','a_colore','a_materiale','a_mis','a_usd','a_promo_price','a_promo_date','a_note','a_post','a_qual','a_eur','a_sell','a_final','a_margin','a_margin_pct']
     .forEach(fid => document.getElementById(fid).value='');
     document.getElementById('a_promo_on').checked=false;
     document.getElementById('a_photo').value='';
@@ -1305,7 +1305,7 @@ async function openArtEdit(id, mode='edit'){
   set('a_cod', mode==='duplicate' ? '' : a?.codice); set('a_brand', a?.brand); set('a_mod', a?.modello);
   set('a_cat', a?.categoria); set('a_desc', a?.descrizione); set('a_forn', a?.fornitore);
   set('a_taglia', a?.taglia); set('a_variante', a?.variante); set('a_colore', a?.colore);
-  set('a_mis', a?.misura); set('a_usd', a?.costoUsd||'');
+  set('a_materiale', a?.materiale); set('a_mis', a?.misura); set('a_usd', a?.costoUsd||'');
   document.getElementById('a_promo_on').checked = !!a?.promoAttiva;
   set('a_promo_date', a?.scadenzaPromo); set('a_promo_price', a?.prezzoPromo||'');
   document.getElementById('a_note').value=a?.note||'';
@@ -1366,7 +1366,7 @@ function renderArtAutoFields(){
       colore:document.getElementById('a_colore').value.trim(),
       descrizione:document.getElementById('a_desc').value.trim(),
       fornitore:document.getElementById('a_forn').value.trim(),
-      materiale:'', colori:'', tracolla:'', scatola:false
+      materiale:document.getElementById('a_materiale').value.trim(), colori:'', tracolla:'', scatola:false
     };
     document.getElementById('a_post').value = buildPost(draft);
     return;
@@ -1398,7 +1398,7 @@ function renderArtAutoFields(){
     colore:document.getElementById('a_colore').value.trim(),
     descrizione:document.getElementById('a_desc').value.trim(),
     fornitore:document.getElementById('a_forn').value.trim(),
-    materiale:'', colori:'', tracolla:'', scatola:false
+    materiale:document.getElementById('a_materiale').value.trim(), colori:'', tracolla:'', scatola:false
   };
   document.getElementById('a_post').value = buildPost(draft);
 }
@@ -1461,6 +1461,7 @@ async function saveArt(){
       taglia: document.getElementById('a_taglia').value.trim(),
       variante: document.getElementById('a_variante').value.trim(),
       colore: document.getElementById('a_colore').value.trim(),
+      materiale: document.getElementById('a_materiale').value.trim(),
       misura: document.getElementById('a_mis').value.trim(),
       costoUsd: usd,
       costoEur: r.costo,
@@ -1866,7 +1867,7 @@ document.getElementById('qArt').addEventListener('input', renderArt);
 document.getElementById('qCli').addEventListener('input', renderCli);
 document.getElementById('qOrd').addEventListener('input', renderOrd);
 
-['a_cod','a_brand','a_mod','a_mis','a_usd','a_promo_on','a_promo_price','a_promo_date','a_forn','a_desc','a_taglia','a_variante','a_colore'].forEach(id=>{
+['a_cod','a_brand','a_mod','a_mis','a_usd','a_promo_on','a_promo_price','a_promo_date','a_forn','a_desc','a_taglia','a_variante','a_colore','a_materiale'].forEach(id=>{
   const el=document.getElementById(id);
   el.addEventListener(id==='a_promo_on'?'change':'input', ()=>{ renderArtAutoFields(); refreshDirty('art'); });
 });
@@ -1913,6 +1914,58 @@ renderDiagnostics();
 const initial=location.hash.replace('#','')||'home';
 history.replaceState({page:initial},'', '#'+initial);
 go(initial);
+</script>
+
+<script>
+(function(){
+  function capitalizeFieldValue(value){
+    if(!value) return value;
+    const m = value.match(/^(\s*)(.)/s);
+    if(!m) return value;
+    const lead = m[1] || '';
+    const ch = m[2] || '';
+    return lead + ch.toLocaleUpperCase('it-IT') + value.slice(lead.length + ch.length);
+  }
+
+  function applyLiveInitialCaps(root){
+    const selector = 'input[type="text"], input[type="search"], textarea';
+    const bind = (el) => {
+      if(!el || el.dataset.initcapBound === '1') return;
+      el.dataset.initcapBound = '1';
+      const handler = () => {
+        const oldValue = el.value;
+        const nextValue = capitalizeFieldValue(oldValue);
+        if(nextValue === oldValue) return;
+        const start = el.selectionStart;
+        const end = el.selectionEnd;
+        el.value = nextValue;
+        try {
+          if(typeof start === 'number' && typeof end === 'number') el.setSelectionRange(start, end);
+        } catch(e) {}
+        el.dispatchEvent(new Event('change', { bubbles:true }));
+      };
+      el.addEventListener('input', handler);
+      el.addEventListener('blur', handler);
+      handler();
+    };
+
+    (root || document).querySelectorAll(selector).forEach(bind);
+
+    const mo = new MutationObserver((mutations) => {
+      for(const mu of mutations){
+        mu.addedNodes.forEach((node) => {
+          if(!(node instanceof Element)) return;
+          if(node.matches && node.matches(selector)) bind(node);
+          if(node.querySelectorAll) node.querySelectorAll(selector).forEach(bind);
+        });
+      }
+    });
+    mo.observe(document.body, { childList:true, subtree:true });
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => applyLiveInitialCaps(document));
+  else applyLiveInitialCaps(document);
+})();
 </script>
 </body>
 </html>
