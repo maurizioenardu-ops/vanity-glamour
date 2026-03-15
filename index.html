@@ -64,6 +64,7 @@ body{-webkit-tap-highlight-color:transparent}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 input,select,textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:14px;font-weight:700;font-size:14px}
 textarea{min-height:90px;resize:vertical}
+#a_post,#vArtPost{resize:none;overflow:hidden;min-height:120px}
 .hero{width:100%;height:190px;border-radius:16px;object-fit:cover;border:1px solid var(--line);background:#f3f4f6}
 .thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
 .thumbs img{width:70px;height:70px;border-radius:12px;object-fit:cover;border:1px solid var(--line);cursor:pointer}
@@ -177,7 +178,7 @@ window.addEventListener('error',e=>{
     <div class="cards dashMain">
       <div class="stat" data-go="ordini"><div class="k">Ordini in corso</div><div id="c_open_orders" class="v big">0</div><div class="sub">non ancora consegnati</div></div>
       <div class="stat" data-go="finanze"><div class="k">Guadagno mese</div><div id="c_profit_month" class="v big">0</div><div class="sub">margine del mese corrente</div></div>
-      <div class="stat" data-go="ordini"><div class="k">Media ordini</div><div id="c_avg_order" class="v big">0</div><div class="sub">valore medio per ordine</div></div>
+      <div class="stat" data-go="ordini"><div class="k">In attesa di pagamento</div><div id="c_wait_payment" class="v big" style="color:#d97706">0</div><div class="sub">ordini non ancora incassati</div></div>
       <div class="stat" data-go="finanze"><div class="k">Guadagno totale</div><div id="c_profit_total" class="v big">0</div><div class="sub">margine complessivo</div></div>
     </div>
 
@@ -843,6 +844,23 @@ function copyTextFrom(el){
   navigator.clipboard?.writeText(t).then(()=>toast('Copiato')).catch(()=>{ try{ el.select(); document.execCommand('copy'); toast('Copiato'); }catch(e){ alert('Copia non disponibile'); } });
 }
 
+
+function autoGrowTextarea(el){
+  if(!el) return;
+  el.style.height='auto';
+  el.style.height=Math.max(el.scrollHeight, 120)+'px';
+}
+
+function bindAutoGrow(ids){
+  ids.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    const run=()=>autoGrowTextarea(el);
+    el.addEventListener('input', run);
+    setTimeout(run,0);
+  });
+}
+
 /* ====== RENDER ====== */
 function dashboardMood(incMonth, prevMonth, openOrders, totalOrders){
   const ratio = prevMonth>0 ? incMonth/prevMonth : (incMonth>0 ? 1.2 : 0);
@@ -862,7 +880,7 @@ function renderHome(){
   const ordini=db.ordini||[];
   const inCorso=ordini.filter(o=>String(o.stato||'').trim().toLowerCase()!=='consegnato').length;
   const totaleOrdini=ordini.reduce((s,o)=>s+Number(o.totale||0),0);
-  const mediaOrdini=ordini.length ? totaleOrdini / ordini.length : 0;
+  const inAttesaPagamento=ordini.filter(o=>!orderPaidStatus(o)).length;
   const guadagnoTot=ordini.reduce((s,o)=>s+(orderPaidStatus(o)?orderMargin(o,db):0),0);
   const sameMonth=o=>{ const d=new Date((o.data||'')+'T12:00:00'); return !isNaN(d) && d.getMonth()===curMonth && d.getFullYear()===curYear; };
   const guadagnoMese=ordini.filter(sameMonth).reduce((s,o)=>s+(orderPaidStatus(o)?orderMargin(o,db):0),0);
@@ -872,7 +890,7 @@ function renderHome(){
 
   document.getElementById('c_open_orders').textContent=inCorso;
   document.getElementById('c_profit_month').textContent=money(guadagnoMese);
-  document.getElementById('c_avg_order').textContent=money(mediaOrdini);
+  document.getElementById('c_wait_payment').textContent=inAttesaPagamento;
   document.getElementById('c_profit_total').textContent=money(guadagnoTot);
   document.getElementById('c_inc_month').textContent=money(incMese);
   document.getElementById('c_due_total').textContent=money(daIncassare);
@@ -1261,6 +1279,7 @@ async function openArtView(id){
   const pill=document.getElementById('vArtPromoPill');
   pill.innerHTML = promoValid(a)?`<div class="pill promo" style="margin-top:6px"><span class="dot"></span>PROMO attiva</div>`:(a.promoAttiva?`<div class="pill" style="margin-top:6px">PROMO impostata</div>`:'');
   document.getElementById('vArtPost').value=buildPost(a);
+  bindAutoGrow(['vArtPost']);
   show('mArtView');
 }
 async function openArtEdit(id, mode='edit'){
