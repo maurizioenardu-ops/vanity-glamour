@@ -435,7 +435,7 @@ window.addEventListener('error',e=>{
   </div>
   <div class="ordBlock" style="background:linear-gradient(180deg,#fff8ef,#fff2df);border-color:#f0c98b;box-shadow:0 10px 24px rgba(164,106,0,.08)">
     <div class="h2">📦 Tracking spedizione</div>
-    <div class="small" style="margin:-4px 0 10px;color:#7a4b00;font-weight:700">Direttamente dentro l'ordine, senza corriere</div>
+    <div class="small" style="display:none"></div>
     <div>
       <div class="k">Numero spedizione</div>
       <input id="o_tracking" placeholder="Inserisci tracking" autocomplete="off" autocapitalize="off" spellcheck="false" style="font-size:16px;font-weight:800;border:2px solid #d8a24d;background:#fffdfa"/>
@@ -1203,6 +1203,40 @@ function renderFinanze(){
 
 function renderAll(){ renderHome(); renderArt(); renderCli(); renderOrd(); renderFinanze(); }
 
+
+const dirtyState={art:false,cli:false,ord:false};
+const dirtySnap={art:'',cli:'',ord:''};
+function artState(){
+  return JSON.stringify({
+    cod:v('a_cod'),brand:v('a_brand'),mod:v('a_mod'),cat:v('a_cat'),desc:v('a_desc'),forn:v('a_forn'),taglia:v('a_taglia'),variante:v('a_variante'),colore:v('a_colore'),mis:v('a_mis'),usd:v('a_usd'),promoOn:!!document.getElementById('a_promo_on').checked,promoPrice:v('a_promo_price'),promoDate:v('a_promo_date'),post:v('a_post'),note:v('a_note'),photo:(document.getElementById('a_photo').files[0]?.name||'')
+  });
+}
+function cliState(){
+  return JSON.stringify({nome:v('c_nome'),tel:v('c_tel'),ind:v('c_ind'),cap:v('c_cap'),citta:v('c_citta'),prov:v('c_prov'),corriere:v('c_corriere'),track:v('c_track'),trackUrl:v('c_track_url'),note:v('c_note')});
+}
+function ordState(){
+  return JSON.stringify({cli:v('o_cli'),stato:v('o_stato'),data:v('o_data'),note:v('o_note'),discount:v('o_discount'),tracking:v('o_tracking'),art:v('o_art'),price:v('o_price'),rows:ordRows});
+}
+function applyDirty(form,isDirty){
+  dirtyState[form]=!!isDirty;
+  const map={art:['saveArt','closeEdit','deleteArt'],cli:['saveCli','closeCli','deleteCli'],ord:['saveOrd','closeOrd','deleteOrd']};
+  for(const action of map[form]){
+    const btn=document.querySelector(`[data-action="${action}"]`);
+    if(btn) btn.disabled=!isDirty;
+  }
+  if(form==='art'){ const del=document.querySelector('[data-action="deleteArt"]'); if(del && !currentArtId) del.style.display='none'; else if(del) del.style.display=''; }
+  if(form==='cli'){ const del=document.querySelector('[data-action="deleteCli"]'); if(del && !currentCliId) del.style.display='none'; else if(del) del.style.display=''; }
+  if(form==='ord'){ const del=document.querySelector('[data-action="deleteOrd"]'); if(del && !currentOrdId) del.style.display='none'; else if(del) del.style.display=''; }
+}
+function initDirty(form){
+  dirtySnap[form]=(form==='art'?artState():form==='cli'?cliState():ordState());
+  applyDirty(form,false);
+}
+function refreshDirty(form){
+  const cur=(form==='art'?artState():form==='cli'?cliState():ordState());
+  applyDirty(form, cur!==dirtySnap[form]);
+}
+
 /* ====== ART view/edit ====== */
 let currentArtId=null;
 async function openArtView(id){
@@ -1239,6 +1273,7 @@ async function openArtEdit(id, mode='edit'){
     document.getElementById('a_photo').value='';
     renderArtPhotoPrev([]);
     show('mArtEdit');
+    initDirty('art');
     return;
   }
   set('a_cod', mode==='duplicate' ? '' : a?.codice); set('a_brand', a?.brand); set('a_mod', a?.modello);
@@ -1253,6 +1288,7 @@ async function openArtEdit(id, mode='edit'){
   renderArtAutoFields();
   renderArtPhotoPrev(mode==='duplicate' ? [] : await getArticlePics(a));
   show('mArtEdit');
+  initDirty('art');
   if(mode==='duplicate'){
     const codeInput=document.getElementById('a_cod');
     setTimeout(()=>{ try{ codeInput.focus(); codeInput.select(); }catch(e){} }, 60);
@@ -1466,6 +1502,7 @@ function openCliEdit(id){
   document.getElementById('c_track_url').value=c?.trackingUrl||c?.monitoraggioUrl||'';
   document.getElementById('c_note').value=c?.note||'';
   show('mCliEdit');
+  initDirty('cli');
 }
 function saveCli(){
   const db=loadDB();
@@ -1536,6 +1573,7 @@ function openOrdEdit(id, prefillArticleId=null){
   updateOrderPriceFromSelection();
   refreshTrackingWidget(false);
   show('mOrdEdit');
+  initDirty('ord');
 }
 function todayStr(){
   const d=new Date();
@@ -1585,7 +1623,9 @@ function addRow(){
   document.getElementById('o_price').value='';
   fillArtSelect(db);
   renderOrdRows();
+  refreshDirty('ord');
 }
+
 async function renderOrdRows(){
   const box=document.getElementById('o_rows');
   box.innerHTML=ordRows.map((r,i)=>`<div class="row orderRowItem">
@@ -1608,6 +1648,7 @@ async function renderOrdRows(){
   if(subt) subt.textContent=money(subtot);
   document.getElementById('o_tot').textContent=money(tot);
 }
+
 function trackingValue(){
   return (document.getElementById('o_tracking')?.value||'').trim();
 }
@@ -1659,6 +1700,13 @@ function toggleTrackingWidget(){
   if(!tr){ alert('Inserisci prima un numero tracking'); return; }
   const wrap=document.getElementById('o_tracking_wrap');
   refreshTrackingWidget(wrap.dataset.open!=='1');
+}
+function markDelivered(){
+  const tr=trackingValue();
+  if(!tr){ alert('Inserisci prima un numero tracking'); return; }
+  document.getElementById('o_stato').value='Consegnato';
+  refreshDirty('ord');
+  toast('Stato impostato su Consegnato');
 }
 
 function saveOrd(){
@@ -1780,11 +1828,12 @@ document.addEventListener('click',(ev)=>{
   if(a==='copyTracking') return copyTracking();
   if(a==='openTracking17') return openTracking17();
   if(a==='toggleTrackingWidget') return toggleTrackingWidget();
+  if(a==='markDelivered') return markDelivered();
   if(a==='saveOrd') return saveOrd();
   if(a==='closeOrd') return hide('mOrdEdit');
   if(a==='deleteOrd') return deleteOrd();
   if(a==='addRow') return addRow();
-  if(a==='delRow'){ const i=Number(el.dataset.i); ordRows.splice(i,1); renderOrdRows(); return; }
+  if(a==='delRow'){ const i=Number(el.dataset.i); ordRows.splice(i,1); renderOrdRows(); refreshDirty('ord'); return; }
 });
 
 document.getElementById('qArt').addEventListener('input', renderArt);
@@ -1793,7 +1842,7 @@ document.getElementById('qOrd').addEventListener('input', renderOrd);
 
 ['a_cod','a_brand','a_mod','a_mis','a_usd','a_promo_on','a_promo_price','a_promo_date','a_forn','a_desc','a_taglia','a_variante','a_colore'].forEach(id=>{
   const el=document.getElementById(id);
-  el.addEventListener(id==='a_promo_on'?'change':'input', renderArtAutoFields);
+  el.addEventListener(id==='a_promo_on'?'change':'input', ()=>{ renderArtAutoFields(); refreshDirty('art'); });
 });
 
 document.getElementById('o_cli_q').addEventListener('input',()=>fillClientSelect(loadDB(), document.getElementById('o_cli_q').value));
@@ -1801,9 +1850,14 @@ document.getElementById('o_art_q').addEventListener('input',()=>{
   fillArtSelect(loadDB(), document.getElementById('o_art_q').value);
   updateOrderPriceFromSelection();
 });
-document.getElementById('o_art').addEventListener('change', updateOrderPriceFromSelection);
-document.getElementById('o_discount').addEventListener('input', renderOrdRows);
-document.getElementById('o_tracking').addEventListener('input', ()=>refreshTrackingWidget(false));
+document.getElementById('o_art').addEventListener('change', ()=>{ updateOrderPriceFromSelection(); refreshDirty('ord'); });
+document.getElementById('o_discount').addEventListener('input', ()=>{ renderOrdRows(); refreshDirty('ord'); });
+document.getElementById('o_tracking').addEventListener('input', ()=>{ refreshTrackingWidget(false); refreshDirty('ord'); });
+
+
+['a_cat','a_note','a_post','a_photo'].forEach(id=>{ const el=document.getElementById(id); el.addEventListener(id==='a_photo'?'change':'input', ()=>refreshDirty('art')); });
+['c_nome','c_tel','c_ind','c_cap','c_citta','c_prov','c_corriere','c_track','c_track_url','c_note'].forEach(id=>{ const el=document.getElementById(id); el.addEventListener(id==='c_prov'?'change':'input', ()=>refreshDirty('cli')); });
+['o_cli','o_stato','o_data','o_note','o_price'].forEach(id=>{ const el=document.getElementById(id); el.addEventListener((id==='o_cli'||id==='o_stato'||id==='o_data')?'change':'input', ()=>refreshDirty('ord')); });
 
 document.getElementById('importFile').addEventListener('change',(e)=>{
   const f=e.target.files[0];
