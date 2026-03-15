@@ -524,7 +524,7 @@ function getLast6MonthsData(db){
     months.push({key:monthKey(d), label:monthLabel(d), total:0});
   }
   const map=Object.fromEntries(months.map(m=>[m.key,m]));
-  const paidStates=['Consegnato','Pagato'];
+  const paidStates=['Pagato','In lavorazione','Spedito','Consegnato'];
   db.ordini.forEach(o=>{
     const dt=o.data?new Date(o.data+'T12:00:00'):new Date(o._ts||Date.now());
     const key=monthKey(dt);
@@ -536,8 +536,8 @@ function getLast6MonthsData(db){
 function renderHome(){
   const db=loadDB();
 
-  const paidStates=['Consegnato','Pagato'];
-  const waitingStates=['In attesa di pagamento','Richiesto','Ordinato','Spedito','Pronto'];
+  const paidStates=['Pagato','In lavorazione','Spedito','Consegnato'];
+  const waitingStates=['In attesa di pagamento','Richiesto','Ordinato','Pronto'];
   const ordiniInCorso=db.ordini.filter(o=>!paidStates.includes(o.stato)).length;
   const attesaPagamento=db.ordini.filter(o=>waitingStates.includes(o.stato)).length;
   document.getElementById('c_ord_corso').textContent=ordiniInCorso;
@@ -673,7 +673,7 @@ function renderOrd(){
 }
 function renderConti(){
   const db=loadDB();
-  const pagati=['Pagato','Spedito','Consegnato'];
+  const pagati=['Pagato','In lavorazione','Spedito','Consegnato'];
   const incassato=db.ordini.filter(o=>pagati.includes(o.stato)).reduce((s,o)=>s+Number(o.totale||0),0);
   const daIncassare=db.ordini.filter(o=>!pagati.includes(o.stato)).reduce((s,o)=>s+Number(o.totale||0),0);
   const costi=db.ordini.reduce((sum,o)=>sum+(o.righe||[]).reduce((rSum,r)=>{
