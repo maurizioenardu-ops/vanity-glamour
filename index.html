@@ -123,6 +123,9 @@ textarea{min-height:90px;resize:vertical}
 #mOrdEdit .modal{background:linear-gradient(180deg,#ffffff,#fbfdff)}
 #mOrdEdit .actions:last-child{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.98) 18%,#fff 55%);padding-top:12px;padding-bottom:2px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 #mOrdEdit .actions:last-child .btn{min-height:50px;font-size:16px}
+[data-editbar="1"]{display:none !important}
+[data-editbar="1"].showbar{display:grid !important}
+#mCliEdit [data-editbar="1"].showbar,#mOrdEdit [data-editbar="1"].showbar,#mArtEdit [data-editbar="1"].showbar{display:grid !important}
 #mOrdEdit .ordBlock{padding:14px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,#fff8f2,#fffdfb);margin-bottom:12px;box-shadow:0 10px 24px rgba(15,23,42,.05)}
 #mOrdEdit .ordBlock.soft{background:linear-gradient(180deg,#f4f8ff,#fbfdff)}
 #mOrdEdit .ordBlock.gold{background:linear-gradient(180deg,#fff8ea,#fffdf8)}
@@ -133,7 +136,12 @@ textarea{min-height:90px;resize:vertical}
   .navBottom .inner{gap:2px}
   .navBottom button{font-size:10px;padding:10px 2px 12px}
   .card,.stat,.modal{border-radius:14px}
-}</style>
+}
+.btn[disabled], .btn.is-disabled{background:#d9dde6 !important;color:#7d8596 !important;border-color:#aeb6c5 !important;box-shadow:none !important;opacity:1 !important;filter:grayscale(.1)}
+.btn[disabled]::after, .btn.is-disabled::after{content:" OFF";font-size:.8em}
+.actions[data-editbar="1"]{display:none !important}
+.actions[data-editbar="1"].show{display:grid !important;grid-template-columns:1fr 1fr 1fr;gap:10px}
+</style>
 <script>
 window.addEventListener('error',e=>{
   const x=document.getElementById('dateLine');
@@ -142,6 +150,7 @@ window.addEventListener('error',e=>{
 </script>
 </head>
 <body>
+
 <div class="top">
   <h1>Vanity &amp; Glamour</h1>
   <div id="dateLine" class="date">--/--/----</div>
@@ -373,10 +382,10 @@ window.addEventListener('error',e=>{
     <div id="a_photo_prev" class="thumbs"></div>
   </div>
 
-  <div class="actions">
-    <button class="btn primary" type="button" data-action="saveArt">Salva</button>
-    <button class="btn" type="button" data-action="closeEdit">Annulla</button>
-    <button class="btn danger" type="button" data-action="deleteArt">Elimina</button>
+  <div class="actions" id="artEditActions" data-editbar="1" hidden>
+    <button class="btn primary" type="button" data-action="saveArt" disabled>Salva</button>
+    <button class="btn" type="button" data-action="closeEdit" disabled>Annulla</button>
+    <button class="btn danger" type="button" data-action="deleteArt" disabled>Elimina</button>
   </div>
 </div></div>
 
@@ -392,7 +401,7 @@ window.addEventListener('error',e=>{
     <div><div class="k">Città</div><input id="c_citta" autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
   </div>
   <div style="margin-top:10px"><div class="k">Provincia</div><select id="c_prov"></select></div>
-  <div class="card" style="margin-top:12px;padding:12px;border:2px dashed rgba(12,23,48,.18);background:linear-gradient(180deg,#f7fbff,#eef6ff)">
+  <div class="card" id="cliShippingBlock" style="display:none !important;margin-top:12px;padding:12px;border:2px dashed rgba(12,23,48,.18);background:linear-gradient(180deg,#f7fbff,#eef6ff)">
     <div class="h3" style="margin-bottom:8px">📦 Spedizione e monitoraggio</div>
     <div class="grid2">
       <div><div class="k">Corriere</div><input id="c_corriere" placeholder="GLS, BRT, SDA..." autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
@@ -401,10 +410,10 @@ window.addEventListener('error',e=>{
     <div style="margin-top:10px"><div class="k">Link monitoraggio</div><input id="c_track_url" placeholder="https://..." autocomplete="off" autocapitalize="off" spellcheck="false"/></div>
   </div>
   <div style="margin-top:10px"><div class="k">Note</div><textarea id="c_note"></textarea></div>
-  <div class="actions">
-    <button class="btn primary" type="button" data-action="saveCli">Salva</button>
-    <button class="btn" type="button" data-action="closeCli">Annulla</button>
-    <button class="btn danger" type="button" data-action="deleteCli">Elimina</button>
+  <div class="actions" id="cliEditActions" data-editbar="1" hidden>
+    <button class="btn primary" type="button" data-action="saveCli" disabled>Salva</button>
+    <button class="btn" type="button" data-action="closeCli" disabled>Annulla</button>
+    <button class="btn danger" type="button" data-action="deleteCli" disabled>Elimina</button>
   </div>
 </div></div>
 
@@ -463,10 +472,10 @@ window.addEventListener('error',e=>{
     <div id="o_rows" class="list"></div>
   </div>
   <div class="ordBlock gold" style="margin-top:10px"><div class="k">Totale</div><div id="o_tot" class="priceHot">0</div></div>
-  <div class="actions">
-    <button class="btn primary" type="button" data-action="saveOrd">Salva</button>
-    <button class="btn" type="button" data-action="closeOrd">Annulla</button>
-    <button class="btn danger" type="button" data-action="deleteOrd">Elimina</button>
+  <div class="actions" id="ordEditActions" data-editbar="1" hidden>
+    <button class="btn primary" type="button" data-action="saveOrd" disabled>Salva</button>
+    <button class="btn" type="button" data-action="closeOrd" disabled>Annulla</button>
+    <button class="btn danger" type="button" data-action="deleteOrd" disabled>Elimina</button>
   </div>
 </div></div>
 
@@ -1205,37 +1214,35 @@ function renderAll(){ renderHome(); renderArt(); renderCli(); renderOrd(); rende
 
 
 const dirtyState={art:false,cli:false,ord:false};
-const dirtySnap={art:'',cli:'',ord:''};
-function artState(){
-  return JSON.stringify({
-    cod:v('a_cod'),brand:v('a_brand'),mod:v('a_mod'),cat:v('a_cat'),desc:v('a_desc'),forn:v('a_forn'),taglia:v('a_taglia'),variante:v('a_variante'),colore:v('a_colore'),mis:v('a_mis'),usd:v('a_usd'),promoOn:!!document.getElementById('a_promo_on').checked,promoPrice:v('a_promo_price'),promoDate:v('a_promo_date'),post:v('a_post'),note:v('a_note'),photo:(document.getElementById('a_photo').files[0]?.name||'')
-  });
+function actionWrapId(form){ return form==='art' ? "artEditActions" : form==='cli' ? "cliEditActions" : "ordEditActions"; }
+function resetEditState(form){
+  dirtyState[form]=false;
+  const wrap=document.getElementById(actionWrapId(form));
+  if(wrap){ wrap.hidden=true; wrap.classList.remove('showbar'); wrap.style.display='none'; }
 }
-function cliState(){
-  return JSON.stringify({nome:v('c_nome'),tel:v('c_tel'),ind:v('c_ind'),cap:v('c_cap'),citta:v('c_citta'),prov:v('c_prov'),corriere:v('c_corriere'),track:v('c_track'),trackUrl:v('c_track_url'),note:v('c_note')});
-}
-function ordState(){
-  return JSON.stringify({cli:v('o_cli'),stato:v('o_stato'),data:v('o_data'),note:v('o_note'),discount:v('o_discount'),tracking:v('o_tracking'),art:v('o_art'),price:v('o_price'),rows:ordRows});
-}
-function applyDirty(form,isDirty){
-  dirtyState[form]=!!isDirty;
-  const map={art:['saveArt','closeEdit','deleteArt'],cli:['saveCli','closeCli','deleteCli'],ord:['saveOrd','closeOrd','deleteOrd']};
-  for(const action of map[form]){
-    const btn=document.querySelector(`[data-action="${action}"]`);
-    if(btn) btn.disabled=!isDirty;
+function markEdited(form){
+  if(dirtyState[form]) return;
+  dirtyState[form]=true;
+  const wrap=document.getElementById(actionWrapId(form));
+  if(wrap){
+    wrap.hidden=false;
+    wrap.classList.add('showbar');
+    wrap.style.display='grid';
   }
-  if(form==='art'){ const del=document.querySelector('[data-action="deleteArt"]'); if(del && !currentArtId) del.style.display='none'; else if(del) del.style.display=''; }
-  if(form==='cli'){ const del=document.querySelector('[data-action="deleteCli"]'); if(del && !currentCliId) del.style.display='none'; else if(del) del.style.display=''; }
-  if(form==='ord'){ const del=document.querySelector('[data-action="deleteOrd"]'); if(del && !currentOrdId) del.style.display='none'; else if(del) del.style.display=''; }
+  const saveSel=form==='art' ? "[data-action=\"saveArt\"]" : form==='cli' ? "[data-action=\"saveCli\"]" : "[data-action=\"saveOrd\"]";
+  const cancelSel=form==='art' ? "[data-action=\"closeEdit\"]" : form==='cli' ? "[data-action=\"closeCli\"]" : "[data-action=\"closeOrd\"]";
+  const delSel=form==='art' ? "[data-action=\"deleteArt\"]" : form==='cli' ? "[data-action=\"deleteCli\"]" : "[data-action=\"deleteOrd\"]";
+  const saveBtn=document.querySelector(saveSel); if(saveBtn) saveBtn.disabled=false;
+  const cancelBtn=document.querySelector(cancelSel); if(cancelBtn) cancelBtn.disabled=false;
+  const delBtn=document.querySelector(delSel);
+  if(delBtn){
+    delBtn.disabled=false;
+    const hasId = form==='art' ? !!currentArtId : form==='cli' ? !!currentCliId : !!currentOrdId;
+    delBtn.style.display = hasId ? "" : "none";
+  }
 }
-function initDirty(form){
-  dirtySnap[form]=(form==='art'?artState():form==='cli'?cliState():ordState());
-  applyDirty(form,false);
-}
-function refreshDirty(form){
-  const cur=(form==='art'?artState():form==='cli'?cliState():ordState());
-  applyDirty(form, cur!==dirtySnap[form]);
-}
+function initDirty(form){ resetEditState(form); }
+function refreshDirty(form){ markEdited(form); }
 
 /* ====== ART view/edit ====== */
 let currentArtId=null;
@@ -1870,6 +1877,18 @@ const provSel=document.getElementById('c_prov');
 provSel.innerHTML='<option value="">Seleziona</option>'+PROVINCE.map(p=>`<option value="${p}">${p}</option>`).join('');
 
 /* init */
+
+['mArtEdit','mCliEdit','mOrdEdit'].forEach(mid=>{
+  const el=document.getElementById(mid);
+  if(!el) return;
+  const form=mid==='mArtEdit'?'art':(mid==='mCliEdit'?'cli':'ord');
+  ['input','change'].forEach(evt=>el.addEventListener(evt,(ev)=>{
+    const t=ev.target;
+    if(!t) return;
+    if(t.closest('[data-editbar="1"]')) return;
+    if(t.matches('input, textarea, select')) markEdited(form);
+  },true));
+});
 renderAll();
 renderDiagnostics();
 const initial=location.hash.replace('#','')||'home';
